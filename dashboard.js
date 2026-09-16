@@ -15,26 +15,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     error: sessionError
   } = await secoraSupabase.auth.getSession();
 
-
   if (sessionError || !session) {
-
     window.location.replace("index.html");
-
     return;
-
   }
 
-
-  const user =
-    session.user;
-
+  const user = session.user;
 
   // -------------------------------------------------------
   // BASIC USER INFORMATION
   // -------------------------------------------------------
 
   setupUserInterface(user);
-
+  setupProfileMenu(user);
 
   // -------------------------------------------------------
   // LOAD PLATFORM DATA
@@ -42,23 +35,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
 
-    const data =
-      await loadPlatformData(user.id);
+    const data = await loadPlatformData(user.id);
 
+    renderDashboardStats(data);
 
-    renderDashboardStats(
-      data
-    );
+    renderContinueLearning(data);
 
-
-    renderContinueLearning(
-      data
-    );
-
-
-    renderCourses(
-      data
-    );
+    renderCourses(data);
 
   } catch (error) {
 
@@ -71,7 +54,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   }
 
-
   // -------------------------------------------------------
   // LOGOUT
   // -------------------------------------------------------
@@ -79,25 +61,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   const logoutButton =
     document.getElementById("logoutBtn");
 
-
   if (logoutButton) {
 
     logoutButton.addEventListener(
       "click",
       async () => {
 
-        logoutButton.disabled =
-          true;
+        logoutButton.disabled = true;
 
         logoutButton.textContent =
           "Logging out...";
-
 
         const {
           error
         } =
           await secoraSupabase.auth.signOut();
-
 
         if (error) {
 
@@ -115,7 +93,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           return;
 
         }
-
 
         window.location.replace(
           "index.html"
@@ -140,13 +117,11 @@ function setupUserInterface(
   const metadata =
     user.user_metadata || {};
 
-
   const displayName =
     metadata.full_name ||
     metadata.name ||
     user.email?.split("@")[0] ||
     "Learner";
-
 
   // Greeting
 
@@ -155,14 +130,12 @@ function setupUserInterface(
       "userGreeting"
     );
 
-
   if (greeting) {
 
     greeting.textContent =
       `Welcome back, ${displayName}`;
 
   }
-
 
   // Name
 
@@ -171,14 +144,12 @@ function setupUserInterface(
       "userName"
     );
 
-
   if (userName) {
 
     userName.textContent =
       displayName;
 
   }
-
 
   // Email
 
@@ -187,14 +158,12 @@ function setupUserInterface(
       "userEmail"
     );
 
-
   if (userEmail) {
 
     userEmail.textContent =
       user.email || "";
 
   }
-
 
   // Avatar
 
@@ -203,13 +172,11 @@ function setupUserInterface(
       "userAvatar"
     );
 
-
   if (avatar) {
 
     const avatarUrl =
       metadata.avatar_url ||
       metadata.picture;
-
 
     if (avatarUrl) {
 
@@ -228,14 +195,12 @@ function setupUserInterface(
 
   }
 
-
   // Date
 
   const dateElement =
     document.getElementById(
       "currentDate"
     );
-
 
   if (dateElement) {
 
@@ -293,13 +258,11 @@ async function loadPlatformData(
         }
       );
 
-
   if (coursesError) {
 
     throw coursesError;
 
   }
-
 
   // -------------------------------------------------------
   // MODULES
@@ -310,9 +273,7 @@ async function loadPlatformData(
       course => course.id
     );
 
-
   let modules = [];
-
 
   if (courseIds.length) {
 
@@ -339,19 +300,16 @@ async function loadPlatformData(
           }
         );
 
-
     if (error) {
 
       throw error;
 
     }
 
-
     modules =
       data || [];
 
   }
-
 
   // -------------------------------------------------------
   // LESSONS
@@ -362,9 +320,7 @@ async function loadPlatformData(
       module => module.id
     );
 
-
   let lessons = [];
-
 
   if (moduleIds.length) {
 
@@ -398,19 +354,16 @@ async function loadPlatformData(
           }
         );
 
-
     if (error) {
 
       throw error;
 
     }
 
-
     lessons =
       data || [];
 
   }
-
 
   // -------------------------------------------------------
   // USER PROGRESS
@@ -421,9 +374,7 @@ async function loadPlatformData(
       lesson => lesson.id
     );
 
-
   let progress = [];
-
 
   if (lessonIds.length) {
 
@@ -448,19 +399,16 @@ async function loadPlatformData(
           lessonIds
         );
 
-
     if (error) {
 
       throw error;
 
     }
 
-
     progress =
       data || [];
 
   }
-
 
   return {
 
@@ -489,7 +437,6 @@ function buildCourseData(
     progress
   } = data;
 
-
   return courses.map(
     course => {
 
@@ -499,12 +446,10 @@ function buildCourseData(
             module.course_id === course.id
         );
 
-
       const moduleIds =
         courseModules.map(
           module => module.id
         );
-
 
       const courseLessons =
         lessons.filter(
@@ -514,13 +459,11 @@ function buildCourseData(
             )
         );
 
-
       const courseLessonIds =
         courseLessons.map(
           lesson =>
             lesson.id
         );
-
 
       const courseProgress =
         progress.filter(
@@ -530,17 +473,14 @@ function buildCourseData(
             )
         );
 
-
       const completed =
         courseProgress.filter(
           item =>
             item.completed === true
         ).length;
 
-
       const total =
         courseLessons.length;
-
 
       const percentage =
         total === 0
@@ -548,7 +488,6 @@ function buildCourseData(
           : Math.round(
               (completed / total) * 100
             );
-
 
       return {
 
@@ -587,17 +526,14 @@ function renderDashboardStats(
       data
     );
 
-
   const totalLessons =
     data.lessons.length;
-
 
   const completedLessons =
     data.progress.filter(
       item =>
         item.completed === true
     ).length;
-
 
   const startedCourses =
     courseData.filter(
@@ -612,7 +548,6 @@ function renderDashboardStats(
         )
     ).length;
 
-
   const overallPercentage =
     totalLessons === 0
       ? 0
@@ -623,7 +558,6 @@ function renderDashboardStats(
           ) * 100
         );
 
-
   // -------------------------------------------------------
   // Try IDs first
   // -------------------------------------------------------
@@ -633,18 +567,15 @@ function renderDashboardStats(
     completedLessons
   );
 
-
   setText(
     "coursesStarted",
     startedCourses
   );
 
-
   setText(
     "overallProgress",
     `${overallPercentage}%`
   );
-
 
   // -------------------------------------------------------
   // Compatibility with existing dashboard
@@ -655,7 +586,6 @@ function renderDashboardStats(
       ".stat-card strong"
     );
 
-
   if (statValues.length >= 1) {
 
     statValues[0].textContent =
@@ -663,14 +593,12 @@ function renderDashboardStats(
 
   }
 
-
   if (statValues.length >= 2) {
 
     statValues[1].textContent =
       startedCourses;
 
   }
-
 
   if (statValues.length >= 3) {
 
@@ -695,7 +623,6 @@ function renderContinueLearning(
     progress
   } = data;
 
-
   // -------------------------------------------------------
   // Find lessons that were opened
   // -------------------------------------------------------
@@ -712,13 +639,11 @@ function renderContinueLearning(
                 lesson.id
             );
 
-
           if (!record?.last_opened_at) {
 
             return null;
 
           }
-
 
           return {
 
@@ -733,7 +658,6 @@ function renderContinueLearning(
       )
       .filter(Boolean);
 
-
   // Nothing has been opened yet
 
   if (!openedLessons.length) {
@@ -743,7 +667,6 @@ function renderContinueLearning(
     return;
 
   }
-
 
   // -------------------------------------------------------
   // Most recently opened lesson
@@ -759,14 +682,11 @@ function renderContinueLearning(
       )
   );
 
-
   const current =
     openedLessons[0];
 
-
   const lesson =
     current.lesson;
-
 
   const module =
     data.modules.find(
@@ -775,7 +695,6 @@ function renderContinueLearning(
         lesson.module_id
     );
 
-
   const course =
     data.courses.find(
       item =>
@@ -783,13 +702,11 @@ function renderContinueLearning(
         module?.course_id
     );
 
-
   if (!course) {
 
     return;
 
   }
-
 
   // -------------------------------------------------------
   // Existing continue elements
@@ -800,24 +717,20 @@ function renderContinueLearning(
     course.title
   );
 
-
   setText(
     "continueLesson",
     lesson.title
   );
-
 
   setText(
     "continueModule",
     module?.title || ""
   );
 
-
   const continueButton =
     document.getElementById(
       "continueBtn"
     );
-
 
   if (continueButton) {
 
@@ -827,7 +740,6 @@ function renderContinueLearning(
       )}`;
 
   }
-
 
   // -------------------------------------------------------
   // If old dashboard doesn't have a continue card,
@@ -868,29 +780,24 @@ function createContinueCard(
       ".course-grid"
     );
 
-
   if (!courseGrid) {
 
     return;
 
   }
 
-
   const card =
     document.createElement(
       "section"
     );
 
-
   card.className =
     "continue-learning";
-
 
   const status =
     progress.completed
       ? "Completed"
       : "In progress";
-
 
   card.innerHTML = `
 
@@ -920,7 +827,6 @@ function createContinueCard(
 
     </div>
 
-
     <div class="continue-action">
 
       <span class="continue-status">
@@ -940,7 +846,6 @@ function createContinueCard(
 
   `;
 
-
   courseGrid.parentNode.insertBefore(
     card,
     courseGrid
@@ -959,7 +864,6 @@ function renderEmptyContinueLearning() {
     document.querySelector(
       ".continue-learning"
     );
-
 
   if (existing) {
 
@@ -983,19 +887,16 @@ function renderCourses(
       ".course-grid"
     );
 
-
   if (!grid) {
 
     return;
 
   }
 
-
   const courseData =
     buildCourseData(
       data
     );
-
 
   if (!courseData.length) {
 
@@ -1019,7 +920,6 @@ function renderCourses(
     return;
 
   }
-
 
   grid.innerHTML =
     courseData
@@ -1047,11 +947,9 @@ function createCourseCard(
       course.level || "beginner"
     ).toUpperCase();
 
-
   return `
 
     <article class="course-card">
-
 
       <div class="course-card-top">
 
@@ -1059,13 +957,11 @@ function createCourseCard(
           ${escapeHTML(level)}
         </span>
 
-
         <span class="course-percentage">
           ${course.percentage}%
         </span>
 
       </div>
-
 
       <h3>
         ${escapeHTML(
@@ -1073,13 +969,11 @@ function createCourseCard(
         )}
       </h3>
 
-
       <p>
         ${escapeHTML(
           course.description || ""
         )}
       </p>
-
 
       <div class="course-card-meta">
 
@@ -1088,14 +982,12 @@ function createCourseCard(
           LESSON${course.total === 1 ? "" : "S"}
         </span>
 
-
         <span>
           ${course.completed}
           COMPLETED
         </span>
 
       </div>
-
 
       <div class="course-progress">
 
@@ -1106,7 +998,6 @@ function createCourseCard(
 
       </div>
 
-
       <a
         href="course.html?slug=${encodeURIComponent(
           course.slug
@@ -1115,7 +1006,6 @@ function createCourseCard(
       >
         Explore →
       </a>
-
 
     </article>
 
@@ -1138,7 +1028,6 @@ function setText(
       id
     );
 
-
   if (element) {
 
     element.textContent =
@@ -1160,13 +1049,11 @@ function showDashboardError() {
       ".course-grid"
     );
 
-
   if (!grid) {
 
     return;
 
   }
-
 
   grid.innerHTML = `
 
@@ -1221,5 +1108,779 @@ function escapeHTML(
       "'",
       "&#039;"
     );
+
+}
+
+
+// =========================================================
+// PROFILE / HEADER AUTH UI
+// =========================================================
+
+function setupProfileMenu(user) {
+
+  const metadata =
+    user?.user_metadata || {};
+
+  const displayName =
+    metadata.full_name ||
+    metadata.name ||
+    user?.email?.split("@")[0] ||
+    "Learner";
+
+  const avatarUrl =
+    metadata.avatar_url ||
+    metadata.picture ||
+    "";
+
+  // -------------------------------------------------------
+  // FIND EXISTING PROFILE TRIGGER
+  // -------------------------------------------------------
+
+  const trigger =
+    document.getElementById(
+      "profileBtn"
+    ) ||
+    document.getElementById(
+      "profileButton"
+    ) ||
+    document.getElementById(
+      "profileTrigger"
+    ) ||
+    document.querySelector(
+      "[data-profile-trigger], .profile-trigger, .profile-button, .user-menu-trigger, .header-profile"
+    );
+
+  // -------------------------------------------------------
+  // UPDATE PROFILE NAMES
+  // -------------------------------------------------------
+
+  const nameElements = [
+
+    document.getElementById(
+      "profileName"
+    ),
+
+    document.getElementById(
+      "headerUserName"
+    ),
+
+    document.getElementById(
+      "userName"
+    )
+
+  ].filter(Boolean);
+
+  nameElements.forEach(
+    element => {
+
+      element.textContent =
+        displayName;
+
+    }
+  );
+
+  // -------------------------------------------------------
+  // REMOVE HEADER LOADING STATE
+  // -------------------------------------------------------
+
+  document
+    .querySelectorAll("body *")
+    .forEach(
+      element => {
+
+        if (
+          element.children.length !== 0
+        ) {
+          return;
+        }
+
+        const value =
+          element.textContent.trim();
+
+        if (
+          value === "Loading..." ||
+          value === "Loading…"
+        ) {
+
+          const parentText =
+            element.parentElement
+              ?.textContent
+              ?.trim() || "";
+
+          if (
+            parentText.length < 100 ||
+            element.id === "profileLoading" ||
+            element.classList.contains(
+              "profile-loading"
+            )
+          ) {
+
+            element.textContent =
+              displayName;
+
+          }
+
+        }
+
+      }
+    );
+
+  // -------------------------------------------------------
+  // EXISTING PROFILE TRIGGER
+  // -------------------------------------------------------
+
+  if (trigger) {
+
+    trigger.style.cursor =
+      "pointer";
+
+    trigger.setAttribute(
+      "role",
+      "button"
+    );
+
+    trigger.setAttribute(
+      "tabindex",
+      "0"
+    );
+
+    trigger.setAttribute(
+      "aria-haspopup",
+      "true"
+    );
+
+    trigger.setAttribute(
+      "aria-expanded",
+      "false"
+    );
+
+    // Prevent duplicate listeners
+
+    if (
+      trigger.dataset
+        .secoraProfileBound !==
+      "true"
+    ) {
+
+      trigger.dataset
+        .secoraProfileBound =
+        "true";
+
+      trigger.addEventListener(
+        "click",
+        event => {
+
+          event.preventDefault();
+
+          event.stopPropagation();
+
+          const menu =
+            document.getElementById(
+              "profileMenu"
+            ) ||
+            document.querySelector(
+              "[data-profile-menu], .profile-menu, .user-menu-dropdown"
+            );
+
+          if (!menu) {
+
+            window.location.href =
+              "profile.html";
+
+            return;
+
+          }
+
+          const isOpen =
+            menu.classList.contains(
+              "open"
+            ) ||
+            menu.getAttribute(
+              "aria-hidden"
+            ) === "false";
+
+          menu.classList.toggle(
+            "open",
+            !isOpen
+          );
+
+          menu.setAttribute(
+            "aria-hidden",
+            String(isOpen)
+          );
+
+          trigger.setAttribute(
+            "aria-expanded",
+            String(!isOpen)
+          );
+
+        }
+      );
+
+      trigger.addEventListener(
+        "keydown",
+        event => {
+
+          if (
+            event.key === "Enter" ||
+            event.key === " "
+          ) {
+
+            event.preventDefault();
+
+            trigger.click();
+
+          }
+
+        }
+      );
+
+    }
+
+  }
+
+  // -------------------------------------------------------
+  // EXISTING PROFILE MENU
+  // -------------------------------------------------------
+
+  const menu =
+    document.getElementById(
+      "profileMenu"
+    ) ||
+    document.querySelector(
+      "[data-profile-menu], .profile-menu, .user-menu-dropdown"
+    );
+
+  if (menu) {
+
+    const menuName =
+      menu.querySelector(
+        "#profileMenuName, .profile-menu-name, [data-profile-name]"
+      );
+
+    const menuEmail =
+      menu.querySelector(
+        "#profileMenuEmail, .profile-menu-email, [data-profile-email]"
+      );
+
+    if (menuName) {
+
+      menuName.textContent =
+        displayName;
+
+    }
+
+    if (menuEmail) {
+
+      menuEmail.textContent =
+        user?.email || "";
+
+    }
+
+    const profileLink =
+      menu.querySelector(
+        "#profileLink, [data-profile-link], a[href*='profile']"
+      );
+
+    if (profileLink) {
+
+      profileLink.href =
+        "profile.html";
+
+      profileLink.addEventListener(
+        "click",
+        () => {
+
+          menu.classList.remove(
+            "open"
+          );
+
+          menu.setAttribute(
+            "aria-hidden",
+            "true"
+          );
+
+        }
+      );
+
+    }
+
+  }
+
+  // -------------------------------------------------------
+  // CREATE FALLBACK PROFILE HEADER
+  // -------------------------------------------------------
+
+  if (!trigger) {
+
+    createFallbackProfileHeader(
+      user,
+      displayName,
+      avatarUrl
+    );
+
+  }
+
+  // -------------------------------------------------------
+  // CLOSE MENU WHEN CLICKING OUTSIDE
+  // -------------------------------------------------------
+
+  if (
+    !document.documentElement
+      .dataset
+      .secoraProfileOutsideBound
+  ) {
+
+    document.documentElement
+      .dataset
+      .secoraProfileOutsideBound =
+      "true";
+
+    document.addEventListener(
+      "click",
+      event => {
+
+        const openMenu =
+          document.getElementById(
+            "profileMenu"
+          ) ||
+          document.querySelector(
+            "[data-profile-menu], .profile-menu, .user-menu-dropdown"
+          );
+
+        if (!openMenu) {
+
+          return;
+
+        }
+
+        const activeTrigger =
+          document.getElementById(
+            "profileBtn"
+          ) ||
+          document.getElementById(
+            "profileButton"
+          ) ||
+          document.getElementById(
+            "profileTrigger"
+          ) ||
+          document.querySelector(
+            "[data-profile-trigger], .profile-trigger, .profile-button, .user-menu-trigger, .header-profile"
+          );
+
+        if (
+          !openMenu.contains(
+            event.target
+          ) &&
+          !activeTrigger?.contains(
+            event.target
+          )
+        ) {
+
+          openMenu.classList.remove(
+            "open"
+          );
+
+          openMenu.setAttribute(
+            "aria-hidden",
+            "true"
+          );
+
+          if (activeTrigger) {
+
+            activeTrigger.setAttribute(
+              "aria-expanded",
+              "false"
+            );
+
+          }
+
+        }
+
+      }
+    );
+
+  }
+
+}
+
+
+// =========================================================
+// FALLBACK PROFILE HEADER
+// =========================================================
+
+function createFallbackProfileHeader(
+  user,
+  displayName,
+  avatarUrl
+) {
+
+  const header =
+    document.querySelector(
+      "header"
+    ) ||
+    document.querySelector(
+      ".topbar"
+    ) ||
+    document.querySelector(
+      ".navbar"
+    ) ||
+    document.querySelector(
+      "nav"
+    );
+
+  if (
+    !header ||
+    document.getElementById(
+      "secoraFallbackProfile"
+    )
+  ) {
+
+    return;
+
+  }
+
+  // -------------------------------------------------------
+  // WRAPPER
+  // -------------------------------------------------------
+
+  const wrapper =
+    document.createElement(
+      "div"
+    );
+
+  wrapper.id =
+    "secoraFallbackProfile";
+
+  wrapper.style.cssText = `
+    position:relative;
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    font-family:inherit;
+  `;
+
+  // -------------------------------------------------------
+  // PROFILE BUTTON
+  // -------------------------------------------------------
+
+  const button =
+    document.createElement(
+      "button"
+    );
+
+  button.id =
+    "profileBtn";
+
+  button.type =
+    "button";
+
+  button.style.cssText = `
+    display:flex;
+    align-items:center;
+    gap:9px;
+    border:0;
+    background:transparent;
+    color:inherit;
+    padding:6px 8px;
+    border-radius:9px;
+    cursor:pointer;
+    font:inherit;
+  `;
+
+  // -------------------------------------------------------
+  // AVATAR
+  // -------------------------------------------------------
+
+  const avatar =
+    document.createElement(
+      "span"
+    );
+
+  avatar.style.cssText = `
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    overflow:hidden;
+    background:#e9edf2;
+    color:#1b2430;
+    font-size:13px;
+    font-weight:700;
+  `;
+
+  if (avatarUrl) {
+
+    avatar.innerHTML =
+      `<img src="${escapeHTML(
+        avatarUrl
+      )}" alt="${escapeHTML(
+        displayName
+      )}" style="width:100%;height:100%;object-fit:cover;">`;
+
+  } else {
+
+    avatar.textContent =
+      displayName
+        .charAt(0)
+        .toUpperCase();
+
+  }
+
+  // -------------------------------------------------------
+  // NAME
+  // -------------------------------------------------------
+
+  const text =
+    document.createElement(
+      "span"
+    );
+
+  text.id =
+    "profileName";
+
+  text.textContent =
+    displayName;
+
+  text.style.cssText = `
+    font-size:13px;
+    font-weight:600;
+    white-space:nowrap;
+  `;
+
+  button.append(
+    avatar,
+    text
+  );
+
+  // -------------------------------------------------------
+  // PROFILE MENU
+  // -------------------------------------------------------
+
+  const menu =
+    document.createElement(
+      "div"
+    );
+
+  menu.id =
+    "profileMenu";
+
+  menu.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  menu.style.cssText = `
+    position:absolute;
+    top:calc(100% + 10px);
+    right:0;
+    min-width:220px;
+    padding:10px;
+    background:#fff;
+    color:#17202b;
+    border:1px solid #e2e7ed;
+    border-radius:12px;
+    box-shadow:0 16px 40px rgba(0,0,0,.12);
+    display:none;
+    z-index:9999;
+  `;
+
+  // -------------------------------------------------------
+  // PROFILE CSS
+  // -------------------------------------------------------
+
+  const style =
+    document.createElement(
+      "style"
+    );
+
+  style.textContent = `
+
+    #profileMenu.open {
+      display:block !important;
+    }
+
+    #profileBtn:hover {
+      background:rgba(0,0,0,.04);
+    }
+
+    #profileMenu a,
+    #profileMenu button {
+
+      display:block;
+      width:100%;
+      box-sizing:border-box;
+      padding:10px 11px;
+      border:0;
+      background:transparent;
+      color:inherit;
+      text-align:left;
+      text-decoration:none;
+      border-radius:8px;
+      cursor:pointer;
+      font:inherit;
+
+    }
+
+    #profileMenu a:hover,
+    #profileMenu button:hover {
+
+      background:#f2f5f8;
+
+    }
+
+  `;
+
+  // -------------------------------------------------------
+  // PROFILE INFORMATION
+  // -------------------------------------------------------
+
+  const info =
+    document.createElement(
+      "div"
+    );
+
+  info.style.cssText =
+    "padding:8px 10px 10px;border-bottom:1px solid #edf0f3;margin-bottom:5px;";
+
+  const menuName =
+    document.createElement(
+      "strong"
+    );
+
+  menuName.id =
+    "profileMenuName";
+
+  menuName.textContent =
+    displayName;
+
+  menuName.style.display =
+    "block";
+
+  const menuEmail =
+    document.createElement(
+      "small"
+    );
+
+  menuEmail.id =
+    "profileMenuEmail";
+
+  menuEmail.textContent =
+    user?.email || "";
+
+  menuEmail.style.cssText =
+    "display:block;margin-top:3px;color:#718096;overflow:hidden;text-overflow:ellipsis;";
+
+  info.append(
+    menuName,
+    menuEmail
+  );
+
+  // -------------------------------------------------------
+  // PROFILE LINK
+  // -------------------------------------------------------
+
+  const profileLink =
+    document.createElement(
+      "a"
+    );
+
+  profileLink.id =
+    "profileLink";
+
+  profileLink.href =
+    "profile.html";
+
+  profileLink.textContent =
+    "Profile";
+
+  // -------------------------------------------------------
+  // LOGOUT BUTTON
+  // -------------------------------------------------------
+
+  const logout =
+    document.createElement(
+      "button"
+    );
+
+  logout.id =
+    "logoutBtn";
+
+  logout.type =
+    "button";
+
+  logout.textContent =
+    "Logout";
+
+  // -------------------------------------------------------
+  // BUILD MENU
+  // -------------------------------------------------------
+
+  menu.append(
+    info,
+    profileLink,
+    logout
+  );
+
+  wrapper.append(
+    button,
+    menu
+  );
+
+  header.append(
+    wrapper
+  );
+
+  document.head.appendChild(
+    style
+  );
+
+  // -------------------------------------------------------
+  // LOGOUT HANDLER
+  // -------------------------------------------------------
+
+  logout.addEventListener(
+    "click",
+    async event => {
+
+      event.preventDefault();
+
+      logout.disabled =
+        true;
+
+      logout.textContent =
+        "Logging out...";
+
+      const {
+        error
+      } =
+        await secoraSupabase
+          .auth
+          .signOut();
+
+      if (error) {
+
+        console.error(
+          "Logout error:",
+          error
+        );
+
+        logout.disabled =
+          false;
+
+        logout.textContent =
+          "Logout";
+
+        return;
+
+      }
+
+      window.location.replace(
+        "index.html"
+      );
+
+    }
+  );
 
 }
