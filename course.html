@@ -1,144 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
 
+<head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Learn cybersecurity with Secora."
+  >
 
   <title>Course — Secora</title>
 
-  <link rel="stylesheet" href="course.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js"></script>
-  <script src="course.js" defer></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- Course Styles -->
+  <link
+    rel="stylesheet"
+    href="course.css"
+  >
 
 </head>
 
+
 <body>
 
-  <div class="page">
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
 
-    <!-- HEADER -->
+  <header class="course-header">
 
-    <header class="course-header">
+    <div class="header-inner">
 
-      <a href="home.html" class="back-link">
+      <a
+        href="home.html"
+        class="brand"
+      >
+        SECORA
+      </a>
+
+
+      <a
+        href="home.html"
+        class="back-dashboard"
+      >
         ← Dashboard
       </a>
 
-      <div class="header-brand">
-        <div class="brand-mark">S</div>
-        <span>SECORA</span>
-      </div>
+    </div>
 
-      <div class="header-spacer"></div>
-
-    </header>
+  </header>
 
 
-    <!-- MAIN -->
+  <!-- =====================================================
+       MAIN
+       ===================================================== -->
 
-    <main class="course-main">
+  <main class="course-page">
 
-      <!-- COURSE HERO -->
 
-      <section class="course-hero">
+    <!-- ===================================================
+         COURSE HERO
+         =================================================== -->
 
-        <div class="course-hero-content">
+    <section class="course-hero">
 
-          <div class="course-label">
-            COURSE
-          </div>
+      <div class="course-hero-content">
 
-          <h1 id="courseTitle">
-            Loading...
-          </h1>
-
-          <p
-            id="courseDescription"
-            class="course-description">
-            Loading course information...
-          </p>
-
-          <div class="course-meta">
-
-            <span id="courseLevel">
-              —
-            </span>
-
-            <span class="meta-dot">•</span>
-
-            <span id="moduleCount">
-              —
-            </span>
-
-            <span class="meta-dot">•</span>
-
-            <span id="lessonCount">
-              —
-            </span>
-
-          </div>
-
+        <div class="course-eyebrow">
+          COURSE
         </div>
 
 
-        <div class="course-progress-card">
+        <h1 id="courseTitle">
+          Loading course...
+        </h1>
 
-          <div class="progress-ring">
 
-            <span id="progressPercent">
-              0%
-            </span>
+        <p
+          id="courseDescription"
+          class="course-description"
+        >
+          Loading course description...
+        </p>
 
-          </div>
 
-          <span>
-            COURSE PROGRESS
+        <div class="course-meta">
+
+          <span id="courseLevel">
+            beginner
+          </span>
+
+
+          <span class="meta-divider">
+            •
+          </span>
+
+
+          <span id="moduleCount">
+            0 MODULES
+          </span>
+
+
+          <span class="meta-divider">
+            •
+          </span>
+
+
+          <span id="lessonCount">
+            0 LESSONS
           </span>
 
         </div>
 
-      </section>
+      </div>
 
 
-      <!-- CONTENT -->
+      <!-- =================================================
+           COURSE PROGRESS
+           ================================================= -->
 
-      <section class="course-content">
+      <aside class="course-progress-card">
 
-        <div class="content-heading">
+        <div class="progress-ring">
 
-          <div>
-
-            <p class="eyebrow">
-              CURRICULUM
-            </p>
-
-            <h2>
-              Course content
-            </h2>
-
-          </div>
+          <span id="progressPercent">
+            0%
+          </span>
 
         </div>
 
 
-        <div
-          id="modulesContainer"
-          class="modules">
+        <div class="progress-details">
 
-          <div class="loading">
-            Loading modules...
-          </div>
+          <span id="progressLessons">
+            0 / 0 lessons
+          </span>
 
         </div>
 
-      </section>
 
-    </main>
+        <span class="progress-label">
+          COURSE PROGRESS
+        </span>
 
-  </div>
+      </aside>
+
+    </section>
+
+
+
+    <!-- ===================================================
+         CURRICULUM
+         =================================================== -->
+
+    <section class="curriculum-section">
+
+
+      <div class="section-heading">
+
+        <div>
+
+          <span class="section-eyebrow">
+            CURRICULUM
+          </span>
+
+          <h2>
+            Course structure
+          </h2>
+
+        </div>
+
+
+        <p>
+          Work through each module
+          and complete the lessons at your pace.
+        </p>
+
+      </div>
+
+
+
+      <!-- =================================================
+           MODULES
+           ================================================= -->
+
+      <div
+        id="modulesContainer"
+        class="modules-container"
+      >
+
+        <div class="course-loading">
+
+          Loading curriculum...
+
+        </div>
+
+      </div>
+
+
+    </section>
+
+
+  </main>
+
+
+
+  <!-- =====================================================
+       SUPABASE
+       ===================================================== -->
+
+  <script src="supabase.js"></script>
+
+
+  <!-- =====================================================
+       COURSE LOGIC
+       ===================================================== -->
+
+  <script src="course.js"></script>
+
 
 </body>
+
 </html>
