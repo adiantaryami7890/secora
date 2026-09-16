@@ -1,12 +1,9 @@
-// =========================================================
-// SECORA V0.3.3 — DYNAMIC COURSE PAGE
+ // =========================================================
+// SECORA V0.3.5 — COURSE PAGE
+// Dynamic course + modules + lessons
 // =========================================================
 
 document.addEventListener("DOMContentLoaded", async () => {
-
-  // -------------------------------------------------------
-  // ELEMENTS
-  // -------------------------------------------------------
 
   const title =
     document.getElementById("courseTitle");
@@ -27,9 +24,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("modulesContainer");
 
 
-  // -------------------------------------------------------
-  // AUTH CHECK
-  // -------------------------------------------------------
+  // =======================================================
+  // AUTH
+  // =======================================================
 
   const {
     data: { session },
@@ -45,9 +42,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
-  // -------------------------------------------------------
-  // GET COURSE SLUG
-  // -------------------------------------------------------
+  // =======================================================
+  // COURSE SLUG
+  // =======================================================
 
   const params =
     new URLSearchParams(window.location.search);
@@ -67,15 +64,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
-  console.log(
-    "Loading course:",
-    slug
-  );
-
-
-  // -------------------------------------------------------
+  // =======================================================
   // LOAD COURSE
-  // -------------------------------------------------------
+  // =======================================================
 
   const {
     data: course,
@@ -110,9 +101,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
-  // -------------------------------------------------------
+  // =======================================================
   // COURSE INFORMATION
-  // -------------------------------------------------------
+  // =======================================================
 
   title.textContent =
     course.title;
@@ -120,18 +111,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   description.textContent =
     course.description || "";
 
-
   level.textContent =
     course.level || "beginner";
-
 
   document.title =
     `${course.title} — Secora`;
 
 
-  // -------------------------------------------------------
+  // =======================================================
   // LOAD MODULES
-  // -------------------------------------------------------
+  // =======================================================
 
   const {
     data: modules,
@@ -166,10 +155,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
-  // -------------------------------------------------------
-  // MODULE COUNT
-  // -------------------------------------------------------
-
   const totalModules =
     modules?.length || 0;
 
@@ -178,14 +163,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     `${totalModules} MODULE${totalModules === 1 ? "" : "S"}`;
 
 
-  // -------------------------------------------------------
-  // LOAD LESSON COUNTS
-  // -------------------------------------------------------
+  // =======================================================
+  // LOAD TOTAL LESSON COUNT
+  // =======================================================
 
   let totalLessons = 0;
 
 
-  if (modules && modules.length > 0) {
+  if (modules?.length) {
 
     const moduleIds =
       modules.map(module => module.id);
@@ -196,7 +181,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       error: lessonsError
     } = await secoraSupabase
       .from("lessons")
-      .select("id, module_id")
+      .select("id")
       .in("module_id", moduleIds)
       .eq("published", true);
 
@@ -215,11 +200,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     `${totalLessons} LESSON${totalLessons === 1 ? "" : "S"}`;
 
 
-  // -------------------------------------------------------
+  // =======================================================
   // NO MODULES
-  // -------------------------------------------------------
+  // =======================================================
 
-  if (!modules || modules.length === 0) {
+  if (!modules?.length) {
 
     modulesContainer.innerHTML = `
 
@@ -233,9 +218,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
-  // -------------------------------------------------------
+  // =======================================================
   // RENDER MODULES
-  // -------------------------------------------------------
+  // =======================================================
 
   modulesContainer.innerHTML = "";
 
@@ -258,7 +243,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       article.innerHTML = `
 
-        <div class="module-header">
+        <div
+          class="module-header"
+          data-module-id="${module.id}"
+        >
 
           <div class="module-number">
             ${number}
@@ -289,6 +277,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         </div>
 
+
+        <div class="lesson-list"></div>
+
       `;
 
 
@@ -298,9 +289,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   );
 
 
-  // -------------------------------------------------------
+  // =======================================================
   // MODULE CLICK
-  // -------------------------------------------------------
+  // =======================================================
 
   document
     .querySelectorAll(".module-header")
@@ -308,12 +299,49 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       header.addEventListener(
         "click",
-        () => {
+        async () => {
 
           const module =
             header.parentElement;
 
-          module.classList.toggle("open");
+          const lessonList =
+            module.querySelector(".lesson-list");
+
+
+          const isOpen =
+            module.classList.contains("open");
+
+
+          // Close
+
+          if (isOpen) {
+
+            module.classList.remove("open");
+
+            lessonList.innerHTML = "";
+
+            return;
+          }
+
+
+          // Open
+
+          module.classList.add("open");
+
+
+          lessonList.innerHTML = `
+
+            <div class="lesson-loading">
+              Loading lessons...
+            </div>
+
+          `;
+
+
+          await loadModuleLessons(
+            header.dataset.moduleId,
+            lessonList
+          );
 
         }
       );
@@ -324,10 +352,130 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 // =========================================================
-// ERROR UI
+// LOAD LESSONS FOR MODULE
 // =========================================================
 
-function showError(element, message) {
+async function loadModuleLessons(
+  moduleId,
+  container
+) {
+
+  const {
+    data: lessons,
+    error
+  } = await secoraSupabase
+    .from("lessons")
+    .select(`
+      id,
+      title,
+      slug,
+      duration_minutes,
+      position
+    `)
+    .eq("module_id", moduleId)
+    .eq("published", true)
+    .order("position", {
+      ascending: true
+    });
+
+
+  if (error) {
+
+    console.error(
+      "Lesson loading error:",
+      error
+    );
+
+
+    container.innerHTML = `
+
+      <div class="lesson-loading">
+        Unable to load lessons.
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  if (!lessons?.length) {
+
+    container.innerHTML = `
+
+      <div class="lesson-loading">
+        Lessons are being prepared.
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  container.innerHTML = "";
+
+
+  lessons.forEach(
+    (lesson, index) => {
+
+      const link =
+        document.createElement("a");
+
+
+      link.className =
+        "lesson-item";
+
+
+      link.href =
+        `lesson.html?slug=${encodeURIComponent(lesson.slug)}`;
+
+
+      const number =
+        String(index + 1)
+          .padStart(2, "0");
+
+
+      link.innerHTML = `
+
+        <span class="lesson-number">
+          ${number}
+        </span>
+
+
+        <span class="lesson-title">
+          ${escapeHTML(lesson.title)}
+        </span>
+
+
+        <span class="lesson-duration">
+          ${lesson.duration_minutes || "—"} MIN
+        </span>
+
+
+        <span class="lesson-arrow">
+          →
+        </span>
+
+      `;
+
+
+      container.appendChild(link);
+
+    }
+  );
+
+}
+
+
+// =========================================================
+// ERROR
+// =========================================================
+
+function showError(
+  element,
+  message
+) {
 
   if (!element) {
     return;
