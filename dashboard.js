@@ -1,4 +1,4 @@
- // =========================================================
+// =========================================================
 // SECORA V0.3.2 — DYNAMIC DASHBOARD
 // =========================================================
 
@@ -22,9 +22,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const logoutBtn =
     document.getElementById("logoutBtn");
-
-  const courseGrid =
-    document.querySelector(".course-grid");
 
 
   // =======================================================
@@ -282,7 +279,9 @@ async function loadCourses() {
   }
 
 
+  // -------------------------------------------------------
   // Loading state
+  // -------------------------------------------------------
 
   courseGrid.innerHTML = `
 
@@ -293,7 +292,9 @@ async function loadCourses() {
   `;
 
 
+  // -------------------------------------------------------
   // Fetch published courses
+  // -------------------------------------------------------
 
   const {
     data: courses,
@@ -316,7 +317,9 @@ async function loadCourses() {
     });
 
 
+  // -------------------------------------------------------
   // Error
+  // -------------------------------------------------------
 
   if (error) {
 
@@ -338,7 +341,9 @@ async function loadCourses() {
   }
 
 
+  // -------------------------------------------------------
   // No courses
+  // -------------------------------------------------------
 
   if (!courses || courses.length === 0) {
 
@@ -354,9 +359,9 @@ async function loadCourses() {
   }
 
 
-  // =======================================================
-  // GENERATE COURSE CARDS
-  // =======================================================
+  // -------------------------------------------------------
+  // Generate course cards
+  // -------------------------------------------------------
 
   courseGrid.innerHTML = "";
 
@@ -395,12 +400,13 @@ async function loadCourses() {
 
         <div class="course-meta">
 
-          <span class="level beginner">
+          <span class="level ${course.level || "beginner"}">
             ${level}
           </span>
 
           <span>
-            ${moduleCount} MODULE${moduleCount === 1 ? "" : "S"}
+            ${moduleCount}
+            MODULE${moduleCount === 1 ? "" : "S"}
           </span>
 
         </div>
@@ -459,8 +465,19 @@ async function loadCourses() {
 
 
           if (!slug) {
+
+            console.error(
+              "Course slug is missing."
+            );
+
             return;
           }
+
+
+          console.log(
+            "Opening course:",
+            slug
+          );
 
 
           window.location.href =
@@ -487,30 +504,4 @@ function escapeHTML(value) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 
-}
-/* =========================================================
-   DYNAMIC COURSE STATES
-   ========================================================= */
-
-.course-loading {
-  grid-column: 1 / -1;
-
-  min-height: 180px;
-
-  background: #ffffff;
-
-  border: 1px solid var(--line);
-
-  border-radius: 8px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-family: var(--font-ui);
-
-  font-size: 12px;
-  font-weight: 500;
-
-  color: var(--muted);
 }
