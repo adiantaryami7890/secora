@@ -1415,3 +1415,323 @@ input:focus-visible {
   background: #dfe5ff;
   color: #111214;
 }
+/* =========================================================
+   SECORA V0.3.7
+   CONTINUE LEARNING
+   ========================================================= */
+
+.continue-learning {
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  margin: 0 0 42px;
+
+  padding: 32px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 32px;
+
+  background: #111214;
+
+  border: 1px solid #24262a;
+
+  border-radius: 18px;
+
+  color: #ffffff;
+
+}
+
+
+.continue-content {
+
+  min-width: 0;
+
+}
+
+
+.continue-eyebrow {
+
+  display: block;
+
+  margin-bottom: 10px;
+
+  font-family: var(--font-ui);
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.16em;
+
+  color: #8d939c;
+
+}
+
+
+.continue-content h2 {
+
+  margin: 0;
+
+  font-family: var(--font-display);
+
+  font-size: clamp(24px, 3vw, 36px);
+
+  line-height: 1.1;
+
+  letter-spacing: -0.04em;
+
+  color: #ffffff;
+
+}
+
+
+.continue-course {
+
+  margin: 12px 0 0;
+
+  font-family: var(--font-ui);
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  color: #d9dde3;
+
+}
+
+
+.continue-module {
+
+  margin: 5px 0 0;
+
+  font-family: var(--font-ui);
+
+  font-size: 12px;
+
+  color: #858b94;
+
+}
+
+
+.continue-action {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+
+  flex-shrink: 0;
+
+}
+
+
+.continue-status {
+
+  font-family: var(--font-ui);
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+
+  color: #8d939c;
+
+}
+
+
+.continue-button {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-width: 130px;
+
+  padding: 13px 20px;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #111214;
+
+  text-decoration: none;
+
+  font-family: var(--font-ui);
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  transition:
+    transform 180ms ease,
+    background 180ms ease;
+
+}
+
+
+.continue-button:hover {
+
+  transform: translateY(-2px);
+
+  background: #e8eaed;
+
+}
+
+
+/* =========================================================
+   COURSE PROGRESS
+   ========================================================= */
+
+.course-progress {
+
+  width: 100%;
+
+  height: 4px;
+
+  margin-top: 20px;
+
+  overflow: hidden;
+
+  background: #27292d;
+
+  border-radius: 999px;
+
+}
+
+
+.course-progress-bar {
+
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: #ffffff;
+
+  transition: width 400ms ease;
+
+}
+
+
+/* =========================================================
+   COURSE CARD PROGRESS
+   ========================================================= */
+
+.course-card-top {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+}
+
+
+.course-percentage {
+
+  font-family: var(--font-display);
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+}
+
+
+.course-card-meta {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-top: 22px;
+
+  font-family: var(--font-ui);
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.1em;
+
+  color: #888d95;
+
+}
+
+
+.course-empty {
+
+  padding: 50px;
+
+  text-align: center;
+
+}
+
+
+.course-empty h3 {
+
+  margin: 0 0 8px;
+
+  font-family: var(--font-display);
+
+}
+
+
+.course-empty p {
+
+  margin: 0;
+
+  color: #858b94;
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .continue-learning {
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    padding: 24px;
+
+  }
+
+
+  .continue-action {
+
+    width: 100%;
+
+    justify-content: space-between;
+
+  }
+
+
+  .continue-button {
+
+    min-width: 110px;
+
+  }
+
+}
