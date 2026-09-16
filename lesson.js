@@ -1,5 +1,5 @@
-// =========================================================
-// SECORA V0.3.5 — LESSON READER
+ // =========================================================
+// SECORA V0.3.6 — LESSON READER + PROGRESS
 // =========================================================
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
   // =======================================================
-  // GET LESSON SLUG
+  // LESSON SLUG
   // =======================================================
 
   const params =
@@ -132,10 +132,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
-  // =======================================================
-  // COURSE + MODULE
-  // =======================================================
-
   const module =
     lesson.modules;
 
@@ -144,27 +140,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
   // =======================================================
-  // HEADER
+  // COURSE INFORMATION
   // =======================================================
 
   lessonTitle.textContent =
     lesson.title;
 
-
   moduleName.textContent =
     module?.title || "Module";
-
 
   lessonDuration.textContent =
     lesson.duration_minutes || "—";
 
-
   document.title =
     `${lesson.title} — Secora`;
 
-
   breadcrumb.textContent =
-    `${course?.title || "Course"}  /  ${module?.title || "Module"}`;
+    `${course?.title || "Course"} / ${module?.title || "Module"}`;
 
 
   // =======================================================
@@ -185,13 +177,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
   // =======================================================
-  // RENDER CONTENT
+  // RENDER LESSON
   // =======================================================
 
   lessonContent.innerHTML =
     renderMarkdown(
       lesson.content || ""
     );
+
+
+  // =======================================================
+  // RECORD LESSON OPEN
+  // =======================================================
+
+  await recordLessonOpened(
+    user.id,
+    lesson.id
+  );
 
 
   // =======================================================
@@ -205,13 +207,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
   // =======================================================
-  // LOAD PREVIOUS / NEXT
+  // LOAD NAVIGATION
   // =======================================================
 
   await loadLessonNavigation(
     lesson,
     module,
-    course,
     previousLesson,
     nextLesson
   );
@@ -237,7 +238,65 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 // =========================================================
-// COMPLETION
+// RECORD LESSON OPENED
+// =========================================================
+
+async function recordLessonOpened(
+  userId,
+  lessonId
+) {
+
+  const {
+    data: existing,
+    error
+  } = await secoraSupabase
+    .from("lesson_progress")
+    .select("id, completed")
+    .eq("user_id", userId)
+    .eq("lesson_id", lessonId)
+    .maybeSingle();
+
+
+  if (error) {
+
+    console.warn(
+      "Could not read lesson progress:",
+      error
+    );
+
+    return;
+  }
+
+
+  if (existing) {
+
+    await secoraSupabase
+      .from("lesson_progress")
+      .update({
+        last_opened_at:
+          new Date().toISOString()
+      })
+      .eq("id", existing.id);
+
+  } else {
+
+    await secoraSupabase
+      .from("lesson_progress")
+      .insert({
+        user_id: userId,
+        lesson_id: lessonId,
+        completed: false,
+        last_opened_at:
+          new Date().toISOString()
+      });
+
+  }
+
+}
+
+
+// =========================================================
+// LOAD COMPLETION
 // =========================================================
 
 async function loadCompletion(
@@ -264,16 +323,11 @@ async function loadCompletion(
     );
 
     return;
-
   }
 
 
-  const completed =
-    data?.completed === true;
-
-
   updateCompletionUI(
-    completed
+    data?.completed === true
   );
 
 }
@@ -288,12 +342,17 @@ async function toggleCompletion(
   lessonId
 ) {
 
-  const completeBtn =
-    document.getElementById("completeBtn");
+  const button =
+    document.getElementById(
+      "completeBtn"
+    );
 
 
-  completeBtn.disabled =
+  button.disabled =
     true;
+
+  button.textContent =
+    "Saving...";
 
 
   const {
@@ -310,11 +369,15 @@ async function toggleCompletion(
   if (existingError) {
 
     console.error(
+      "Progress lookup failed:",
       existingError
     );
 
-    completeBtn.disabled =
+    button.disabled =
       false;
+
+    button.textContent =
+      "Mark as complete";
 
     return;
   }
@@ -324,12 +387,12 @@ async function toggleCompletion(
     !(existing?.completed === true);
 
 
-  let error;
+  let result;
 
 
   if (existing) {
 
-    const result =
+    result =
       await secoraSupabase
         .from("lesson_progress")
         .update({
@@ -343,13 +406,9 @@ async function toggleCompletion(
         })
         .eq("id", existing.id);
 
-
-    error =
-      result.error;
-
   } else {
 
-    const result =
+    result =
       await secoraSupabase
         .from("lesson_progress")
         .insert({
@@ -364,29 +423,28 @@ async function toggleCompletion(
             new Date().toISOString()
         });
 
-
-    error =
-      result.error;
-
   }
 
 
-  completeBtn.disabled =
-    false;
-
-
-  if (error) {
+  if (result.error) {
 
     console.error(
       "Progress update failed:",
-      error
+      result.error
     );
 
-    completeBtn.textContent =
+    button.disabled =
+      false;
+
+    button.textContent =
       "Unable to update";
 
     return;
   }
+
+
+  button.disabled =
+    false;
 
 
   updateCompletionUI(
@@ -456,13 +514,12 @@ function updateCompletionUI(
 
 
 // =========================================================
-// PREVIOUS / NEXT LESSON
+// LESSON NAVIGATION
 // =========================================================
 
 async function loadLessonNavigation(
   lesson,
   module,
-  course,
   previousLink,
   nextLink
 ) {
@@ -501,6 +558,8 @@ async function loadLessonNavigation(
     );
 
 
+  // PREVIOUS
+
   if (currentIndex > 0) {
 
     const previous =
@@ -509,7 +568,6 @@ async function loadLessonNavigation(
 
     previousLink.href =
       `lesson.html?slug=${encodeURIComponent(previous.slug)}`;
-
 
     previousLink.querySelector("strong")
       .textContent =
@@ -523,6 +581,8 @@ async function loadLessonNavigation(
   }
 
 
+  // NEXT
+
   if (
     currentIndex >= 0 &&
     currentIndex < lessons.length - 1
@@ -534,7 +594,6 @@ async function loadLessonNavigation(
 
     nextLink.href =
       `lesson.html?slug=${encodeURIComponent(next.slug)}`;
-
 
     nextLink.querySelector("strong")
       .textContent =
@@ -551,7 +610,7 @@ async function loadLessonNavigation(
 
 
 // =========================================================
-// MARKDOWN → HTML
+// MARKDOWN RENDERER
 // =========================================================
 
 function renderMarkdown(
@@ -605,60 +664,52 @@ function renderMarkdown(
         line.trim();
 
 
-      // Empty line
-
       if (!trimmed) {
 
         closeLists();
 
         return;
-
       }
 
-
-      // H3
 
       if (trimmed.startsWith("### ")) {
 
         closeLists();
 
         html +=
-          `<h3>${formatInline(trimmed.slice(4))}</h3>`;
+          `<h3>${formatInline(
+            trimmed.slice(4)
+          )}</h3>`;
 
         return;
-
       }
 
-
-      // H2
 
       if (trimmed.startsWith("## ")) {
 
         closeLists();
 
         html +=
-          `<h2>${formatInline(trimmed.slice(3))}</h2>`;
+          `<h2>${formatInline(
+            trimmed.slice(3)
+          )}</h2>`;
 
         return;
-
       }
 
-
-      // H1
 
       if (trimmed.startsWith("# ")) {
 
         closeLists();
 
         html +=
-          `<h1>${formatInline(trimmed.slice(2))}</h1>`;
+          `<h1>${formatInline(
+            trimmed.slice(2)
+          )}</h1>`;
 
         return;
-
       }
 
-
-      // Unordered list
 
       if (
         trimmed.startsWith("- ") ||
@@ -677,14 +728,13 @@ function renderMarkdown(
         }
 
         html +=
-          `<li>${formatInline(trimmed.slice(2))}</li>`;
+          `<li>${formatInline(
+            trimmed.slice(2)
+          )}</li>`;
 
         return;
-
       }
 
-
-      // Ordered list
 
       if (/^\d+\.\s/.test(trimmed)) {
 
@@ -699,34 +749,17 @@ function renderMarkdown(
 
         }
 
-
         html +=
           `<li>${formatInline(
-            trimmed.replace(/^\d+\.\s/, "")
+            trimmed.replace(
+              /^\d+\.\s/,
+              ""
+            )
           )}</li>`;
 
         return;
-
       }
 
-
-      // Quote
-
-      if (trimmed.startsWith("&gt; ")) {
-
-        closeLists();
-
-        html +=
-          `<blockquote>${formatInline(
-            trimmed.slice(5)
-          )}</blockquote>`;
-
-        return;
-
-      }
-
-
-      // Normal paragraph
 
       closeLists();
 
@@ -755,13 +788,11 @@ function formatInline(
 
   return text
 
-    // Bold
     .replace(
       /\*\*(.*?)\*\*/g,
       "<strong>$1</strong>"
     )
 
-    // Inline code
     .replace(
       /`([^`]+)`/g,
       "<code>$1</code>"
