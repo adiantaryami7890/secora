@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Secora — modern cybersecurity learning." />
+  <title>Secora — Sign in</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="Secora home">
+      <span class="brand-mark" aria-hidden="true">S</span>
+      <span>SECORA</span>
+    </a>
+    <nav class="header-nav" aria-label="Primary navigation">
+      <a href="#">Explore</a>
+      <a href="#">Courses</a>
+      <a href="#">About</a>
+    </nav>
+  </header>
+
+  <main class="login-shell">
+    <section class="brand-panel" aria-label="Secora introduction">
+      <div class="panel-grid" aria-hidden="true"></div>
+      <div class="panel-content">
+        <div class="eyebrow"><span></span> CYBERSECURITY EDUCATION</div>
+        <h1>Understand.<br><em>Secure.</em><br>Advance.</h1>
+        <p>Build a deeper understanding of cybersecurity — from foundational concepts to modern security architecture.</p>
+        <div class="principles">
+          <div><strong>01</strong><span>Learn the fundamentals</span></div>
+          <div><strong>02</strong><span>Understand how systems work</span></div>
+          <div><strong>03</strong><span>Think like a security professional</span></div>
+        </div>
+      </div>
+      <div class="panel-foot">SECORA / 01 — LEARNING PLATFORM</div>
+    </section>
+
+    <section class="form-panel">
+      <div class="form-wrap">
+        <div class="mobile-brand">SECORA</div>
+        <div class="form-heading">
+          <p class="kicker">WELCOME BACK</p>
+          <h2>Sign in</h2>
+          <p>Continue your cybersecurity learning journey.</p>
+        </div>
+
+        <form id="loginForm" novalidate>
+          <label for="email">Email address</label>
+          <div class="input-wrap">
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+          </div>
+          <p class="error" id="emailError"></p>
+
+          <div class="label-row">
+            <label for="password">Password</label>
+            <a href="forgot-password.html">Forgot password?</a>
+          </div>
+          <div class="input-wrap password-wrap">
+            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required />
+            <button type="button" id="togglePassword" class="password-toggle" aria-label="Show password">Show</button>
+          </div>
+          <p class="error" id="passwordError"></p>
+
+          <button class="primary-btn" type="submit">
+            <span>Sign in</span>
+            <span aria-hidden="true">→</span>
+          </button>
+          <p class="form-status" id="formStatus" role="status"></p>
+        </form>
+
+        <div class="divider"><span>OR</span></div>
+
+        <button class="google-btn" id="googleButton" type="button">
+          <span class="google-icon">G</span>
+          Continue with Google
+        </button>
+
+        <p class="signup">Don't have an account? <a href="signup.html">Create one</a></p>
+        <p class="security-note"><span>●</span> Your learning space is protected with secure authentication.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>© 2026 Secora</span>
+    <span>Cybersecurity education, made clear.</span>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="auth.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>
