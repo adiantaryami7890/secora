@@ -1,7 +1,8 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -16,16 +17,25 @@
 
   <title>Course — Secora</title>
 
-  <!-- Google Fonts -->
+
+  <!-- Fonts -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
 
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
     rel="stylesheet"
   >
 
-  <!-- Course Styles -->
+
+  <!-- Course CSS -->
+
   <link
     rel="stylesheet"
     href="course.css"
@@ -35,6 +45,7 @@
 
 
 <body>
+
 
   <!-- =====================================================
        HEADER
@@ -64,6 +75,7 @@
   </header>
 
 
+
   <!-- =====================================================
        MAIN
        ===================================================== -->
@@ -72,10 +84,11 @@
 
 
     <!-- ===================================================
-         COURSE HERO
+         HERO
          =================================================== -->
 
     <section class="course-hero">
+
 
       <div class="course-hero-content">
 
@@ -100,7 +113,7 @@
         <div class="course-meta">
 
           <span id="courseLevel">
-            beginner
+            BEGINNER
           </span>
 
 
@@ -128,13 +141,18 @@
       </div>
 
 
+
       <!-- =================================================
-           COURSE PROGRESS
+           PROGRESS
            ================================================= -->
 
       <aside class="course-progress-card">
 
-        <div class="progress-ring">
+
+        <div
+          class="progress-ring"
+          id="progressRing"
+        >
 
           <span id="progressPercent">
             0%
@@ -156,7 +174,9 @@
           COURSE PROGRESS
         </span>
 
+
       </aside>
+
 
     </section>
 
@@ -171,11 +191,13 @@
 
       <div class="section-heading">
 
+
         <div>
 
           <span class="section-eyebrow">
             CURRICULUM
           </span>
+
 
           <h2>
             Course structure
@@ -189,13 +211,12 @@
           and complete the lessons at your pace.
         </p>
 
+
       </div>
 
 
 
-      <!-- =================================================
-           MODULES
-           ================================================= -->
+      <!-- MODULES -->
 
       <div
         id="modulesContainer"
@@ -203,9 +224,7 @@
       >
 
         <div class="course-loading">
-
           Loading curriculum...
-
         </div>
 
       </div>
@@ -226,10 +245,46 @@
 
 
   <!-- =====================================================
-       COURSE LOGIC
+       COURSE SCRIPT
        ===================================================== -->
 
-  <script src="course.js"></script>
+  <script>
+
+    // Wait until Supabase has been initialized
+    // before loading course.js.
+
+    function loadCourseScript() {
+
+      if (
+        typeof window.secoraSupabase !== "undefined"
+      ) {
+
+        const script =
+          document.createElement("script");
+
+        script.src =
+          "course.js";
+
+        document.body.appendChild(
+          script
+        );
+
+        return;
+
+      }
+
+
+      setTimeout(
+        loadCourseScript,
+        50
+      );
+
+    }
+
+
+    loadCourseScript();
+
+  </script>
 
 
 </body>
