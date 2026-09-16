@@ -1,5 +1,6 @@
  // =========================================================
-// SECORA V0.3.6 — LESSON READER + PROGRESS
+// SECORA V0.4.1 — LESSON READER + REAL PROGRESS
+// HTML + MARKDOWN CONTENT SUPPORT
 // =========================================================
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -181,7 +182,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // =======================================================
 
   lessonContent.innerHTML =
-    renderMarkdown(
+    renderLessonContent(
       lesson.content || ""
     );
 
@@ -222,17 +223,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   // COMPLETE BUTTON
   // =======================================================
 
-  completeBtn.addEventListener(
-    "click",
-    async () => {
+  if (completeBtn) {
 
-      await toggleCompletion(
-        user.id,
-        lesson.id
-      );
+    completeBtn.addEventListener(
+      "click",
+      async () => {
 
-    }
-  );
+        await toggleCompletion(
+          user.id,
+          lesson.id
+        );
+
+      }
+    );
+
+  }
 
 });
 
@@ -346,6 +351,11 @@ async function toggleCompletion(
     document.getElementById(
       "completeBtn"
     );
+
+
+  if (!button) {
+    return;
+  }
 
 
   button.disabled =
@@ -478,6 +488,11 @@ function updateCompletionUI(
     );
 
 
+  if (!status || !bar || !button) {
+    return;
+  }
+
+
   if (completed) {
 
     status.textContent =
@@ -554,57 +569,322 @@ async function loadLessonNavigation(
 
   const currentIndex =
     lessons.findIndex(
-      item => item.id === lesson.id
+      item =>
+        item.id === lesson.id
     );
 
 
+  // =======================================================
   // PREVIOUS
-
-  if (currentIndex > 0) {
-
-    const previous =
-      lessons[currentIndex - 1];
-
-
-    previousLink.href =
-      `lesson.html?slug=${encodeURIComponent(previous.slug)}`;
-
-    previousLink.querySelector("strong")
-      .textContent =
-      previous.title;
-
-  } else {
-
-    previousLink.style.visibility =
-      "hidden";
-
-  }
-
-
-  // NEXT
+  // =======================================================
 
   if (
-    currentIndex >= 0 &&
-    currentIndex < lessons.length - 1
+    previousLink
   ) {
 
-    const next =
-      lessons[currentIndex + 1];
+    if (currentIndex > 0) {
+
+      const previous =
+        lessons[currentIndex - 1];
 
 
-    nextLink.href =
-      `lesson.html?slug=${encodeURIComponent(next.slug)}`;
+      previousLink.href =
+        `lesson.html?slug=${encodeURIComponent(previous.slug)}`;
 
-    nextLink.querySelector("strong")
-      .textContent =
-      next.title;
 
-  } else {
+      const previousTitle =
+        previousLink.querySelector("strong");
 
-    nextLink.style.visibility =
-      "hidden";
+
+      if (previousTitle) {
+
+        previousTitle.textContent =
+          previous.title;
+
+      }
+
+
+      previousLink.style.visibility =
+        "visible";
+
+    } else {
+
+      previousLink.style.visibility =
+        "hidden";
+
+    }
 
   }
+
+
+  // =======================================================
+  // NEXT
+  // =======================================================
+
+  if (
+    nextLink
+  ) {
+
+    if (
+      currentIndex >= 0 &&
+      currentIndex < lessons.length - 1
+    ) {
+
+      const next =
+        lessons[currentIndex + 1];
+
+
+      nextLink.href =
+        `lesson.html?slug=${encodeURIComponent(next.slug)}`;
+
+
+      const nextTitle =
+        nextLink.querySelector("strong");
+
+
+      if (nextTitle) {
+
+        nextTitle.textContent =
+          next.title;
+
+      }
+
+
+      nextLink.style.visibility =
+        "visible";
+
+    } else {
+
+      nextLink.style.visibility =
+        "hidden";
+
+    }
+
+  }
+
+}
+
+
+// =========================================================
+// LESSON CONTENT RENDERER
+// Supports HTML + Markdown
+// =========================================================
+
+function renderLessonContent(
+  content
+) {
+
+  const value =
+    String(content || "").trim();
+
+
+  if (!value) {
+    return "";
+  }
+
+
+  // -------------------------------------------------------
+  // Detect HTML
+  // -------------------------------------------------------
+
+  if (
+    /<\/?[a-z][\s\S]*>/i.test(value)
+  ) {
+
+    return sanitizeLessonHTML(
+      value
+    );
+
+  }
+
+
+  // -------------------------------------------------------
+  // Otherwise treat as Markdown
+  // -------------------------------------------------------
+
+  return renderMarkdown(
+    value
+  );
+
+}
+
+
+// =========================================================
+// SAFE HTML SANITIZER
+// =========================================================
+
+function sanitizeLessonHTML(
+  html
+) {
+
+  const template =
+    document.createElement(
+      "template"
+    );
+
+
+  template.innerHTML =
+    html;
+
+
+  const allowedTags =
+    new Set([
+      "H1",
+      "H2",
+      "H3",
+      "H4",
+      "P",
+      "UL",
+      "OL",
+      "LI",
+      "STRONG",
+      "B",
+      "EM",
+      "I",
+      "CODE",
+      "PRE",
+      "BLOCKQUOTE",
+      "BR",
+      "HR",
+      "A"
+    ]);
+
+
+  const walker =
+    document.createTreeWalker(
+      template.content,
+      NodeFilter.SHOW_ELEMENT
+    );
+
+
+  const elements = [];
+
+
+  let current =
+    walker.nextNode();
+
+
+  while (current) {
+
+    elements.push(
+      current
+    );
+
+    current =
+      walker.nextNode();
+
+  }
+
+
+  elements.forEach(
+    element => {
+
+      // ---------------------------------------------------
+      // Capture safe information BEFORE removing attributes
+      // ---------------------------------------------------
+
+      let originalHref =
+        null;
+
+
+      if (
+        element.tagName === "A"
+      ) {
+
+        originalHref =
+          element.getAttribute(
+            "href"
+          );
+
+      }
+
+
+      // ---------------------------------------------------
+      // Remove dangerous / unsupported elements
+      // ---------------------------------------------------
+
+      if (
+        !allowedTags.has(
+          element.tagName
+        )
+      ) {
+
+        element.replaceWith(
+          document.createTextNode(
+            element.textContent
+          )
+        );
+
+        return;
+
+      }
+
+
+      // ---------------------------------------------------
+      // Remove ALL attributes
+      // ---------------------------------------------------
+
+      [...element.attributes]
+        .forEach(
+          attribute => {
+
+            element.removeAttribute(
+              attribute.name
+            );
+
+          }
+        );
+
+
+      // ---------------------------------------------------
+      // Restore safe links
+      // ---------------------------------------------------
+
+      if (
+        element.tagName === "A" &&
+        originalHref
+      ) {
+
+        const href =
+          originalHref.trim();
+
+
+        const isSafeURL =
+          href.startsWith("/") ||
+          href.startsWith("#") ||
+          /^https?:\/\//i.test(
+            href
+          );
+
+
+        if (isSafeURL) {
+
+          element.setAttribute(
+            "href",
+            href
+          );
+
+
+          element.setAttribute(
+            "target",
+            "_blank"
+          );
+
+
+          element.setAttribute(
+            "rel",
+            "noopener noreferrer"
+          );
+
+        }
+
+      }
+
+    }
+  );
+
+
+  return template.innerHTML;
 
 }
 
@@ -618,17 +898,22 @@ function renderMarkdown(
 ) {
 
   const safe =
-    escapeHTML(markdown);
+    escapeHTML(
+      markdown
+    );
 
 
   const lines =
     safe.split("\n");
 
 
-  let html = "";
+  let html =
+    "";
+
 
   let inUnorderedList =
     false;
+
 
   let inOrderedList =
     false;
@@ -636,18 +921,27 @@ function renderMarkdown(
 
   function closeLists() {
 
-    if (inUnorderedList) {
+    if (
+      inUnorderedList
+    ) {
 
-      html += "</ul>";
+      html +=
+        "</ul>";
+
 
       inUnorderedList =
         false;
 
     }
 
-    if (inOrderedList) {
 
-      html += "</ol>";
+    if (
+      inOrderedList
+    ) {
+
+      html +=
+        "</ol>";
+
 
       inOrderedList =
         false;
@@ -664,90 +958,154 @@ function renderMarkdown(
         line.trim();
 
 
+      // ---------------------------------------------------
+      // Empty line
+      // ---------------------------------------------------
+
       if (!trimmed) {
 
         closeLists();
 
         return;
+
       }
 
 
-      if (trimmed.startsWith("### ")) {
+      // ---------------------------------------------------
+      // H3
+      // ---------------------------------------------------
+
+      if (
+        trimmed.startsWith(
+          "### "
+        )
+      ) {
 
         closeLists();
+
 
         html +=
           `<h3>${formatInline(
             trimmed.slice(4)
           )}</h3>`;
 
+
         return;
+
       }
 
 
-      if (trimmed.startsWith("## ")) {
+      // ---------------------------------------------------
+      // H2
+      // ---------------------------------------------------
+
+      if (
+        trimmed.startsWith(
+          "## "
+        )
+      ) {
 
         closeLists();
+
 
         html +=
           `<h2>${formatInline(
             trimmed.slice(3)
           )}</h2>`;
 
+
         return;
+
       }
 
 
-      if (trimmed.startsWith("# ")) {
+      // ---------------------------------------------------
+      // H1
+      // ---------------------------------------------------
+
+      if (
+        trimmed.startsWith(
+          "# "
+        )
+      ) {
 
         closeLists();
+
 
         html +=
           `<h1>${formatInline(
             trimmed.slice(2)
           )}</h1>`;
 
+
         return;
+
       }
 
+
+      // ---------------------------------------------------
+      // Unordered list
+      // ---------------------------------------------------
 
       if (
         trimmed.startsWith("- ") ||
         trimmed.startsWith("* ")
       ) {
 
-        if (!inUnorderedList) {
+        if (
+          !inUnorderedList
+        ) {
 
           closeLists();
 
-          html += "<ul>";
+
+          html +=
+            "<ul>";
+
 
           inUnorderedList =
             true;
 
         }
 
+
         html +=
           `<li>${formatInline(
             trimmed.slice(2)
           )}</li>`;
 
+
         return;
+
       }
 
 
-      if (/^\d+\.\s/.test(trimmed)) {
+      // ---------------------------------------------------
+      // Ordered list
+      // ---------------------------------------------------
 
-        if (!inOrderedList) {
+      if (
+        /^\d+\.\s/.test(
+          trimmed
+        )
+      ) {
+
+        if (
+          !inOrderedList
+        ) {
 
           closeLists();
 
-          html += "<ol>";
+
+          html +=
+            "<ol>";
+
 
           inOrderedList =
             true;
 
         }
+
 
         html +=
           `<li>${formatInline(
@@ -757,14 +1115,23 @@ function renderMarkdown(
             )
           )}</li>`;
 
+
         return;
+
       }
 
 
+      // ---------------------------------------------------
+      // Paragraph
+      // ---------------------------------------------------
+
       closeLists();
 
+
       html +=
-        `<p>${formatInline(trimmed)}</p>`;
+        `<p>${formatInline(
+          trimmed
+        )}</p>`;
 
     }
   );
@@ -788,11 +1155,13 @@ function formatInline(
 
   return text
 
+    // Bold
     .replace(
       /\*\*(.*?)\*\*/g,
       "<strong>$1</strong>"
     )
 
+    // Inline code
     .replace(
       /`([^`]+)`/g,
       "<code>$1</code>"
@@ -847,6 +1216,11 @@ function showError(
   element,
   message
 ) {
+
+  if (!element) {
+    return;
+  }
+
 
   element.innerHTML = `
 
