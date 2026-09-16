@@ -890,3 +890,20 @@ a {
   }
 
 }
+/* =========================================================
+   COURSE PROGRESS DETAILS
+   ========================================================= */
+
+.progress-details {
+  text-align: center;
+}
+
+.progress-details span {
+  color: #a3a6ac;
+
+  font-family: var(--font-ui);
+
+  font-size: 9px;
+
+  font-weight: 500;
+}
