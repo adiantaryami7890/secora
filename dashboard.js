@@ -1,17 +1,174 @@
-const domains=[["Computer Fundamentals", "Hardware, software, files, processes and core computing concepts.", "Beginner"], ["Networking", "IP, TCP/UDP, DNS, HTTP, routing and network architecture.", "Beginner"], ["Linux", "Filesystem, permissions, processes, users and administration.", "Beginner"], ["Windows", "Accounts, services, registry, controls and administration.", "Beginner"], ["Operating Systems", "Processes, memory, storage, kernels, users and security models.", "Beginner"], ["Cybersecurity Fundamentals", "Security principles, attack surfaces, assets and controls.", "Beginner"], ["CIA Triad", "Confidentiality, integrity and availability in real systems.", "Beginner"], ["Threats & Vulnerabilities", "Threat actors, vulnerabilities, exploits and attack vectors.", "Beginner"], ["Risk Management", "Assets, likelihood, impact, treatment and governance.", "Beginner"], ["Ethical Hacking", "Methodology, ethics, scope and authorized security testing.", "Intermediate"], ["Reconnaissance", "Information gathering and attack-surface mapping concepts.", "Intermediate"], ["Vulnerability Assessment", "Identify, validate, prioritize and communicate weaknesses.", "Intermediate"], ["Web Security", "HTTP, sessions, authentication, authorization and web risks.", "Intermediate"], ["Penetration Testing", "Structured testing methodology and reporting.", "Intermediate"], ["Active Directory", "Identity, domains, authentication and enterprise Windows security.", "Intermediate"], ["SOC", "Alert triage, escalation, workflows and monitoring.", "Intermediate"], ["SIEM", "Log collection, normalization, correlation and detection.", "Intermediate"], ["Incident Response", "Preparation, detection, containment, recovery and lessons.", "Intermediate"], ["Threat Intelligence", "Threat data, indicators, context and analysis.", "Intermediate"], ["Digital Forensics", "Evidence, acquisition, timelines, artifacts and analysis.", "Intermediate"], ["EDR / XDR", "Endpoint telemetry, detection and response visibility.", "Intermediate"], ["Cloud Security", "Cloud identity, workloads, storage, networks and controls.", "Advanced"], ["Application Security", "Secure design, coding risks and threat modeling.", "Advanced"], ["API Security", "Authentication, authorization, validation and secure API design.", "Advanced"], ["DevSecOps", "Security in development, CI/CD, infrastructure and releases.", "Advanced"], ["Zero Trust", "Identity-aware access, verification and segmentation.", "Advanced"], ["Cryptography", "Encryption, hashing, keys, signatures and certificates.", "Advanced"], ["Malware Analysis", "Malware behavior and static/dynamic analysis concepts.", "Advanced"], ["Security Architecture", "Trust boundaries, controls and defense-in-depth.", "Advanced"], ["Security Governance", "Policies, standards, governance and accountability.", "Advanced"]];
-const grid=document.getElementById("grid");
-grid.innerHTML=domains.map((d,i)=>`<article class="domain"><span class="num">${String(i+1).padStart(2,"0")} / ${d[2].toUpperCase()}</span><h3>${d[0]}</h3><p>${d[1]}</p><div class="meta"><span>12 lessons</span><b>Explore →</b></div></article>`).join("");
+ // ==========================================
+// SECORA V0.3 — DASHBOARD
+// ==========================================
 
-(async()=>{
-  const session=await requireSession(); if(!session)return;
-  const {data:{user}}=await secoraSupabase.auth.getUser();
-  const n=user?.user_metadata?.full_name||user?.user_metadata?.name||user?.email?.split("@")[0]||"there";
-  const first=n.split(" ")[0];
-  document.getElementById("name").textContent=first;
-  document.getElementById("user").textContent=first;
-  document.getElementById("avatar").textContent=first.charAt(0).toUpperCase();
-  const profile=document.getElementById("profile"), menu=document.getElementById("menu"), logout=document.getElementById("logout");
-  profile.onclick=()=>menu.classList.toggle("open");
-  logout.onclick=async()=>{await secoraSupabase.auth.signOut();location.replace(LOGIN_URL)};
-  document.addEventListener("click",e=>{if(!e.target.closest(".profile"))menu.classList.remove("open")});
-})();
+document.addEventListener("DOMContentLoaded", async () => {
+
+  const {
+    data: { session },
+    error: sessionError
+  } = await secoraSupabase.auth.getSession();
+
+  // No authenticated user
+  if (sessionError || !session) {
+    window.location.replace("index.html");
+    return;
+  }
+
+  const user = session.user;
+
+  console.log("Secora user:", user);
+
+  // ------------------------------------------
+  // USER INFORMATION
+  // ------------------------------------------
+
+  const metadata = user.user_metadata || {};
+
+  const name =
+    metadata.full_name ||
+    metadata.name ||
+    metadata.user_name ||
+    user.email?.split("@")[0] ||
+    "Student";
+
+  const firstName = name.split(" ")[0];
+
+  document.getElementById("welcomeName").textContent = firstName;
+  document.getElementById("topUserName").textContent = name;
+
+
+  // ------------------------------------------
+  // AVATAR
+  // ------------------------------------------
+
+  const avatar = document.getElementById("userAvatar");
+
+  const avatarUrl =
+    metadata.avatar_url ||
+    metadata.picture;
+
+  if (avatarUrl) {
+
+    const img = document.createElement("img");
+
+    img.src = avatarUrl;
+    img.alt = name;
+
+    img.onerror = () => {
+      avatar.textContent = firstName.charAt(0).toUpperCase();
+    };
+
+    avatar.textContent = "";
+    avatar.appendChild(img);
+
+  } else {
+
+    avatar.textContent =
+      firstName.charAt(0).toUpperCase();
+
+  }
+
+
+  // ------------------------------------------
+  // DATE
+  // ------------------------------------------
+
+  const dateElement =
+    document.getElementById("currentDate");
+
+  const today = new Date();
+
+  dateElement.textContent =
+    today.toLocaleDateString("en-IN", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    });
+
+
+  // ------------------------------------------
+  // LOGOUT
+  // ------------------------------------------
+
+  document
+    .getElementById("logoutBtn")
+    .addEventListener("click", async () => {
+
+      const button =
+        document.getElementById("logoutBtn");
+
+      button.disabled = true;
+      button.textContent = "Logging out...";
+
+      const { error } =
+        await secoraSupabase.auth.signOut();
+
+      if (error) {
+
+        console.error("Logout error:", error);
+
+        button.disabled = false;
+        button.innerHTML = "<span>↪</span> Log out";
+
+        return;
+      }
+
+      window.location.replace("index.html");
+
+    });
+
+
+  // ------------------------------------------
+  // PROFILE DATA
+  // ------------------------------------------
+
+  try {
+
+    const { data: profile, error } =
+      await secoraSupabase
+        .from("profiles")
+        .select("display_name, avatar_url")
+        .eq("id", user.id)
+        .maybeSingle();
+
+    if (!error && profile) {
+
+      if (profile.display_name) {
+
+        document.getElementById(
+          "welcomeName"
+        ).textContent =
+          profile.display_name.split(" ")[0];
+
+        document.getElementById(
+          "topUserName"
+        ).textContent =
+          profile.display_name;
+      }
+
+      if (profile.avatar_url) {
+
+        const img =
+          document.createElement("img");
+
+        img.src = profile.avatar_url;
+        img.alt = profile.display_name || name;
+
+        avatar.textContent = "";
+        avatar.appendChild(img);
+      }
+
+    }
+
+  } catch (error) {
+
+    console.warn(
+      "Profile could not be loaded:",
+      error
+    );
+
+  }
+
+});
