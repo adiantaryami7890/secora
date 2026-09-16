@@ -488,3 +488,29 @@ function escapeHTML(value) {
     .replaceAll("'", "&#039;");
 
 }
+/* =========================================================
+   DYNAMIC COURSE STATES
+   ========================================================= */
+
+.course-loading {
+  grid-column: 1 / -1;
+
+  min-height: 180px;
+
+  background: #ffffff;
+
+  border: 1px solid var(--line);
+
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: var(--font-ui);
+
+  font-size: 12px;
+  font-weight: 500;
+
+  color: var(--muted);
+}
