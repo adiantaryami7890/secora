@@ -18,7 +18,9 @@
   <title>Course — Secora</title>
 
 
-  <!-- Fonts -->
+  <!-- =====================================================
+       FONTS
+       ===================================================== -->
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -34,7 +36,9 @@
   >
 
 
-  <!-- Course CSS -->
+  <!-- =====================================================
+       COURSE CSS
+       ===================================================== -->
 
   <link
     rel="stylesheet"
@@ -84,7 +88,7 @@
 
 
     <!-- ===================================================
-         HERO
+         COURSE HERO
          =================================================== -->
 
     <section class="course-hero">
@@ -216,7 +220,9 @@
 
 
 
-      <!-- MODULES -->
+      <!-- =================================================
+           MODULE CONTAINER
+           ================================================= -->
 
       <div
         id="modulesContainer"
@@ -238,53 +244,26 @@
 
 
   <!-- =====================================================
-       SUPABASE
+       SUPABASE LIBRARY
+       ===================================================== -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
+
+
+  <!-- =====================================================
+       SECORA SUPABASE CONFIG
        ===================================================== -->
 
   <script src="supabase.js"></script>
 
 
   <!-- =====================================================
-       COURSE SCRIPT
+       COURSE LOGIC
        ===================================================== -->
 
-  <script>
-
-    // Wait until Supabase has been initialized
-    // before loading course.js.
-
-    function loadCourseScript() {
-
-      if (
-        typeof window.secoraSupabase !== "undefined"
-      ) {
-
-        const script =
-          document.createElement("script");
-
-        script.src =
-          "course.js";
-
-        document.body.appendChild(
-          script
-        );
-
-        return;
-
-      }
-
-
-      setTimeout(
-        loadCourseScript,
-        50
-      );
-
-    }
-
-
-    loadCourseScript();
-
-  </script>
+  <script src="course.js"></script>
 
 
 </body>
