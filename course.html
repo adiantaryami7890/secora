@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Course — Secora</title>
+
+  <link rel="stylesheet" href="course.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="course.js" defer></script>
+
+</head>
+
+<body>
+
+  <div class="page">
+
+    <!-- HEADER -->
+
+    <header class="course-header">
+
+      <a href="home.html" class="back-link">
+        ← Dashboard
+      </a>
+
+      <div class="header-brand">
+        <div class="brand-mark">S</div>
+        <span>SECORA</span>
+      </div>
+
+      <div class="header-spacer"></div>
+
+    </header>
+
+
+    <!-- MAIN -->
+
+    <main class="course-main">
+
+      <!-- COURSE HERO -->
+
+      <section class="course-hero">
+
+        <div class="course-hero-content">
+
+          <div class="course-label">
+            COURSE
+          </div>
+
+          <h1 id="courseTitle">
+            Loading...
+          </h1>
+
+          <p
+            id="courseDescription"
+            class="course-description">
+            Loading course information...
+          </p>
+
+          <div class="course-meta">
+
+            <span id="courseLevel">
+              —
+            </span>
+
+            <span class="meta-dot">•</span>
+
+            <span id="moduleCount">
+              —
+            </span>
+
+            <span class="meta-dot">•</span>
+
+            <span id="lessonCount">
+              —
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="course-progress-card">
+
+          <div class="progress-ring">
+
+            <span id="progressPercent">
+              0%
+            </span>
+
+          </div>
+
+          <span>
+            COURSE PROGRESS
+          </span>
+
+        </div>
+
+      </section>
+
+
+      <!-- CONTENT -->
+
+      <section class="course-content">
+
+        <div class="content-heading">
+
+          <div>
+
+            <p class="eyebrow">
+              CURRICULUM
+            </p>
+
+            <h2>
+              Course content
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="modulesContainer"
+          class="modules">
+
+          <div class="loading">
+            Loading modules...
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+</body>
+</html>
