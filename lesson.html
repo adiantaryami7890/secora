@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Lesson — Secora</title>
+
+  <link
+    rel="stylesheet"
+    href="lesson.css"
+  >
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="supabase.js"></script>
+
+  <script
+    src="lesson.js"
+    defer
+  ></script>
+
+</head>
+
+
+<body>
+
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <header class="lesson-header">
+
+    <a
+      href="home.html"
+      class="header-brand"
+    >
+
+      <div class="brand-mark">
+        S
+      </div>
+
+      <span>
+        SECORA
+      </span>
+
+    </a>
+
+
+    <a
+      id="backToCourse"
+      href="#"
+      class="back-course"
+    >
+      ← Back to course
+    </a>
+
+  </header>
+
+
+
+  <!-- =====================================================
+       MAIN
+       ===================================================== -->
+
+  <main class="lesson-page">
+
+
+    <!-- BREADCRUMB -->
+
+    <div
+      id="breadcrumb"
+      class="breadcrumb"
+    >
+      Loading...
+    </div>
+
+
+
+    <!-- LESSON HEADER -->
+
+    <section class="lesson-intro">
+
+      <div class="lesson-kicker">
+        LESSON
+      </div>
+
+
+      <h1 id="lessonTitle">
+        Loading...
+      </h1>
+
+
+      <div class="lesson-meta">
+
+        <span id="moduleName">
+          —
+        </span>
+
+        <span>
+          •
+        </span>
+
+        <span id="lessonDuration">
+          —
+        </span>
+
+        <span>
+          MIN READ
+        </span>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- READING AREA -->
+
+    <section class="reading-layout">
+
+
+      <!-- ARTICLE -->
+
+      <article
+        id="lessonContent"
+        class="lesson-content"
+      >
+
+        <div class="content-loading">
+          Loading lesson...
+        </div>
+
+      </article>
+
+
+
+      <!-- SIDE PROGRESS -->
+
+      <aside class="lesson-sidebar">
+
+        <div class="progress-box">
+
+          <span class="progress-label">
+            LESSON
+          </span>
+
+          <strong id="completionStatus">
+            0%
+          </strong>
+
+          <div class="progress-line">
+
+            <div
+              id="completionBar"
+              class="progress-line-fill"
+            ></div>
+
+          </div>
+
+
+          <button
+            id="completeBtn"
+            class="complete-button"
+            type="button"
+          >
+            Mark as complete
+          </button>
+
+        </div>
+
+      </aside>
+
+    </section>
+
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="lesson-navigation">
+
+      <a
+        id="previousLesson"
+        href="#"
+        class="lesson-nav previous"
+      >
+
+        <span>
+          ←
+        </span>
+
+        <div>
+
+          <small>
+            PREVIOUS
+          </small>
+
+          <strong>
+            Previous lesson
+          </strong>
+
+        </div>
+
+      </a>
+
+
+      <a
+        id="nextLesson"
+        href="#"
+        class="lesson-nav next"
+      >
+
+        <div>
+
+          <small>
+            NEXT
+          </small>
+
+          <strong>
+            Next lesson
+          </strong>
+
+        </div>
+
+        <span>
+          →
+        </span>
+
+      </a>
+
+    </nav>
+
+  </main>
+
+</body>
+
+</html>
