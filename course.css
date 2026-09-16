@@ -742,3 +742,151 @@ a {
   }
 
 }
+/* =========================================================
+   LESSON LIST
+   ========================================================= */
+
+.lesson-list {
+  display: none;
+
+  border-top: 1px solid var(--line);
+
+  background: #fafafa;
+}
+
+.module.open .lesson-list {
+  display: block;
+}
+
+
+.lesson-loading {
+  padding: 20px 25px;
+
+  color: #888b91;
+
+  font-family: var(--font-ui);
+
+  font-size: 11px;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   LESSON ITEM
+   ========================================================= */
+
+.lesson-item {
+  min-height: 58px;
+
+  padding: 0 25px 0 86px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  border-bottom: 1px solid #eeeeef;
+
+  color: #111214;
+
+  transition:
+    background .2s ease,
+    padding-left .2s ease;
+}
+
+.lesson-item:last-child {
+  border-bottom: 0;
+}
+
+.lesson-item:hover {
+  background: #f3f4f6;
+
+  padding-left: 90px;
+}
+
+
+.lesson-number {
+  width: 25px;
+
+  color: #a0a3a8;
+
+  font-family: var(--font-display);
+
+  font-size: 10px;
+
+  font-weight: 700;
+}
+
+
+.lesson-title {
+  flex: 1;
+
+  font-family: var(--font-ui);
+
+  font-size: 12px;
+
+  font-weight: 500;
+}
+
+
+.lesson-duration {
+  color: #9a9da2;
+
+  font-family: var(--font-ui);
+
+  font-size: 9px;
+
+  font-weight: 600;
+
+  letter-spacing: .6px;
+}
+
+
+.lesson-arrow {
+  color: #9a9da2;
+
+  font-size: 14px;
+
+  transition:
+    transform .2s ease,
+    color .2s ease;
+}
+
+.lesson-item:hover .lesson-arrow {
+  transform: translateX(3px);
+
+  color: var(--blue);
+}
+
+
+/* =========================================================
+   MOBILE LESSONS
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .lesson-item {
+
+    padding: 0 18px 0 67px;
+
+    gap: 10px;
+  }
+
+  .lesson-item:hover {
+
+    padding-left: 70px;
+  }
+
+  .lesson-duration {
+
+    display: none;
+  }
+
+  .lesson-title {
+
+    font-size: 11px;
+  }
+
+}
