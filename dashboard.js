@@ -1,14 +1,14 @@
  // =========================================================
 // SECORA V0.3.7
-// DYNAMIC DASHBOARD
-// CONTINUE LEARNING + REAL STATISTICS
+// COMPLETE DASHBOARD.JS
+// AUTH + PROFILE MENU + COURSES + PROGRESS
 // =========================================================
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-  // -------------------------------------------------------
+  // =======================================================
   // AUTH
-  // -------------------------------------------------------
+  // =======================================================
 
   const {
     data: { session },
@@ -22,16 +22,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const user = session.user;
 
-  // -------------------------------------------------------
-  // BASIC USER INFORMATION
-  // -------------------------------------------------------
+  // =======================================================
+  // USER INTERFACE
+  // =======================================================
 
   setupUserInterface(user);
+
+  // =======================================================
+  // PROFILE / ACCOUNT MENU
+  // =======================================================
+
   setupProfileMenu(user);
 
-  // -------------------------------------------------------
-  // LOAD PLATFORM DATA
-  // -------------------------------------------------------
+  // =======================================================
+  // LOAD DASHBOARD DATA
+  // =======================================================
 
   try {
 
@@ -45,61 +50,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   } catch (error) {
 
-    console.error(
-      "Dashboard error:",
-      error
-    );
+    console.error("Dashboard error:", error);
 
     showDashboardError();
-
-  }
-
-  // -------------------------------------------------------
-  // LOGOUT
-  // -------------------------------------------------------
-
-  const logoutButton =
-    document.getElementById("logoutBtn");
-
-  if (logoutButton) {
-
-    logoutButton.addEventListener(
-      "click",
-      async () => {
-
-        logoutButton.disabled = true;
-
-        logoutButton.textContent =
-          "Logging out...";
-
-        const {
-          error
-        } =
-          await secoraSupabase.auth.signOut();
-
-        if (error) {
-
-          console.error(
-            "Logout error:",
-            error
-          );
-
-          logoutButton.disabled =
-            false;
-
-          logoutButton.textContent =
-            "Logout";
-
-          return;
-
-        }
-
-        window.location.replace(
-          "index.html"
-        );
-
-      }
-    );
 
   }
 
@@ -107,28 +60,65 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 // =========================================================
-// USER INTERFACE
+// USER DETAILS
 // =========================================================
 
-function setupUserInterface(
-  user
-) {
+function getUserDetails(user) {
 
   const metadata =
-    user.user_metadata || {};
+    user?.user_metadata || {};
+
+  const identity =
+    user?.identities?.[0]?.identity_data || {};
+
+  const email =
+    user?.email ||
+    identity.email ||
+    "";
 
   const displayName =
     metadata.full_name ||
     metadata.name ||
-    user.email?.split("@")[0] ||
+    identity.full_name ||
+    identity.name ||
+    email.split("@")[0] ||
     "Learner";
 
-  // Greeting
+  const avatarUrl =
+    metadata.avatar_url ||
+    metadata.picture ||
+    identity.avatar_url ||
+    identity.picture ||
+    "";
+
+  return {
+    displayName,
+    email,
+    avatarUrl
+  };
+
+}
+
+
+// =========================================================
+// BASIC USER UI
+// =========================================================
+
+function setupUserInterface(user) {
+
+  const {
+    displayName,
+    email,
+    avatarUrl
+  } = getUserDetails(user);
+
+
+  // -------------------------------------------------------
+  // GREETING
+  // -------------------------------------------------------
 
   const greeting =
-    document.getElementById(
-      "userGreeting"
-    );
+    document.getElementById("userGreeting");
 
   if (greeting) {
 
@@ -137,12 +127,13 @@ function setupUserInterface(
 
   }
 
-  // Name
+
+  // -------------------------------------------------------
+  // NAME
+  // -------------------------------------------------------
 
   const userName =
-    document.getElementById(
-      "userName"
-    );
+    document.getElementById("userName");
 
   if (userName) {
 
@@ -151,32 +142,30 @@ function setupUserInterface(
 
   }
 
-  // Email
+
+  // -------------------------------------------------------
+  // EMAIL
+  // -------------------------------------------------------
 
   const userEmail =
-    document.getElementById(
-      "userEmail"
-    );
+    document.getElementById("userEmail");
 
   if (userEmail) {
 
     userEmail.textContent =
-      user.email || "";
+      email;
 
   }
 
-  // Avatar
+
+  // -------------------------------------------------------
+  // AVATAR
+  // -------------------------------------------------------
 
   const avatar =
-    document.getElementById(
-      "userAvatar"
-    );
+    document.getElementById("userAvatar");
 
   if (avatar) {
-
-    const avatarUrl =
-      metadata.avatar_url ||
-      metadata.picture;
 
     if (avatarUrl) {
 
@@ -185,6 +174,12 @@ function setupUserInterface(
 
       avatar.alt =
         displayName;
+
+      avatar.referrerPolicy =
+        "no-referrer";
+
+      avatar.style.display =
+        "";
 
     } else {
 
@@ -195,12 +190,13 @@ function setupUserInterface(
 
   }
 
-  // Date
+
+  // -------------------------------------------------------
+  // DATE
+  // -------------------------------------------------------
 
   const dateElement =
-    document.getElementById(
-      "currentDate"
-    );
+    document.getElementById("currentDate");
 
   if (dateElement) {
 
@@ -221,7 +217,1574 @@ function setupUserInterface(
 
 
 // =========================================================
-// LOAD ALL PLATFORM DATA
+// PROFILE MENU
+// =========================================================
+
+function setupProfileMenu(user) {
+
+  const {
+    displayName,
+    email,
+    avatarUrl
+  } = getUserDetails(user);
+
+
+  // -------------------------------------------------------
+  // ADD PROFILE CSS
+  // -------------------------------------------------------
+
+  injectProfileStyles();
+
+
+  // -------------------------------------------------------
+  // FIND EXISTING PROFILE AREA
+  // -------------------------------------------------------
+
+  let wrapper =
+    document.getElementById(
+      "secoraProfileWrapper"
+    );
+
+
+  // -------------------------------------------------------
+  // IF PROFILE DOES NOT EXIST, CREATE IT
+  // -------------------------------------------------------
+
+  if (!wrapper) {
+
+    wrapper =
+      createProfileWrapper(
+        displayName,
+        email,
+        avatarUrl
+      );
+
+
+    const existingProfile =
+      findExistingProfileArea();
+
+
+    if (
+      existingProfile &&
+      existingProfile.parentElement
+    ) {
+
+      existingProfile.replaceWith(
+        wrapper
+      );
+
+    } else {
+
+      const header =
+        document.querySelector(".topbar") ||
+        document.querySelector("header") ||
+        document.querySelector(".navbar") ||
+        document.querySelector("nav");
+
+
+      if (header) {
+
+        header.appendChild(wrapper);
+
+      } else {
+
+        document.body.appendChild(wrapper);
+
+      }
+
+    }
+
+  }
+
+
+  // -------------------------------------------------------
+  // UPDATE USER INFORMATION
+  // -------------------------------------------------------
+
+  updateProfileWrapper(
+    wrapper,
+    displayName,
+    email,
+    avatarUrl
+  );
+
+
+  // -------------------------------------------------------
+  // PROFILE BUTTON
+  // -------------------------------------------------------
+
+  const profileButton =
+    wrapper.querySelector(
+      "#profileBtn"
+    );
+
+
+  const profileMenu =
+    wrapper.querySelector(
+      "#profileMenu"
+    );
+
+
+  if (
+    profileButton &&
+    profileButton.dataset.secoraBound !== "true"
+  ) {
+
+    profileButton.dataset.secoraBound =
+      "true";
+
+
+    // -----------------------------------------------------
+    // CLICK
+    // -----------------------------------------------------
+
+    profileButton.addEventListener(
+      "click",
+      event => {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        toggleProfileMenu(
+          profileButton,
+          profileMenu
+        );
+
+      }
+    );
+
+
+    // -----------------------------------------------------
+    // KEYBOARD
+    // -----------------------------------------------------
+
+    profileButton.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Enter" ||
+          event.key === " "
+        ) {
+
+          event.preventDefault();
+
+          profileButton.click();
+
+        }
+
+
+        if (
+          event.key === "Escape"
+        ) {
+
+          closeProfileMenu();
+
+        }
+
+      }
+    );
+
+  }
+
+
+  // -------------------------------------------------------
+  // LOGOUT
+  // -------------------------------------------------------
+
+  const logoutButton =
+    wrapper.querySelector(
+      "#logoutBtn"
+    );
+
+  bindLogoutButton(
+    logoutButton
+  );
+
+
+  // -------------------------------------------------------
+  // OUTSIDE CLICK
+  // -------------------------------------------------------
+
+  if (
+    document.documentElement.dataset
+      .secoraProfileOutsideBound !== "true"
+  ) {
+
+    document.documentElement.dataset
+      .secoraProfileOutsideBound =
+      "true";
+
+
+    document.addEventListener(
+      "click",
+      event => {
+
+        const currentWrapper =
+          document.getElementById(
+            "secoraProfileWrapper"
+          );
+
+        if (!currentWrapper) {
+          return;
+        }
+
+        if (
+          !currentWrapper.contains(
+            event.target
+          )
+        ) {
+
+          closeProfileMenu();
+
+        }
+
+      }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Escape"
+        ) {
+
+          closeProfileMenu();
+
+        }
+
+      }
+    );
+
+  }
+
+}
+
+
+// =========================================================
+// FIND OLD PROFILE AREA
+// =========================================================
+
+function findExistingProfileArea() {
+
+  const selectors = [
+
+    "#profileBtn",
+
+    "#profileButton",
+
+    "#profileTrigger",
+
+    "[data-profile-trigger]",
+
+    ".profile-trigger",
+
+    ".profile-button",
+
+    ".user-menu-trigger",
+
+    ".header-profile",
+
+    ".user-profile",
+
+    ".user-account"
+
+  ];
+
+
+  for (
+    const selector of selectors
+  ) {
+
+    const element =
+      document.querySelector(
+        selector
+      );
+
+
+    if (element) {
+
+      return (
+        element.closest(
+          ".profile-wrapper"
+        ) ||
+
+        element.closest(
+          ".user-wrapper"
+        ) ||
+
+        element.closest(
+          ".account-wrapper"
+        ) ||
+
+        element.parentElement ||
+
+        element
+      );
+
+    }
+
+  }
+
+
+  // -------------------------------------------------------
+  // FIND LOADING...
+  // -------------------------------------------------------
+
+  const leaves =
+    [
+      ...document.querySelectorAll(
+        "body *"
+      )
+    ].filter(
+      element =>
+        element.children.length === 0
+    );
+
+
+  const loading =
+    leaves.find(
+      element => {
+
+        const text =
+          element.textContent.trim();
+
+        return (
+          text === "Loading..." ||
+          text === "Loading…"
+        );
+
+      }
+    );
+
+
+  if (loading) {
+
+    let node =
+      loading;
+
+
+    for (
+      let i = 0;
+      i < 5;
+      i++
+    ) {
+
+      if (!node.parentElement) {
+        break;
+      }
+
+
+      const parent =
+        node.parentElement;
+
+
+      const text =
+        parent.textContent
+          .replace(/\s+/g, " ")
+          .trim();
+
+
+      if (
+        text.length <= 150 &&
+        /Loading/i.test(text)
+      ) {
+
+        return parent;
+
+      }
+
+
+      node =
+        parent;
+
+    }
+
+
+    return loading.parentElement;
+
+  }
+
+
+  return null;
+
+}
+
+
+// =========================================================
+// CREATE PROFILE WRAPPER
+// =========================================================
+
+function createProfileWrapper(
+  displayName,
+  email,
+  avatarUrl
+) {
+
+  const wrapper =
+    document.createElement(
+      "div"
+    );
+
+
+  wrapper.id =
+    "secoraProfileWrapper";
+
+
+  wrapper.className =
+    "secora-profile-wrapper";
+
+
+  wrapper.innerHTML = `
+
+    <button
+      id="profileBtn"
+      class="secora-profile-trigger"
+      type="button"
+      aria-haspopup="menu"
+      aria-expanded="false"
+    >
+
+      <span class="secora-profile-avatar">
+        ${createAvatarMarkup(
+          displayName,
+          avatarUrl
+        )}
+      </span>
+
+
+      <span class="secora-profile-copy">
+
+        <strong class="secora-profile-name">
+          ${escapeHTML(displayName)}
+        </strong>
+
+        <small class="secora-profile-role">
+          Student
+        </small>
+
+      </span>
+
+
+      <span
+        class="secora-profile-chevron"
+        aria-hidden="true"
+      >
+        ⌄
+      </span>
+
+    </button>
+
+
+    <div
+      id="profileMenu"
+      class="secora-profile-menu"
+      role="menu"
+      aria-hidden="true"
+    >
+
+      <div class="secora-profile-menu-head">
+
+        <span class="secora-menu-avatar">
+          ${createAvatarMarkup(
+            displayName,
+            avatarUrl
+          )}
+        </span>
+
+
+        <div class="secora-profile-menu-user">
+
+          <strong id="profileMenuName">
+            ${escapeHTML(displayName)}
+          </strong>
+
+          <span id="profileMenuEmail">
+            ${escapeHTML(email)}
+          </span>
+
+          <small>
+            Student account
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <div class="secora-profile-menu-divider"></div>
+
+
+      <a
+        class="secora-profile-menu-item"
+        href="profile.html"
+        role="menuitem"
+      >
+
+        <span class="secora-menu-icon">
+          ${profileIcon()}
+        </span>
+
+        <span>
+          Profile
+        </span>
+
+      </a>
+
+
+      <a
+        class="secora-profile-menu-item"
+        href="settings.html"
+        role="menuitem"
+      >
+
+        <span class="secora-menu-icon">
+          ${settingsIcon()}
+        </span>
+
+        <span>
+          Settings
+        </span>
+
+      </a>
+
+
+      <a
+        class="secora-profile-menu-item"
+        href="help.html"
+        role="menuitem"
+      >
+
+        <span class="secora-menu-icon">
+          ${helpIcon()}
+        </span>
+
+        <span>
+          Help
+        </span>
+
+      </a>
+
+
+      <div class="secora-profile-menu-divider"></div>
+
+
+      <button
+        id="logoutBtn"
+        class="secora-profile-menu-item secora-logout-item"
+        type="button"
+        role="menuitem"
+      >
+
+        <span class="secora-menu-icon">
+          ${logoutIcon()}
+        </span>
+
+        <span>
+          Logout
+        </span>
+
+      </button>
+
+    </div>
+
+  `;
+
+
+  return wrapper;
+
+}
+
+
+// =========================================================
+// UPDATE PROFILE
+// =========================================================
+
+function updateProfileWrapper(
+  wrapper,
+  displayName,
+  email,
+  avatarUrl
+) {
+
+  const trigger =
+    wrapper.querySelector(
+      "#profileBtn"
+    );
+
+
+  if (trigger) {
+
+    const name =
+      trigger.querySelector(
+        ".secora-profile-name"
+      );
+
+
+    const role =
+      trigger.querySelector(
+        ".secora-profile-role"
+      );
+
+
+    const avatar =
+      trigger.querySelector(
+        ".secora-profile-avatar"
+      );
+
+
+    if (name) {
+
+      name.textContent =
+        displayName;
+
+    }
+
+
+    if (role) {
+
+      role.textContent =
+        "Student";
+
+    }
+
+
+    if (avatar) {
+
+      avatar.innerHTML =
+        createAvatarMarkup(
+          displayName,
+          avatarUrl
+        );
+
+    }
+
+  }
+
+
+  const menu =
+    wrapper.querySelector(
+      "#profileMenu"
+    );
+
+
+  if (menu) {
+
+    const menuName =
+      menu.querySelector(
+        "#profileMenuName"
+      );
+
+
+    const menuEmail =
+      menu.querySelector(
+        "#profileMenuEmail"
+      );
+
+
+    const menuAvatar =
+      menu.querySelector(
+        ".secora-menu-avatar"
+      );
+
+
+    if (menuName) {
+
+      menuName.textContent =
+        displayName;
+
+    }
+
+
+    if (menuEmail) {
+
+      menuEmail.textContent =
+        email;
+
+    }
+
+
+    if (menuAvatar) {
+
+      menuAvatar.innerHTML =
+        createAvatarMarkup(
+          displayName,
+          avatarUrl
+        );
+
+    }
+
+  }
+
+
+  // -------------------------------------------------------
+  // REMOVE LOADING TEXT
+  // -------------------------------------------------------
+
+  document
+    .querySelectorAll(
+      "body *"
+    )
+    .forEach(
+      element => {
+
+        if (
+          element.children.length !== 0
+        ) {
+
+          return;
+
+        }
+
+
+        const text =
+          element.textContent.trim();
+
+
+        if (
+          text === "Loading..." ||
+          text === "Loading…"
+        ) {
+
+          const parent =
+            element.parentElement;
+
+
+          const parentText =
+            parent?.textContent
+              ?.trim() || "";
+
+
+          if (
+            element.id ===
+              "profileLoading" ||
+
+            element.classList.contains(
+              "profile-loading"
+            ) ||
+
+            parentText.length < 100
+          ) {
+
+            element.textContent =
+              displayName;
+
+          }
+
+        }
+
+      }
+    );
+
+}
+
+
+// =========================================================
+// AVATAR
+// =========================================================
+
+function createAvatarMarkup(
+  displayName,
+  avatarUrl
+) {
+
+  if (avatarUrl) {
+
+    return `
+
+      <img
+        src="${escapeHTML(avatarUrl)}"
+        alt="${escapeHTML(displayName)}"
+        class="secora-avatar-image"
+        referrerpolicy="no-referrer"
+      >
+
+    `;
+
+  }
+
+
+  const initial =
+    String(
+      displayName || "L"
+    )
+      .trim()
+      .charAt(0)
+      .toUpperCase() || "L";
+
+
+  return `
+
+    <span class="secora-avatar-initial">
+      ${escapeHTML(initial)}
+    </span>
+
+  `;
+
+}
+
+
+// =========================================================
+// PROFILE TOGGLE
+// =========================================================
+
+function toggleProfileMenu(
+  button,
+  menu
+) {
+
+  if (!menu) {
+
+    window.location.href =
+      "profile.html";
+
+    return;
+
+  }
+
+
+  const isOpen =
+    menu.classList.contains(
+      "open"
+    );
+
+
+  if (isOpen) {
+
+    closeProfileMenu();
+
+  } else {
+
+    menu.classList.add(
+      "open"
+    );
+
+
+    menu.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+
+    button.setAttribute(
+      "aria-expanded",
+      "true"
+    );
+
+  }
+
+}
+
+
+// =========================================================
+// CLOSE PROFILE
+// =========================================================
+
+function closeProfileMenu() {
+
+  const menu =
+    document.getElementById(
+      "profileMenu"
+    );
+
+
+  const button =
+    document.getElementById(
+      "profileBtn"
+    );
+
+
+  if (menu) {
+
+    menu.classList.remove(
+      "open"
+    );
+
+
+    menu.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+  }
+
+
+  if (button) {
+
+    button.setAttribute(
+      "aria-expanded",
+      "false"
+    );
+
+  }
+
+}
+
+
+// =========================================================
+// LOGOUT
+// =========================================================
+
+function bindLogoutButton(
+  button
+) {
+
+  if (!button) {
+    return;
+  }
+
+
+  if (
+    button.dataset.secoraLogoutBound ===
+    "true"
+  ) {
+
+    return;
+
+  }
+
+
+  button.dataset.secoraLogoutBound =
+    "true";
+
+
+  button.addEventListener(
+    "click",
+    async event => {
+
+      event.preventDefault();
+
+      event.stopPropagation();
+
+
+      button.disabled =
+        true;
+
+
+      button.innerHTML = `
+
+        <span class="secora-menu-icon">
+          ${logoutIcon()}
+        </span>
+
+        <span>
+          Logging out...
+        </span>
+
+      `;
+
+
+      const {
+        error
+      } =
+        await secoraSupabase
+          .auth
+          .signOut();
+
+
+      if (error) {
+
+        console.error(
+          "Logout error:",
+          error
+        );
+
+
+        button.disabled =
+          false;
+
+
+        button.innerHTML = `
+
+          <span class="secora-menu-icon">
+            ${logoutIcon()}
+          </span>
+
+          <span>
+            Logout
+          </span>
+
+        `;
+
+
+        return;
+
+      }
+
+
+      window.location.replace(
+        "index.html"
+      );
+
+    }
+  );
+
+}
+
+
+// =========================================================
+// PROFILE CSS
+// =========================================================
+
+function injectProfileStyles() {
+
+  if (
+    document.getElementById(
+      "secoraProfileStyles"
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  const style =
+    document.createElement(
+      "style"
+    );
+
+
+  style.id =
+    "secoraProfileStyles";
+
+
+  style.textContent = `
+
+    /* =====================================================
+       SECORA PROFILE HEADER
+       ===================================================== */
+
+    .secora-profile-wrapper {
+
+      position: relative;
+
+      display: flex;
+
+      align-items: center;
+
+      margin-left: auto;
+
+      z-index: 9999;
+
+      font-family: inherit;
+
+    }
+
+
+    .secora-profile-trigger {
+
+      appearance: none;
+
+      -webkit-appearance: none;
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 9px;
+
+      min-height: 44px;
+
+      margin: 0;
+
+      padding: 5px 8px 5px 5px;
+
+      border: 0;
+
+      border-radius: 9px;
+
+      outline: 0;
+
+      background: transparent;
+
+      color: inherit;
+
+      cursor: pointer;
+
+      text-align: left;
+
+      font: inherit;
+
+      transition:
+        background .18s ease;
+
+    }
+
+
+    .secora-profile-trigger:hover,
+
+    .secora-profile-trigger[aria-expanded="true"] {
+
+      background:
+        rgba(255,255,255,.055);
+
+    }
+
+
+    .secora-profile-trigger:focus-visible {
+
+      box-shadow:
+        0 0 0 2px
+        rgba(92,214,255,.45);
+
+    }
+
+
+    .secora-profile-avatar,
+
+    .secora-menu-avatar {
+
+      flex: 0 0 auto;
+
+      width: 34px;
+
+      height: 34px;
+
+      display: grid;
+
+      place-items: center;
+
+      overflow: hidden;
+
+      border-radius: 50%;
+
+      background: #152235;
+
+      border: 1px solid #29415a;
+
+      color: #dceeff;
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+    }
+
+
+    .secora-menu-avatar {
+
+      width: 42px;
+
+      height: 42px;
+
+    }
+
+
+    .secora-avatar-image {
+
+      display: block;
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+    }
+
+
+    .secora-avatar-initial {
+
+      width: 100%;
+
+      height: 100%;
+
+      display: grid;
+
+      place-items: center;
+
+      background: #102238;
+
+      color: #dff7ff;
+
+    }
+
+
+    .secora-profile-copy {
+
+      min-width: 0;
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 2px;
+
+      line-height: 1.1;
+
+    }
+
+
+    .secora-profile-name {
+
+      display: block;
+
+      max-width: 150px;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+
+      color: #e8eef7;
+
+      font-size: 12px;
+
+      font-weight: 700;
+
+    }
+
+
+    .secora-profile-role {
+
+      color: #65758b;
+
+      font: 10px
+        'DM Mono',
+        monospace;
+
+    }
+
+
+    .secora-profile-chevron {
+
+      color: #66788e;
+
+      font-size: 15px;
+
+      line-height: 1;
+
+      transition:
+        transform .18s ease;
+
+    }
+
+
+    .secora-profile-trigger[
+      aria-expanded="true"
+    ]
+    .secora-profile-chevron {
+
+      transform:
+        rotate(180deg);
+
+    }
+
+
+    /* =====================================================
+       DROPDOWN
+       ===================================================== */
+
+    .secora-profile-menu {
+
+      position: absolute;
+
+      top: calc(100% + 9px);
+
+      right: 0;
+
+      width: 255px;
+
+      box-sizing: border-box;
+
+      display: none;
+
+      padding: 8px;
+
+      background: #0b111c;
+
+      color: #e7edf5;
+
+      border:
+        1px solid #24364d;
+
+      border-radius: 10px;
+
+      box-shadow:
+        0 24px 70px
+        rgba(0,0,0,.52);
+
+      z-index: 10000;
+
+    }
+
+
+    .secora-profile-menu.open {
+
+      display: block;
+
+      animation:
+        secoraProfileDrop
+        .16s
+        ease-out;
+
+    }
+
+
+    @keyframes secoraProfileDrop {
+
+      from {
+
+        opacity: 0;
+
+        transform:
+          translateY(-5px);
+
+      }
+
+      to {
+
+        opacity: 1;
+
+        transform:
+          translateY(0);
+
+      }
+
+    }
+
+
+    .secora-profile-menu-head {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      padding:
+        9px 8px 11px;
+
+    }
+
+
+    .secora-profile-menu-user {
+
+      min-width: 0;
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 2px;
+
+    }
+
+
+    .secora-profile-menu-user strong {
+
+      color: #f1f6fb;
+
+      font-size: 12px;
+
+      font-weight: 700;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+
+    }
+
+
+    .secora-profile-menu-user span {
+
+      color: #7d8da2;
+
+      font:
+        10px
+        'DM Mono',
+        monospace;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+
+    }
+
+
+    .secora-profile-menu-user small {
+
+      color: #4f6279;
+
+      font-size: 9px;
+
+      margin-top: 1px;
+
+    }
+
+
+    .secora-profile-menu-divider {
+
+      height: 1px;
+
+      margin:
+        3px 2px;
+
+      background: #1b293b;
+
+    }
+
+
+    .secora-profile-menu-item {
+
+      width: 100%;
+
+      min-height: 40px;
+
+      box-sizing: border-box;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      margin: 2px 0;
+
+      padding:
+        9px 10px;
+
+      border: 0;
+
+      border-radius: 7px;
+
+      background: transparent;
+
+      color: #cbd6e3;
+
+      cursor: pointer;
+
+      text-align: left;
+
+      text-decoration: none;
+
+      font:
+        12px
+        inherit;
+
+      transition:
+        background .15s ease,
+        color .15s ease;
+
+    }
+
+
+    .secora-profile-menu-item:hover {
+
+      background: #111c2b;
+
+      color: #f2f7fb;
+
+    }
+
+
+    .secora-profile-menu-item:focus-visible {
+
+      outline:
+        1px solid #31506e;
+
+      outline-offset: -1px;
+
+    }
+
+
+    .secora-menu-icon {
+
+      width: 18px;
+
+      height: 18px;
+
+      flex: 0 0 18px;
+
+      display: grid;
+
+      place-items: center;
+
+      color: #71859d;
+
+    }
+
+
+    .secora-menu-icon svg {
+
+      width: 16px;
+
+      height: 16px;
+
+      display: block;
+
+      stroke: currentColor;
+
+    }
+
+
+    .secora-logout-item:hover {
+
+      color: #ffb2ad;
+
+      background:
+        rgba(255,92,83,.07);
+
+    }
+
+
+    .secora-logout-item:disabled {
+
+      opacity: .65;
+
+      cursor: wait;
+
+    }
+
+
+    @media (max-width: 650px) {
+
+      .secora-profile-copy {
+
+        display: none;
+
+      }
+
+
+      .secora-profile-menu {
+
+        position: fixed;
+
+        top: 62px;
+
+        right: 12px;
+
+        width:
+          min(
+            255px,
+            calc(100vw - 24px)
+          );
+
+      }
+
+    }
+
+  `;
+
+
+  document.head.appendChild(
+    style
+  );
+
+}
+
+
+// =========================================================
+// LOAD PLATFORM DATA
 // =========================================================
 
 async function loadPlatformData(
@@ -258,11 +1821,13 @@ async function loadPlatformData(
         }
       );
 
+
   if (coursesError) {
 
     throw coursesError;
 
   }
+
 
   // -------------------------------------------------------
   // MODULES
@@ -270,10 +1835,13 @@ async function loadPlatformData(
 
   const courseIds =
     (courses || []).map(
-      course => course.id
+      course =>
+        course.id
     );
 
+
   let modules = [];
+
 
   if (courseIds.length) {
 
@@ -300,16 +1868,19 @@ async function loadPlatformData(
           }
         );
 
+
     if (error) {
 
       throw error;
 
     }
 
+
     modules =
       data || [];
 
   }
+
 
   // -------------------------------------------------------
   // LESSONS
@@ -317,10 +1888,13 @@ async function loadPlatformData(
 
   const moduleIds =
     modules.map(
-      module => module.id
+      module =>
+        module.id
     );
 
+
   let lessons = [];
+
 
   if (moduleIds.length) {
 
@@ -354,16 +1928,19 @@ async function loadPlatformData(
           }
         );
 
+
     if (error) {
 
       throw error;
 
     }
 
+
     lessons =
       data || [];
 
   }
+
 
   // -------------------------------------------------------
   // USER PROGRESS
@@ -371,10 +1948,13 @@ async function loadPlatformData(
 
   const lessonIds =
     lessons.map(
-      lesson => lesson.id
+      lesson =>
+        lesson.id
     );
 
+
   let progress = [];
+
 
   if (lessonIds.length) {
 
@@ -399,22 +1979,29 @@ async function loadPlatformData(
           lessonIds
         );
 
+
     if (error) {
 
       throw error;
 
     }
 
+
     progress =
       data || [];
 
   }
 
+
   return {
 
-    courses,
+    courses:
+      courses || [],
+
     modules,
+
     lessons,
+
     progress
 
   };
@@ -437,19 +2024,24 @@ function buildCourseData(
     progress
   } = data;
 
+
   return courses.map(
     course => {
 
       const courseModules =
         modules.filter(
           module =>
-            module.course_id === course.id
+            module.course_id ===
+            course.id
         );
+
 
       const moduleIds =
         courseModules.map(
-          module => module.id
+          module =>
+            module.id
         );
+
 
       const courseLessons =
         lessons.filter(
@@ -459,19 +2051,22 @@ function buildCourseData(
             )
         );
 
-      const courseLessonIds =
+
+      const lessonIds =
         courseLessons.map(
           lesson =>
             lesson.id
         );
 
+
       const courseProgress =
         progress.filter(
           item =>
-            courseLessonIds.includes(
+            lessonIds.includes(
               item.lesson_id
             )
         );
+
 
       const completed =
         courseProgress.filter(
@@ -479,15 +2074,21 @@ function buildCourseData(
             item.completed === true
         ).length;
 
+
       const total =
         courseLessons.length;
+
 
       const percentage =
         total === 0
           ? 0
           : Math.round(
-              (completed / total) * 100
+              (
+                completed /
+                total
+              ) * 100
             );
+
 
       return {
 
@@ -514,7 +2115,7 @@ function buildCourseData(
 
 
 // =========================================================
-// DASHBOARD STATISTICS
+// DASHBOARD STATS
 // =========================================================
 
 function renderDashboardStats(
@@ -526,14 +2127,17 @@ function renderDashboardStats(
       data
     );
 
+
   const totalLessons =
     data.lessons.length;
+
 
   const completedLessons =
     data.progress.filter(
       item =>
         item.completed === true
     ).length;
+
 
   const startedCourses =
     courseData.filter(
@@ -548,6 +2152,7 @@ function renderDashboardStats(
         )
     ).length;
 
+
   const overallPercentage =
     totalLessons === 0
       ? 0
@@ -558,33 +2163,30 @@ function renderDashboardStats(
           ) * 100
         );
 
-  // -------------------------------------------------------
-  // Try IDs first
-  // -------------------------------------------------------
 
   setText(
     "completedLessons",
     completedLessons
   );
 
+
   setText(
     "coursesStarted",
     startedCourses
   );
+
 
   setText(
     "overallProgress",
     `${overallPercentage}%`
   );
 
-  // -------------------------------------------------------
-  // Compatibility with existing dashboard
-  // -------------------------------------------------------
 
   const statValues =
     document.querySelectorAll(
       ".stat-card strong"
     );
+
 
   if (statValues.length >= 1) {
 
@@ -593,12 +2195,14 @@ function renderDashboardStats(
 
   }
 
+
   if (statValues.length >= 2) {
 
     statValues[1].textContent =
       startedCourses;
 
   }
+
 
   if (statValues.length >= 3) {
 
@@ -623,9 +2227,6 @@ function renderContinueLearning(
     progress
   } = data;
 
-  // -------------------------------------------------------
-  // Find lessons that were opened
-  // -------------------------------------------------------
 
   const openedLessons =
     lessons
@@ -639,11 +2240,15 @@ function renderContinueLearning(
                 lesson.id
             );
 
-          if (!record?.last_opened_at) {
+
+          if (
+            !record?.last_opened_at
+          ) {
 
             return null;
 
           }
+
 
           return {
 
@@ -658,9 +2263,10 @@ function renderContinueLearning(
       )
       .filter(Boolean);
 
-  // Nothing has been opened yet
 
-  if (!openedLessons.length) {
+  if (
+    !openedLessons.length
+  ) {
 
     renderEmptyContinueLearning();
 
@@ -668,9 +2274,6 @@ function renderContinueLearning(
 
   }
 
-  // -------------------------------------------------------
-  // Most recently opened lesson
-  // -------------------------------------------------------
 
   openedLessons.sort(
     (a, b) =>
@@ -682,11 +2285,14 @@ function renderContinueLearning(
       )
   );
 
+
   const current =
     openedLessons[0];
 
+
   const lesson =
     current.lesson;
+
 
   const module =
     data.modules.find(
@@ -695,6 +2301,7 @@ function renderContinueLearning(
         lesson.module_id
     );
 
+
   const course =
     data.courses.find(
       item =>
@@ -702,35 +2309,37 @@ function renderContinueLearning(
         module?.course_id
     );
 
+
   if (!course) {
 
     return;
 
   }
 
-  // -------------------------------------------------------
-  // Existing continue elements
-  // -------------------------------------------------------
 
   setText(
     "continueCourse",
     course.title
   );
 
+
   setText(
     "continueLesson",
     lesson.title
   );
+
 
   setText(
     "continueModule",
     module?.title || ""
   );
 
+
   const continueButton =
     document.getElementById(
       "continueBtn"
     );
+
 
   if (continueButton) {
 
@@ -741,10 +2350,6 @@ function renderContinueLearning(
 
   }
 
-  // -------------------------------------------------------
-  // If old dashboard doesn't have a continue card,
-  // create one automatically.
-  // -------------------------------------------------------
 
   if (
     !document.querySelector(
@@ -780,24 +2385,29 @@ function createContinueCard(
       ".course-grid"
     );
 
+
   if (!courseGrid) {
 
     return;
 
   }
 
+
   const card =
     document.createElement(
       "section"
     );
 
+
   card.className =
     "continue-learning";
+
 
   const status =
     progress.completed
       ? "Completed"
       : "In progress";
+
 
   card.innerHTML = `
 
@@ -827,6 +2437,7 @@ function createContinueCard(
 
     </div>
 
+
     <div class="continue-action">
 
       <span class="continue-status">
@@ -846,6 +2457,7 @@ function createContinueCard(
 
   `;
 
+
   courseGrid.parentNode.insertBefore(
     card,
     courseGrid
@@ -855,7 +2467,7 @@ function createContinueCard(
 
 
 // =========================================================
-// EMPTY CONTINUE STATE
+// EMPTY CONTINUE
 // =========================================================
 
 function renderEmptyContinueLearning() {
@@ -864,6 +2476,7 @@ function renderEmptyContinueLearning() {
     document.querySelector(
       ".continue-learning"
     );
+
 
   if (existing) {
 
@@ -875,7 +2488,7 @@ function renderEmptyContinueLearning() {
 
 
 // =========================================================
-// RENDER COURSE CARDS
+// COURSES
 // =========================================================
 
 function renderCourses(
@@ -887,18 +2500,23 @@ function renderCourses(
       ".course-grid"
     );
 
+
   if (!grid) {
 
     return;
 
   }
 
+
   const courseData =
     buildCourseData(
       data
     );
 
-  if (!courseData.length) {
+
+  if (
+    !courseData.length
+  ) {
 
     grid.innerHTML = `
 
@@ -920,6 +2538,7 @@ function renderCourses(
     return;
 
   }
+
 
   grid.innerHTML =
     courseData
@@ -944,8 +2563,10 @@ function createCourseCard(
 
   const level =
     String(
-      course.level || "beginner"
+      course.level ||
+      "beginner"
     ).toUpperCase();
+
 
   return `
 
@@ -963,40 +2584,59 @@ function createCourseCard(
 
       </div>
 
+
       <h3>
         ${escapeHTML(
           course.title
         )}
       </h3>
 
+
       <p>
         ${escapeHTML(
-          course.description || ""
+          course.description ||
+          ""
         )}
       </p>
+
 
       <div class="course-card-meta">
 
         <span>
+
           ${course.total}
-          LESSON${course.total === 1 ? "" : "S"}
+
+          LESSON${
+            course.total === 1
+              ? ""
+              : "S"
+          }
+
         </span>
 
+
         <span>
+
           ${course.completed}
+
           COMPLETED
+
         </span>
 
       </div>
+
 
       <div class="course-progress">
 
         <div
           class="course-progress-bar"
-          style="width:${course.percentage}%"
+          style="
+            width:${course.percentage}%
+          "
         ></div>
 
       </div>
+
 
       <a
         href="course.html?slug=${encodeURIComponent(
@@ -1028,6 +2668,7 @@ function setText(
       id
     );
 
+
   if (element) {
 
     element.textContent =
@@ -1049,11 +2690,13 @@ function showDashboardError() {
       ".course-grid"
     );
 
+
   if (!grid) {
 
     return;
 
   }
+
 
   grid.innerHTML = `
 
@@ -1064,7 +2707,8 @@ function showDashboardError() {
       </h3>
 
       <p>
-        Please refresh the page and try again.
+        Please refresh the page
+        and try again.
       </p>
 
     </div>
@@ -1082,7 +2726,9 @@ function escapeHTML(
   value
 ) {
 
-  return String(value)
+  return String(
+    value ?? ""
+  )
 
     .replaceAll(
       "&",
@@ -1113,774 +2759,176 @@ function escapeHTML(
 
 
 // =========================================================
-// PROFILE / HEADER AUTH UI
+// PROFILE ICON
 // =========================================================
 
-function setupProfileMenu(user) {
-
-  const metadata =
-    user?.user_metadata || {};
-
-  const displayName =
-    metadata.full_name ||
-    metadata.name ||
-    user?.email?.split("@")[0] ||
-    "Learner";
-
-  const avatarUrl =
-    metadata.avatar_url ||
-    metadata.picture ||
-    "";
-
-  // -------------------------------------------------------
-  // FIND EXISTING PROFILE TRIGGER
-  // -------------------------------------------------------
-
-  const trigger =
-    document.getElementById(
-      "profileBtn"
-    ) ||
-    document.getElementById(
-      "profileButton"
-    ) ||
-    document.getElementById(
-      "profileTrigger"
-    ) ||
-    document.querySelector(
-      "[data-profile-trigger], .profile-trigger, .profile-button, .user-menu-trigger, .header-profile"
-    );
-
-  // -------------------------------------------------------
-  // UPDATE PROFILE NAMES
-  // -------------------------------------------------------
-
-  const nameElements = [
-
-    document.getElementById(
-      "profileName"
-    ),
-
-    document.getElementById(
-      "headerUserName"
-    ),
-
-    document.getElementById(
-      "userName"
-    )
-
-  ].filter(Boolean);
-
-  nameElements.forEach(
-    element => {
-
-      element.textContent =
-        displayName;
-
-    }
-  );
-
-  // -------------------------------------------------------
-  // REMOVE HEADER LOADING STATE
-  // -------------------------------------------------------
-
-  document
-    .querySelectorAll("body *")
-    .forEach(
-      element => {
-
-        if (
-          element.children.length !== 0
-        ) {
-          return;
-        }
-
-        const value =
-          element.textContent.trim();
-
-        if (
-          value === "Loading..." ||
-          value === "Loading…"
-        ) {
-
-          const parentText =
-            element.parentElement
-              ?.textContent
-              ?.trim() || "";
-
-          if (
-            parentText.length < 100 ||
-            element.id === "profileLoading" ||
-            element.classList.contains(
-              "profile-loading"
-            )
-          ) {
-
-            element.textContent =
-              displayName;
-
-          }
-
-        }
-
-      }
-    );
-
-  // -------------------------------------------------------
-  // EXISTING PROFILE TRIGGER
-  // -------------------------------------------------------
-
-  if (trigger) {
-
-    trigger.style.cursor =
-      "pointer";
-
-    trigger.setAttribute(
-      "role",
-      "button"
-    );
-
-    trigger.setAttribute(
-      "tabindex",
-      "0"
-    );
-
-    trigger.setAttribute(
-      "aria-haspopup",
-      "true"
-    );
-
-    trigger.setAttribute(
-      "aria-expanded",
-      "false"
-    );
-
-    // Prevent duplicate listeners
-
-    if (
-      trigger.dataset
-        .secoraProfileBound !==
-      "true"
-    ) {
-
-      trigger.dataset
-        .secoraProfileBound =
-        "true";
-
-      trigger.addEventListener(
-        "click",
-        event => {
-
-          event.preventDefault();
-
-          event.stopPropagation();
-
-          const menu =
-            document.getElementById(
-              "profileMenu"
-            ) ||
-            document.querySelector(
-              "[data-profile-menu], .profile-menu, .user-menu-dropdown"
-            );
-
-          if (!menu) {
-
-            window.location.href =
-              "profile.html";
-
-            return;
-
-          }
-
-          const isOpen =
-            menu.classList.contains(
-              "open"
-            ) ||
-            menu.getAttribute(
-              "aria-hidden"
-            ) === "false";
-
-          menu.classList.toggle(
-            "open",
-            !isOpen
-          );
-
-          menu.setAttribute(
-            "aria-hidden",
-            String(isOpen)
-          );
-
-          trigger.setAttribute(
-            "aria-expanded",
-            String(!isOpen)
-          );
-
-        }
-      );
-
-      trigger.addEventListener(
-        "keydown",
-        event => {
-
-          if (
-            event.key === "Enter" ||
-            event.key === " "
-          ) {
-
-            event.preventDefault();
-
-            trigger.click();
-
-          }
-
-        }
-      );
-
-    }
-
-  }
-
-  // -------------------------------------------------------
-  // EXISTING PROFILE MENU
-  // -------------------------------------------------------
-
-  const menu =
-    document.getElementById(
-      "profileMenu"
-    ) ||
-    document.querySelector(
-      "[data-profile-menu], .profile-menu, .user-menu-dropdown"
-    );
-
-  if (menu) {
-
-    const menuName =
-      menu.querySelector(
-        "#profileMenuName, .profile-menu-name, [data-profile-name]"
-      );
-
-    const menuEmail =
-      menu.querySelector(
-        "#profileMenuEmail, .profile-menu-email, [data-profile-email]"
-      );
-
-    if (menuName) {
-
-      menuName.textContent =
-        displayName;
-
-    }
-
-    if (menuEmail) {
-
-      menuEmail.textContent =
-        user?.email || "";
-
-    }
-
-    const profileLink =
-      menu.querySelector(
-        "#profileLink, [data-profile-link], a[href*='profile']"
-      );
-
-    if (profileLink) {
-
-      profileLink.href =
-        "profile.html";
-
-      profileLink.addEventListener(
-        "click",
-        () => {
-
-          menu.classList.remove(
-            "open"
-          );
-
-          menu.setAttribute(
-            "aria-hidden",
-            "true"
-          );
-
-        }
-      );
-
-    }
-
-  }
-
-  // -------------------------------------------------------
-  // CREATE FALLBACK PROFILE HEADER
-  // -------------------------------------------------------
-
-  if (!trigger) {
-
-    createFallbackProfileHeader(
-      user,
-      displayName,
-      avatarUrl
-    );
-
-  }
-
-  // -------------------------------------------------------
-  // CLOSE MENU WHEN CLICKING OUTSIDE
-  // -------------------------------------------------------
-
-  if (
-    !document.documentElement
-      .dataset
-      .secoraProfileOutsideBound
-  ) {
-
-    document.documentElement
-      .dataset
-      .secoraProfileOutsideBound =
-      "true";
-
-    document.addEventListener(
-      "click",
-      event => {
-
-        const openMenu =
-          document.getElementById(
-            "profileMenu"
-          ) ||
-          document.querySelector(
-            "[data-profile-menu], .profile-menu, .user-menu-dropdown"
-          );
-
-        if (!openMenu) {
-
-          return;
-
-        }
-
-        const activeTrigger =
-          document.getElementById(
-            "profileBtn"
-          ) ||
-          document.getElementById(
-            "profileButton"
-          ) ||
-          document.getElementById(
-            "profileTrigger"
-          ) ||
-          document.querySelector(
-            "[data-profile-trigger], .profile-trigger, .profile-button, .user-menu-trigger, .header-profile"
-          );
-
-        if (
-          !openMenu.contains(
-            event.target
-          ) &&
-          !activeTrigger?.contains(
-            event.target
-          )
-        ) {
-
-          openMenu.classList.remove(
-            "open"
-          );
-
-          openMenu.setAttribute(
-            "aria-hidden",
-            "true"
-          );
-
-          if (activeTrigger) {
-
-            activeTrigger.setAttribute(
-              "aria-expanded",
-              "false"
-            );
-
-          }
-
-        }
-
-      }
-    );
-
-  }
+function profileIcon() {
+
+  return `
+
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+
+      <circle
+        cx="12"
+        cy="8"
+        r="3.2"
+      ></circle>
+
+      <path
+        d="
+          M5.5 20
+          c.8-3.4
+          3-5.1
+          6.5-5.1
+          s5.7 1.7
+          6.5 5.1
+        "
+      ></path>
+
+    </svg>
+
+  `;
 
 }
 
 
 // =========================================================
-// FALLBACK PROFILE HEADER
+// SETTINGS ICON
 // =========================================================
 
-function createFallbackProfileHeader(
-  user,
-  displayName,
-  avatarUrl
-) {
+function settingsIcon() {
 
-  const header =
-    document.querySelector(
-      "header"
-    ) ||
-    document.querySelector(
-      ".topbar"
-    ) ||
-    document.querySelector(
-      ".navbar"
-    ) ||
-    document.querySelector(
-      "nav"
-    );
+  return `
 
-  if (
-    !header ||
-    document.getElementById(
-      "secoraFallbackProfile"
-    )
-  ) {
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
 
-    return;
+      <path
+        d="
+          M12 3.8v2.1
+          M12 18.1v2.1
+          M20.2 12h-2.1
+          M5.9 12H3.8
+          M17.8 6.2l-1.5 1.5
+          M7.7 16.3l-1.5 1.5
+          M17.8 17.8l-1.5-1.5
+          M7.7 7.7L6.2 6.2
+        "
+      ></path>
 
-  }
+      <circle
+        cx="12"
+        cy="12"
+        r="3.4"
+      ></circle>
 
-  // -------------------------------------------------------
-  // WRAPPER
-  // -------------------------------------------------------
-
-  const wrapper =
-    document.createElement(
-      "div"
-    );
-
-  wrapper.id =
-    "secoraFallbackProfile";
-
-  wrapper.style.cssText = `
-    position:relative;
-    margin-left:auto;
-    display:flex;
-    align-items:center;
-    font-family:inherit;
-  `;
-
-  // -------------------------------------------------------
-  // PROFILE BUTTON
-  // -------------------------------------------------------
-
-  const button =
-    document.createElement(
-      "button"
-    );
-
-  button.id =
-    "profileBtn";
-
-  button.type =
-    "button";
-
-  button.style.cssText = `
-    display:flex;
-    align-items:center;
-    gap:9px;
-    border:0;
-    background:transparent;
-    color:inherit;
-    padding:6px 8px;
-    border-radius:9px;
-    cursor:pointer;
-    font:inherit;
-  `;
-
-  // -------------------------------------------------------
-  // AVATAR
-  // -------------------------------------------------------
-
-  const avatar =
-    document.createElement(
-      "span"
-    );
-
-  avatar.style.cssText = `
-    width:32px;
-    height:32px;
-    border-radius:50%;
-    display:grid;
-    place-items:center;
-    overflow:hidden;
-    background:#e9edf2;
-    color:#1b2430;
-    font-size:13px;
-    font-weight:700;
-  `;
-
-  if (avatarUrl) {
-
-    avatar.innerHTML =
-      `<img src="${escapeHTML(
-        avatarUrl
-      )}" alt="${escapeHTML(
-        displayName
-      )}" style="width:100%;height:100%;object-fit:cover;">`;
-
-  } else {
-
-    avatar.textContent =
-      displayName
-        .charAt(0)
-        .toUpperCase();
-
-  }
-
-  // -------------------------------------------------------
-  // NAME
-  // -------------------------------------------------------
-
-  const text =
-    document.createElement(
-      "span"
-    );
-
-  text.id =
-    "profileName";
-
-  text.textContent =
-    displayName;
-
-  text.style.cssText = `
-    font-size:13px;
-    font-weight:600;
-    white-space:nowrap;
-  `;
-
-  button.append(
-    avatar,
-    text
-  );
-
-  // -------------------------------------------------------
-  // PROFILE MENU
-  // -------------------------------------------------------
-
-  const menu =
-    document.createElement(
-      "div"
-    );
-
-  menu.id =
-    "profileMenu";
-
-  menu.setAttribute(
-    "aria-hidden",
-    "true"
-  );
-
-  menu.style.cssText = `
-    position:absolute;
-    top:calc(100% + 10px);
-    right:0;
-    min-width:220px;
-    padding:10px;
-    background:#fff;
-    color:#17202b;
-    border:1px solid #e2e7ed;
-    border-radius:12px;
-    box-shadow:0 16px 40px rgba(0,0,0,.12);
-    display:none;
-    z-index:9999;
-  `;
-
-  // -------------------------------------------------------
-  // PROFILE CSS
-  // -------------------------------------------------------
-
-  const style =
-    document.createElement(
-      "style"
-    );
-
-  style.textContent = `
-
-    #profileMenu.open {
-      display:block !important;
-    }
-
-    #profileBtn:hover {
-      background:rgba(0,0,0,.04);
-    }
-
-    #profileMenu a,
-    #profileMenu button {
-
-      display:block;
-      width:100%;
-      box-sizing:border-box;
-      padding:10px 11px;
-      border:0;
-      background:transparent;
-      color:inherit;
-      text-align:left;
-      text-decoration:none;
-      border-radius:8px;
-      cursor:pointer;
-      font:inherit;
-
-    }
-
-    #profileMenu a:hover,
-    #profileMenu button:hover {
-
-      background:#f2f5f8;
-
-    }
+    </svg>
 
   `;
 
-  // -------------------------------------------------------
-  // PROFILE INFORMATION
-  // -------------------------------------------------------
+}
 
-  const info =
-    document.createElement(
-      "div"
-    );
 
-  info.style.cssText =
-    "padding:8px 10px 10px;border-bottom:1px solid #edf0f3;margin-bottom:5px;";
+// =========================================================
+// HELP ICON
+// =========================================================
 
-  const menuName =
-    document.createElement(
-      "strong"
-    );
+function helpIcon() {
 
-  menuName.id =
-    "profileMenuName";
+  return `
 
-  menuName.textContent =
-    displayName;
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
 
-  menuName.style.display =
-    "block";
+      <circle
+        cx="12"
+        cy="12"
+        r="8.5"
+      ></circle>
 
-  const menuEmail =
-    document.createElement(
-      "small"
-    );
+      <path
+        d="
+          M9.7 9.2
+          a2.4 2.4 0 0 1 4.6 1
+          c0 1.7-2.3 2-2.3 3.4
+        "
+      ></path>
 
-  menuEmail.id =
-    "profileMenuEmail";
+      <path
+        d="
+          M12 16.9h.01
+        "
+      ></path>
 
-  menuEmail.textContent =
-    user?.email || "";
+    </svg>
 
-  menuEmail.style.cssText =
-    "display:block;margin-top:3px;color:#718096;overflow:hidden;text-overflow:ellipsis;";
+  `;
 
-  info.append(
-    menuName,
-    menuEmail
-  );
+}
 
-  // -------------------------------------------------------
-  // PROFILE LINK
-  // -------------------------------------------------------
 
-  const profileLink =
-    document.createElement(
-      "a"
-    );
+// =========================================================
+// LOGOUT ICON
+// =========================================================
 
-  profileLink.id =
-    "profileLink";
+function logoutIcon() {
 
-  profileLink.href =
-    "profile.html";
+  return `
 
-  profileLink.textContent =
-    "Profile";
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
 
-  // -------------------------------------------------------
-  // LOGOUT BUTTON
-  // -------------------------------------------------------
+      <path
+        d="
+          M10 4.5H6.8
+          a1.8 1.8 0 0 0-1.8 1.8
+          v11.4
+          a1.8 1.8 0 0 0 1.8 1.8
+          H10
+        "
+      ></path>
 
-  const logout =
-    document.createElement(
-      "button"
-    );
+      <path
+        d="
+          M13.5 8.5
+          L17 12
+          l-3.5 3.5
+        "
+      ></path>
 
-  logout.id =
-    "logoutBtn";
+      <path
+        d="
+          M17 12H9
+        "
+      ></path>
 
-  logout.type =
-    "button";
+    </svg>
 
-  logout.textContent =
-    "Logout";
-
-  // -------------------------------------------------------
-  // BUILD MENU
-  // -------------------------------------------------------
-
-  menu.append(
-    info,
-    profileLink,
-    logout
-  );
-
-  wrapper.append(
-    button,
-    menu
-  );
-
-  header.append(
-    wrapper
-  );
-
-  document.head.appendChild(
-    style
-  );
-
-  // -------------------------------------------------------
-  // LOGOUT HANDLER
-  // -------------------------------------------------------
-
-  logout.addEventListener(
-    "click",
-    async event => {
-
-      event.preventDefault();
-
-      logout.disabled =
-        true;
-
-      logout.textContent =
-        "Logging out...";
-
-      const {
-        error
-      } =
-        await secoraSupabase
-          .auth
-          .signOut();
-
-      if (error) {
-
-        console.error(
-          "Logout error:",
-          error
-        );
-
-        logout.disabled =
-          false;
-
-        logout.textContent =
-          "Logout";
-
-        return;
-
-      }
-
-      window.location.replace(
-        "index.html"
-      );
-
-    }
-  );
+  `;
 
 }
