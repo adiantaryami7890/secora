@@ -1,347 +1,993 @@
  <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Secora — A structured cybersecurity learning platform."
+  >
 
   <title>Dashboard — Secora</title>
 
-  <link rel="stylesheet" href="dashboard.css">
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js"></script>
-  <script src="dashboard.js" defer></script>
+  <!-- =====================================================
+       DASHBOARD STYLES
+       ===================================================== -->
+
+  <link
+    rel="stylesheet"
+    href="dashboard.css"
+  >
+
+
+  <!-- =====================================================
+       SUPABASE
+       ===================================================== -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
+
+  <script
+    src="supabase.js"
+  ></script>
+
+  <script
+    src="dashboard.js"
+    defer
+  ></script>
+
 </head>
+
 
 <body>
 
+
+  <!-- =====================================================
+       APPLICATION
+       ===================================================== -->
+
   <div class="app">
 
-    <!-- SIDEBAR -->
+
+    <!-- ===================================================
+         SIDEBAR
+         =================================================== -->
+
     <aside class="sidebar">
 
-      <div class="brand">
-        <div class="brand-mark">S</div>
-        <span>SECORA</span>
-      </div>
 
-      <nav class="navigation">
+      <!-- BRAND -->
 
-        <p class="nav-label">LEARN</p>
+      <a
+        href="home.html"
+        class="brand"
+        aria-label="Secora Dashboard"
+      >
 
-        <a href="home.html" class="nav-item active">
-          <span>⌂</span>
-          Dashboard
+        <div class="brand-mark">
+          S
+        </div>
+
+        <span>
+          SECORA
+        </span>
+
+      </a>
+
+
+      <!-- NAVIGATION -->
+
+      <nav
+        class="navigation"
+        aria-label="Main navigation"
+      >
+
+
+        <!-- LEARN -->
+
+        <p class="nav-label">
+          LEARN
+        </p>
+
+
+        <a
+          href="home.html"
+          class="nav-item active"
+          aria-current="page"
+        >
+
+          <span aria-hidden="true">
+            ⌂
+          </span>
+
+          <span>
+            Dashboard
+          </span>
+
         </a>
 
-        <a href="#" class="nav-item">
-          <span>▣</span>
-          Courses
+
+        <a
+          href="#courses"
+          class="nav-item"
+        >
+
+          <span aria-hidden="true">
+            ▣
+          </span>
+
+          <span>
+            Courses
+          </span>
+
         </a>
 
-        <a href="#" class="nav-item">
-          <span>↗</span>
-          Learning Paths
+
+        <a
+          href="#learning-path"
+          class="nav-item"
+        >
+
+          <span aria-hidden="true">
+            ↗
+          </span>
+
+          <span>
+            Learning Paths
+          </span>
+
         </a>
 
-        <a href="#" class="nav-item">
-          <span>◈</span>
-          Topics
+
+        <a
+          href="#courses"
+          class="nav-item"
+        >
+
+          <span aria-hidden="true">
+            ◈
+          </span>
+
+          <span>
+            Topics
+          </span>
+
         </a>
 
-        <p class="nav-label second">PERSONAL</p>
 
-        <a href="#" class="nav-item">
-          <span>☆</span>
-          Bookmarks
+        <!-- PERSONAL -->
+
+        <p class="nav-label second">
+          PERSONAL
+        </p>
+
+
+        <a
+          href="#progress"
+          class="nav-item"
+        >
+
+          <span aria-hidden="true">
+            ☆
+          </span>
+
+          <span>
+            Bookmarks
+          </span>
+
         </a>
 
-        <a href="#" class="nav-item">
-          <span>◷</span>
-          Progress
+
+        <a
+          href="#progress"
+          class="nav-item"
+        >
+
+          <span aria-hidden="true">
+            ◷
+          </span>
+
+          <span>
+            Progress
+          </span>
+
         </a>
+
 
       </nav>
 
+
+      <!-- =================================================
+           SIDEBAR BOTTOM
+           ================================================= -->
+
       <div class="sidebar-bottom">
 
-        <a href="#" class="nav-item">
-          <span>⚙</span>
-          Settings
+
+        <!-- ACCOUNT -->
+
+        <div
+          class="sidebar-account"
+          aria-label="Signed in user"
+        >
+
+          <div class="sidebar-avatar">
+
+            <img
+              id="userAvatar"
+              src=""
+              alt=""
+            >
+
+          </div>
+
+
+          <div class="sidebar-account-info">
+
+            <strong id="userName">
+              Loading...
+            </strong>
+
+            <span id="userEmail">
+              Loading...
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- SETTINGS -->
+
+        <a
+          href="#"
+          class="nav-item"
+          id="settingsLink"
+        >
+
+          <span aria-hidden="true">
+            ⚙
+          </span>
+
+          <span>
+            Settings
+          </span>
+
         </a>
 
-        <button id="logoutBtn" class="logout">
-          <span>↪</span>
-          Log out
+
+        <!-- LOGOUT -->
+
+        <button
+          type="button"
+          id="logoutBtn"
+          class="logout"
+        >
+
+          <span aria-hidden="true">
+            ↪
+          </span>
+
+          <span>
+            Log out
+          </span>
+
         </button>
 
+
       </div>
+
 
     </aside>
 
 
-    <!-- MAIN -->
+
+    <!-- ===================================================
+         MAIN CONTENT
+         =================================================== -->
+
     <main class="main">
 
-      <!-- TOPBAR -->
+
+      <!-- =================================================
+           TOP BAR
+           ================================================= -->
+
       <header class="topbar">
+
+
+        <!-- MOBILE BRAND -->
 
         <div class="mobile-brand">
           SECORA
         </div>
 
+
+        <!-- SEARCH -->
+
         <div class="search">
-          <span>⌕</span>
+
+          <span
+            aria-hidden="true"
+          >
+            ⌕
+          </span>
+
           <input
             type="search"
-            placeholder="Search courses, topics..."
             id="searchInput"
+            placeholder="Search courses, topics..."
+            autocomplete="off"
+            aria-label="Search courses and topics"
           >
-          <kbd>⌘ K</kbd>
+
+          <kbd>
+            Ctrl K
+          </kbd>
+
         </div>
+
+
+        <!-- TOP ACTIONS -->
 
         <div class="top-actions">
 
-          <button class="icon-button" title="Notifications">
+
+          <!-- NOTIFICATIONS -->
+
+          <button
+            type="button"
+            class="icon-button"
+            title="Notifications"
+            aria-label="Notifications"
+          >
+
             ♧
+
           </button>
 
-          <div class="profile-mini" id="profileButton">
-            <div class="avatar" id="userAvatar">A</div>
-            <div class="profile-mini-text">
-              <strong id="topUserName">Loading...</strong>
-              <span>Student</span>
+
+          <!-- PROFILE -->
+
+          <div
+            class="profile-mini"
+            id="profileButton"
+          >
+
+            <div class="avatar">
+
+              <img
+                id="topUserAvatar"
+                src=""
+                alt=""
+              >
+
             </div>
+
+
+            <div class="profile-mini-text">
+
+              <strong id="topUserName">
+                Loading...
+              </strong>
+
+              <span>
+                Student
+              </span>
+
+            </div>
+
           </div>
 
+
         </div>
+
 
       </header>
 
 
-      <!-- CONTENT -->
+
+      <!-- =================================================
+           PAGE CONTENT
+           ================================================= -->
+
       <section class="content">
 
-        <!-- HERO -->
+
+        <!-- =================================================
+             WELCOME HEADER
+             ================================================= -->
+
         <section class="welcome">
 
-          <div>
-            <p class="eyebrow">YOUR LEARNING SPACE</p>
 
-            <h1>
-              Welcome back,
-              <span id="welcomeName">Aditya</span>.
+          <div class="welcome-copy">
+
+
+            <p class="eyebrow">
+              YOUR LEARNING SPACE
+            </p>
+
+
+            <h1 id="userGreeting">
+              Welcome, Learner.
             </h1>
+
 
             <p class="welcome-description">
               Build the knowledge required to understand,
               defend, and secure modern systems.
             </p>
+
+
           </div>
+
+
+          <!-- DATE -->
 
           <div class="date-card">
-            <span id="currentDate"></span>
+
+            <span id="currentDate">
+              Loading date...
+            </span>
+
           </div>
+
 
         </section>
 
 
-        <!-- CONTINUE -->
-        <section class="continue-card">
 
-          <div class="continue-info">
+        <!-- =================================================
+             LEARNING OVERVIEW
+             ================================================= -->
 
-            <div class="section-kicker">
-              CONTINUE LEARNING
-            </div>
+        <section
+          class="stats-grid"
+          id="progress"
+          aria-label="Learning overview"
+        >
 
-            <h2>Cybersecurity Fundamentals</h2>
+
+          <!-- COURSES -->
+
+          <article class="stat-card">
+
+            <span class="stat-label">
+              COURSES
+            </span>
+
+            <strong id="coursesStarted">
+              0
+            </strong>
 
             <p>
-              Start with the foundations of modern cybersecurity.
+              Started learning
             </p>
 
-            <div class="progress-row">
-              <div class="progress-track">
-                <div class="progress-fill" style="width: 0%"></div>
-              </div>
+          </article>
 
-              <span>0% complete</span>
-            </div>
 
-            <button class="primary-button">
-              Start learning
-              <span>→</span>
-            </button>
+          <!-- LESSONS -->
 
-          </div>
+          <article class="stat-card">
 
-          <div class="continue-visual">
+            <span class="stat-label">
+              LESSONS
+            </span>
 
-            <div class="orbit orbit-one"></div>
-            <div class="orbit orbit-two"></div>
+            <strong id="completedLessons">
+              0
+            </strong>
 
-            <div class="core">
-              <span>SEC</span>
-            </div>
+            <p>
+              Completed lessons
+            </p>
 
-          </div>
+          </article>
+
+
+          <!-- PROGRESS -->
+
+          <article class="stat-card">
+
+            <span class="stat-label">
+              PROGRESS
+            </span>
+
+            <strong id="overallProgress">
+              0%
+            </strong>
+
+            <p>
+              Overall completion
+            </p>
+
+          </article>
+
+
+          <!-- ACCOUNT STATUS -->
+
+          <article class="stat-card">
+
+            <span class="stat-label">
+              STATUS
+            </span>
+
+            <strong>
+              ACTIVE
+            </strong>
+
+            <p>
+              Learning account
+            </p>
+
+          </article>
+
 
         </section>
 
 
-        <!-- STATS -->
-        <section class="stats-grid">
 
-          <div class="stat-card">
-            <span class="stat-label">COURSES</span>
-            <strong>0</strong>
-            <p>Started learning</p>
-          </div>
+        <!-- =================================================
+             COURSES SECTION
+             ================================================= -->
 
-          <div class="stat-card">
-            <span class="stat-label">LESSONS</span>
-            <strong>0</strong>
-            <p>Completed lessons</p>
-          </div>
-
-          <div class="stat-card">
-            <span class="stat-label">PROGRESS</span>
-            <strong>0%</strong>
-            <p>Overall completion</p>
-          </div>
-
-          <div class="stat-card">
-            <span class="stat-label">STREAK</span>
-            <strong>0</strong>
-            <p>Days learning</p>
-          </div>
-
-        </section>
+        <section
+          class="section"
+          id="courses"
+        >
 
 
-        <!-- COURSES -->
-        <section class="section">
+          <!-- SECTION HEADER -->
 
           <div class="section-header">
 
+
             <div>
-              <p class="eyebrow">EXPLORE</p>
-              <h2>Start with the fundamentals</h2>
+
+              <p class="eyebrow">
+                EXPLORE
+              </p>
+
+              <h2>
+                Start with the fundamentals
+              </h2>
+
             </div>
 
-            <a href="#" class="view-all">
-              View all →
-            </a>
+
+            <span class="view-all">
+              Structured learning
+            </span>
+
 
           </div>
 
 
-          <div class="course-grid">
 
-            <article class="course-card">
+          <!-- =================================================
+               DYNAMIC COURSE GRID
 
-              <div class="course-number">01</div>
+               dashboard.js populates this area from
+               Supabase.
 
-              <div class="course-meta">
-                <span class="level beginner">BEGINNER</span>
-                <span>7 MODULES</span>
-              </div>
+               DO NOT ADD STATIC COURSE CARDS HERE.
+               ================================================= -->
 
-              <h3>Cybersecurity Fundamentals</h3>
+          <div
+            class="course-grid"
+            aria-live="polite"
+            aria-label="Available courses"
+          >
 
-              <p>
-                Understand the principles, threats, risks,
-                controls, and foundations of cybersecurity.
-              </p>
+            <div class="course-loading">
 
-              <div class="course-footer">
-                <span>~ 4 hours</span>
-                <button>Explore →</button>
-              </div>
+              Loading courses...
 
-            </article>
-
-
-            <article class="course-card">
-
-              <div class="course-number">02</div>
-
-              <div class="course-meta">
-                <span class="level beginner">BEGINNER</span>
-                <span>4 MODULES</span>
-              </div>
-
-              <h3>Networking Fundamentals</h3>
-
-              <p>
-                Learn networks, protocols, addressing,
-                communication models, and core infrastructure.
-              </p>
-
-              <div class="course-footer">
-                <span>~ 5 hours</span>
-                <button>Explore →</button>
-              </div>
-
-            </article>
-
-
-            <article class="course-card">
-
-              <div class="course-number">03</div>
-
-              <div class="course-meta">
-                <span class="level beginner">BEGINNER</span>
-                <span>6 MODULES</span>
-              </div>
-
-              <h3>Linux Fundamentals</h3>
-
-              <p>
-                Build practical Linux knowledge for
-                cybersecurity and system administration.
-              </p>
-
-              <div class="course-footer">
-                <span>~ 6 hours</span>
-                <button>Explore →</button>
-              </div>
-
-            </article>
+            </div>
 
           </div>
+
 
         </section>
 
 
-        <!-- LEARNING PATH -->
-        <section class="path-banner">
+
+        <!-- =================================================
+             LEARNING PATH
+             ================================================= -->
+
+        <section
+          class="path-banner"
+          id="learning-path"
+        >
+
 
           <div>
 
-            <p class="eyebrow">LEARNING PATH</p>
 
-            <h2>Become a cybersecurity professional.</h2>
+            <p class="eyebrow">
+              LEARNING PATH
+            </p>
+
+
+            <h2>
+              Become a cybersecurity professional.
+            </h2>
+
 
             <p>
               Follow a structured path from fundamentals
               to advanced security concepts.
             </p>
 
+
           </div>
 
-          <button class="secondary-button">
-            Explore path →
-          </button>
+
+          <a
+            href="#courses"
+            class="secondary-button"
+          >
+            Explore courses →
+          </a>
+
 
         </section>
 
+
       </section>
+
 
     </main>
 
+
   </div>
 
+
+  <!-- =====================================================
+       SMALL COMPATIBILITY / VISUAL ENHANCEMENTS
+       ===================================================== -->
+
+  <style>
+
+    /*
+      These small rules keep the new HTML structure
+      visually compatible with the existing dashboard.css.
+    */
+
+    .sidebar-account {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      padding: 10px 10px 12px;
+
+      margin-bottom: 8px;
+
+      border-top: 1px solid rgba(255,255,255,.07);
+    }
+
+
+    .sidebar-avatar {
+      width: 30px;
+      height: 30px;
+
+      flex: 0 0 30px;
+
+      overflow: hidden;
+
+      border-radius: 50%;
+
+      background:
+        linear-gradient(
+          135deg,
+          #ffffff,
+          #dfe4ec
+        );
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+
+    .sidebar-avatar img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      display: none;
+    }
+
+
+    .sidebar-account-info {
+      min-width: 0;
+
+      display: flex;
+      flex-direction: column;
+
+      gap: 1px;
+    }
+
+
+    .sidebar-account-info strong {
+      overflow: hidden;
+
+      color: #f4f5f7;
+
+      font-size: 9px;
+      font-weight: 600;
+
+      line-height: 1.3;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+
+    .sidebar-account-info span {
+      overflow: hidden;
+
+      color: #737982;
+
+      font-size: 8px;
+
+      line-height: 1.3;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+
+    .profile-mini {
+      display: flex;
+      align-items: center;
+
+      gap: 9px;
+
+      min-width: 0;
+    }
+
+
+    .profile-mini .avatar {
+      width: 32px;
+      height: 32px;
+
+      overflow: hidden;
+
+      flex: 0 0 32px;
+
+      border-radius: 50%;
+
+      background: #e9edf3;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+
+    .profile-mini .avatar img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      display: none;
+    }
+
+
+    .profile-mini-text {
+      display: flex;
+      flex-direction: column;
+
+      min-width: 0;
+    }
+
+
+    .profile-mini-text strong {
+      max-width: 140px;
+
+      overflow: hidden;
+
+      color: var(--ink);
+
+      font-size: 10px;
+      font-weight: 700;
+
+      line-height: 1.3;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+
+    .profile-mini-text span {
+      color: var(--muted);
+
+      font-size: 8px;
+
+      line-height: 1.3;
+    }
+
+
+    .welcome-copy {
+      min-width: 0;
+    }
+
+
+    .welcome h1 {
+      margin: 0;
+
+      color: var(--ink);
+
+      font-family: var(--font-display);
+
+      font-size:
+        clamp(30px, 3.2vw, 48px);
+
+      font-weight: 800;
+
+      line-height: 1.03;
+
+      letter-spacing: -.045em;
+    }
+
+
+    .welcome-description {
+      max-width: 650px;
+
+      margin: 11px 0 0;
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+      line-height: 1.65;
+    }
+
+
+    .date-card {
+      flex-shrink: 0;
+
+      padding: 9px 12px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 9px;
+
+      background: rgba(255,255,255,.65);
+
+      box-shadow: var(--shadow-sm);
+    }
+
+
+    .date-card span {
+      color: var(--muted);
+
+      font-size: 9px;
+      font-weight: 600;
+
+      white-space: nowrap;
+    }
+
+
+    .secondary-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      min-height: 38px;
+
+      padding: 0 16px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 8px;
+
+      background: #ffffff;
+
+      color: var(--ink);
+
+      font-size: 10px;
+      font-weight: 700;
+
+      text-decoration: none;
+
+      transition:
+        transform .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
+    }
+
+
+    .secondary-button:hover {
+      transform: translateY(-2px);
+
+      border-color: #d2d8e1;
+
+      box-shadow: var(--shadow-md);
+    }
+
+
+    /*
+      The old large Continue Learning card has been
+      deliberately removed from the HTML.
+
+      This is an additional safety rule in case an old
+      browser cache or injected markup still contains it.
+    */
+
+    .continue-card {
+      display: none !important;
+    }
+
+
+    @media (max-width: 700px) {
+
+      .profile-mini-text {
+        display: none;
+      }
+
+      .date-card {
+        width: 100%;
+      }
+
+      .date-card span {
+        white-space: normal;
+      }
+
+      .path-banner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+    }
+
+
+    @media (max-width: 430px) {
+
+      .top-actions {
+        gap: 5px;
+      }
+
+      .profile-mini .avatar {
+        width: 29px;
+        height: 29px;
+
+        flex-basis: 29px;
+      }
+
+      .welcome h1 {
+        font-size: 30px;
+      }
+
+    }
+
+  </style>
+
+
 </body>
+
 </html>
