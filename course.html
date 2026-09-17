@@ -1,5 +1,6 @@
  <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
   <meta charset="UTF-8">
@@ -26,23 +27,18 @@
 
 <body>
 
-  <!-- =====================================================
-       COURSE PAGE
-       ===================================================== -->
-
   <div class="course-page">
 
 
-    <!-- ===================================================
+    <!-- =====================================================
          TOP NAVIGATION
-         =================================================== -->
+         ===================================================== -->
 
     <header class="course-nav">
 
       <a
         href="home.html"
         class="back-link"
-        aria-label="Return to dashboard"
       >
 
         <span aria-hidden="true">←</span>
@@ -59,36 +55,31 @@
 
 
 
-    <!-- ===================================================
-         MAIN COURSE CONTENT
-         =================================================== -->
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
 
     <main>
 
       <div class="course-container">
 
 
-        <!-- =================================================
+        <!-- ===================================================
              COURSE HERO
-             ================================================= -->
+             =================================================== -->
 
-        <section
-          class="course-hero"
-          aria-labelledby="courseTitle"
-        >
+        <section class="course-hero">
 
-
-          <!-- -----------------------------------------------
-               COURSE INFORMATION
-               ----------------------------------------------- -->
 
           <div class="course-hero-content">
-
 
             <p class="course-eyebrow">
               COURSE
             </p>
 
+
+            <!-- IMPORTANT:
+                 These IDs are required by course.js -->
 
             <h1 id="courseTitle">
               Loading course...
@@ -103,10 +94,6 @@
             </p>
 
 
-            <!-- ---------------------------------------------
-                 COURSE META
-                 --------------------------------------------- -->
-
             <div class="course-meta">
 
 
@@ -119,42 +106,48 @@
 
 
               <span>
-                <strong id="moduleCount">0</strong>
+
+                <strong id="moduleCount">
+                  0
+                </strong>
+
                 MODULES
+
               </span>
 
 
               <span>
-                <strong id="lessonCount">0</strong>
+
+                <strong id="lessonCount">
+                  0
+                </strong>
+
                 LESSONS
+
               </span>
 
 
             </div>
 
-
           </div>
 
 
 
-          <!-- -----------------------------------------------
-               COURSE PROGRESS
-               ----------------------------------------------- -->
+          <!-- =================================================
+               PROGRESS
+               ================================================= -->
 
-          <div
-            class="course-progress-panel"
-            aria-label="Course progress"
-          >
+          <div class="course-progress-panel">
 
 
             <div
               class="progress-ring"
-              id="progressRing"
+              aria-hidden="true"
             >
 
               <span
-                class="progress-value"
                 id="progressPercent"
+                class="progress-value"
               >
                 0%
               </span>
@@ -167,9 +160,12 @@
             </span>
 
 
+            <!-- IMPORTANT:
+                 course.js requires progressLessons -->
+
             <span
+              id="progressLessons"
               class="progress-count"
-              id="progressCount"
             >
               0 / 0 lessons
             </span>
@@ -182,14 +178,11 @@
 
 
 
-        <!-- =================================================
+        <!-- ===================================================
              CURRICULUM HEADER
-             ================================================= -->
+             =================================================== -->
 
-        <section
-          class="curriculum-header"
-          aria-labelledby="curriculumTitle"
-        >
+        <section class="curriculum-header">
 
 
           <div>
@@ -199,7 +192,7 @@
             </p>
 
 
-            <h2 id="curriculumTitle">
+            <h2>
               Course structure
             </h2>
 
@@ -212,13 +205,10 @@
           </div>
 
 
-          <div
-            class="course-overview-meta"
-            aria-hidden="true"
-          >
+          <div class="course-overview-meta">
 
             <span id="curriculumLessonCount">
-              0 lessons
+              Course curriculum
             </span>
 
           </div>
@@ -228,49 +218,40 @@
 
 
 
-        <!-- =================================================
-             MODULE LIST
+        <!-- ===================================================
+             MODULE CONTAINER
 
              IMPORTANT:
-             course.js populates this dynamically.
+             course.js specifically requires:
 
-             No course/module/lesson content is hard-coded
-             into this HTML.
-             ================================================= -->
+             id="modulesContainer"
+
+             DO NOT CHANGE THIS ID.
+             =================================================== -->
 
         <section
-          id="moduleList"
+          id="modulesContainer"
           class="module-list"
           aria-label="Course curriculum"
         >
 
-
-          <!-- -----------------------------------------------
-               INITIAL LOADING STATE
-               ----------------------------------------------- -->
-
           <div class="course-loading">
 
-            <span>
-              Loading curriculum...
-            </span>
+            Loading curriculum...
 
           </div>
-
 
         </section>
 
 
 
-        <!-- =================================================
-             COURSE FOOTER
-             ================================================= -->
+        <!-- ===================================================
+             FOOTER
+             =================================================== -->
 
         <footer class="course-footer">
 
-          <span>
-            SECORA · Structured cybersecurity learning
-          </span>
+          SECORA · Structured cybersecurity learning
 
         </footer>
 
@@ -278,7 +259,6 @@
       </div>
 
     </main>
-
 
   </div>
 
@@ -294,14 +274,16 @@
 
 
   <!-- =====================================================
-       SECORA SUPABASE CONFIGURATION
+       SECORA SUPABASE CONFIG
        ===================================================== -->
 
   <script src="supabase.js"></script>
 
 
   <!-- =====================================================
-       COURSE LOGIC
+       COURSE JAVASCRIPT
+
+       USE YOUR ORIGINAL UPLOADED course.js HERE.
        ===================================================== -->
 
   <script
@@ -311,4 +293,5 @@
 
 
 </body>
+
 </html>
