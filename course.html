@@ -1,6 +1,5 @@
  <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
   <meta charset="UTF-8">
@@ -12,33 +11,10 @@
 
   <meta
     name="description"
-    content="Learn cybersecurity with Secora."
+    content="Secora cybersecurity learning course"
   >
 
   <title>Course — Secora</title>
-
-
-  <!-- =====================================================
-       FONTS
-       ===================================================== -->
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  >
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
-    rel="stylesheet"
-  >
-
-
-  <!-- =====================================================
-       COURSE CSS
-       ===================================================== -->
 
   <link
     rel="stylesheet"
@@ -50,201 +26,266 @@
 
 <body>
 
-
   <!-- =====================================================
-       HEADER
+       COURSE PAGE
        ===================================================== -->
 
-  <header class="course-header">
-
-    <div class="header-inner">
-
-      <a
-        href="home.html"
-        class="brand"
-      >
-        SECORA
-      </a>
-
-
-      <a
-        href="home.html"
-        class="back-dashboard"
-      >
-        ← Dashboard
-      </a>
-
-    </div>
-
-  </header>
-
-
-
-  <!-- =====================================================
-       MAIN
-       ===================================================== -->
-
-  <main class="course-page">
+  <div class="course-page">
 
 
     <!-- ===================================================
-         COURSE HERO
+         TOP NAVIGATION
          =================================================== -->
 
-    <section class="course-hero">
+    <header class="course-nav">
 
+      <a
+        href="home.html"
+        class="back-link"
+        aria-label="Return to dashboard"
+      >
 
-      <div class="course-hero-content">
+        <span aria-hidden="true">←</span>
 
-        <div class="course-eyebrow">
-          COURSE
-        </div>
+        <span>SECORA</span>
 
+        <span class="back-separator">/</span>
 
-        <h1 id="courseTitle">
-          Loading course...
-        </h1>
+        <span>Dashboard</span>
 
+      </a>
 
-        <p
-          id="courseDescription"
-          class="course-description"
-        >
-          Loading course description...
-        </p>
-
-
-        <div class="course-meta">
-
-          <span id="courseLevel">
-            BEGINNER
-          </span>
-
-
-          <span class="meta-divider">
-            •
-          </span>
-
-
-          <span id="moduleCount">
-            0 MODULES
-          </span>
-
-
-          <span class="meta-divider">
-            •
-          </span>
-
-
-          <span id="lessonCount">
-            0 LESSONS
-          </span>
-
-        </div>
-
-      </div>
-
-
-
-      <!-- =================================================
-           PROGRESS
-           ================================================= -->
-
-      <aside class="course-progress-card">
-
-
-        <div
-          class="progress-ring"
-          id="progressRing"
-        >
-
-          <span id="progressPercent">
-            0%
-          </span>
-
-        </div>
-
-
-        <div class="progress-details">
-
-          <span id="progressLessons">
-            0 / 0 lessons
-          </span>
-
-        </div>
-
-
-        <span class="progress-label">
-          COURSE PROGRESS
-        </span>
-
-
-      </aside>
-
-
-    </section>
+    </header>
 
 
 
     <!-- ===================================================
-         CURRICULUM
+         MAIN COURSE CONTENT
          =================================================== -->
 
-    <section class="curriculum-section">
+    <main>
+
+      <div class="course-container">
 
 
-      <div class="section-heading">
+        <!-- =================================================
+             COURSE HERO
+             ================================================= -->
+
+        <section
+          class="course-hero"
+          aria-labelledby="courseTitle"
+        >
 
 
-        <div>
+          <!-- -----------------------------------------------
+               COURSE INFORMATION
+               ----------------------------------------------- -->
 
-          <span class="section-eyebrow">
-            CURRICULUM
+          <div class="course-hero-content">
+
+
+            <p class="course-eyebrow">
+              COURSE
+            </p>
+
+
+            <h1 id="courseTitle">
+              Loading course...
+            </h1>
+
+
+            <p
+              id="courseDescription"
+              class="course-description"
+            >
+              Loading course information...
+            </p>
+
+
+            <!-- ---------------------------------------------
+                 COURSE META
+                 --------------------------------------------- -->
+
+            <div class="course-meta">
+
+
+              <span
+                id="courseLevel"
+                class="level"
+              >
+                BEGINNER
+              </span>
+
+
+              <span>
+                <strong id="moduleCount">0</strong>
+                MODULES
+              </span>
+
+
+              <span>
+                <strong id="lessonCount">0</strong>
+                LESSONS
+              </span>
+
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- -----------------------------------------------
+               COURSE PROGRESS
+               ----------------------------------------------- -->
+
+          <div
+            class="course-progress-panel"
+            aria-label="Course progress"
+          >
+
+
+            <div
+              class="progress-ring"
+              id="progressRing"
+            >
+
+              <span
+                class="progress-value"
+                id="progressPercent"
+              >
+                0%
+              </span>
+
+            </div>
+
+
+            <span class="progress-label">
+              COURSE PROGRESS
+            </span>
+
+
+            <span
+              class="progress-count"
+              id="progressCount"
+            >
+              0 / 0 lessons
+            </span>
+
+
+          </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             CURRICULUM HEADER
+             ================================================= -->
+
+        <section
+          class="curriculum-header"
+          aria-labelledby="curriculumTitle"
+        >
+
+
+          <div>
+
+            <p class="curriculum-kicker">
+              CURRICULUM
+            </p>
+
+
+            <h2 id="curriculumTitle">
+              Course structure
+            </h2>
+
+
+            <p>
+              Work through each module and complete the
+              lessons at your own pace.
+            </p>
+
+          </div>
+
+
+          <div
+            class="course-overview-meta"
+            aria-hidden="true"
+          >
+
+            <span id="curriculumLessonCount">
+              0 lessons
+            </span>
+
+          </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             MODULE LIST
+
+             IMPORTANT:
+             course.js populates this dynamically.
+
+             No course/module/lesson content is hard-coded
+             into this HTML.
+             ================================================= -->
+
+        <section
+          id="moduleList"
+          class="module-list"
+          aria-label="Course curriculum"
+        >
+
+
+          <!-- -----------------------------------------------
+               INITIAL LOADING STATE
+               ----------------------------------------------- -->
+
+          <div class="course-loading">
+
+            <span>
+              Loading curriculum...
+            </span>
+
+          </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             COURSE FOOTER
+             ================================================= -->
+
+        <footer class="course-footer">
+
+          <span>
+            SECORA · Structured cybersecurity learning
           </span>
 
-
-          <h2>
-            Course structure
-          </h2>
-
-        </div>
-
-
-        <p>
-          Work through each module
-          and complete the lessons at your pace.
-        </p>
+        </footer>
 
 
       </div>
 
+    </main>
 
 
-      <!-- =================================================
-           MODULE CONTAINER
-           ================================================= -->
-
-      <div
-        id="modulesContainer"
-        class="modules-container"
-      >
-
-        <div class="course-loading">
-          Loading curriculum...
-        </div>
-
-      </div>
-
-
-    </section>
-
-
-  </main>
+  </div>
 
 
 
   <!-- =====================================================
-       SUPABASE LIBRARY
+       SUPABASE
        ===================================================== -->
 
   <script
@@ -253,7 +294,7 @@
 
 
   <!-- =====================================================
-       SECORA SUPABASE CONFIG
+       SECORA SUPABASE CONFIGURATION
        ===================================================== -->
 
   <script src="supabase.js"></script>
@@ -263,9 +304,11 @@
        COURSE LOGIC
        ===================================================== -->
 
-  <script src="course.js"></script>
+  <script
+    src="course.js"
+    defer
+  ></script>
 
 
 </body>
-
 </html>
