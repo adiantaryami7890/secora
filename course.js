@@ -1,8 +1,24 @@
  // =========================================================
-// SECORA V0.3.6 — COURSE PAGE + REAL PROGRESS
+// SECORA — COURSE PAGE
+// V0.4.1
+// DYNAMIC COURSE + MODULES + LESSONS + REAL PROGRESS
 // =========================================================
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener(
+  "DOMContentLoaded",
+  initializeCourse
+);
+
+
+// =========================================================
+// INITIALIZE
+// =========================================================
+
+async function initializeCourse() {
+
+  // -------------------------------------------------------
+  // REQUIRED DOM ELEMENTS
+  // -------------------------------------------------------
 
   const title =
     document.getElementById("courseTitle");
@@ -28,301 +44,495 @@ document.addEventListener("DOMContentLoaded", async () => {
   const modulesContainer =
     document.getElementById("modulesContainer");
 
-
-  // =======================================================
-  // AUTH
-  // =======================================================
-
-  const {
-    data: { session },
-    error: sessionError
-  } = await secoraSupabase.auth.getSession();
+  const curriculumLessonCount =
+    document.getElementById("curriculumLessonCount");
 
 
-  if (sessionError || !session) {
+  // -------------------------------------------------------
+  // DOM VALIDATION
+  // -------------------------------------------------------
 
-    window.location.replace("index.html");
-
-    return;
-  }
-
-
-  const user =
-    session.user;
-
-
-  // =======================================================
-  // COURSE SLUG
-  // =======================================================
-
-  const params =
-    new URLSearchParams(window.location.search);
-
-  const slug =
-    params.get("slug");
-
-
-  if (!slug) {
-
-    showError(
-      modulesContainer,
-      "No course was selected."
-    );
-
-    return;
-  }
-
-
-  // =======================================================
-  // LOAD COURSE
-  // =======================================================
-
-  const {
-    data: course,
-    error: courseError
-  } = await secoraSupabase
-    .from("courses")
-    .select(`
-      id,
-      title,
-      slug,
-      description,
-      level
-    `)
-    .eq("slug", slug)
-    .eq("published", true)
-    .single();
-
-
-  if (courseError || !course) {
+  if (!modulesContainer) {
 
     console.error(
-      "Course error:",
-      courseError
-    );
-
-    showError(
-      modulesContainer,
-      "This course could not be found."
+      "SECORA: #modulesContainer was not found."
     );
 
     return;
+
   }
 
 
   // =======================================================
-  // COURSE HEADER
+  // AUTHENTICATION
   // =======================================================
 
-  title.textContent =
-    course.title;
-
-  description.textContent =
-    course.description || "";
-
-  level.textContent =
-    course.level || "beginner";
-
-  document.title =
-    `${course.title} — Secora`;
-
-
-  // =======================================================
-  // LOAD MODULES
-  // =======================================================
-
-  const {
-    data: modules,
-    error: modulesError
-  } = await secoraSupabase
-    .from("modules")
-    .select(`
-      id,
-      title,
-      description,
-      position
-    `)
-    .eq("course_id", course.id)
-    .order("position", {
-      ascending: true
-    });
-
-
-  if (modulesError) {
-
-    console.error(
-      "Module error:",
-      modulesError
-    );
-
-    showError(
-      modulesContainer,
-      "Unable to load course modules."
-    );
-
-    return;
-  }
-
-
-  const totalModules =
-    modules?.length || 0;
-
-
-  moduleCount.textContent =
-    `${totalModules} MODULE${totalModules === 1 ? "" : "S"}`;
-
-
-  // =======================================================
-  // LOAD ALL LESSONS
-  // =======================================================
-
-  let allLessons = [];
-
-
-  if (modules?.length) {
-
-    const moduleIds =
-      modules.map(
-        module => module.id
-      );
-
+  try {
 
     const {
-      data: lessons,
-      error: lessonsError
-    } = await secoraSupabase
-      .from("lessons")
-      .select(`
-        id,
-        module_id,
-        title,
-        slug,
-        position,
-        duration_minutes
-      `)
-      .in(
-        "module_id",
-        moduleIds
-      )
-      .eq("published", true)
-      .order("position", {
-        ascending: true
-      });
+      data: {
+        session
+      },
+      error: sessionError
+    } =
+      await secoraSupabase
+        .auth
+        .getSession();
 
 
-    if (!lessonsError && lessons) {
+    if (
+      sessionError ||
+      !session
+    ) {
 
-      allLessons =
-        lessons;
+      window.location.replace(
+        "index.html"
+      );
+
+      return;
 
     }
 
-  }
+
+    const user =
+      session.user;
 
 
-  // =======================================================
-  // LESSON COUNT
-  // =======================================================
+    // =====================================================
+    // COURSE SLUG
+    // =====================================================
 
-  const totalLessons =
-    allLessons.length;
-
-
-  lessonCount.textContent =
-    `${totalLessons} LESSON${totalLessons === 1 ? "" : "S"}`;
-
-
-  // =======================================================
-  // LOAD USER PROGRESS
-  // =======================================================
-
-  let completedLessons = 0;
-
-
-  if (totalLessons > 0) {
-
-    const lessonIds =
-      allLessons.map(
-        lesson => lesson.id
+    const params =
+      new URLSearchParams(
+        window.location.search
       );
 
 
-    const {
-      data: progress,
-      error: progressError
-    } = await secoraSupabase
-      .from("lesson_progress")
-      .select(
-        "lesson_id, completed"
-      )
-      .eq(
-        "user_id",
-        user.id
-      )
-      .in(
-        "lesson_id",
-        lessonIds
+    const slug =
+      params.get("slug");
+
+
+    if (!slug) {
+
+      showError(
+        modulesContainer,
+        "No course was selected."
       );
 
-
-    if (!progressError && progress) {
-
-      completedLessons =
-        progress.filter(
-          item => item.completed === true
-        ).length;
+      return;
 
     }
 
-  }
+
+    // =====================================================
+    // LOAD COURSE
+    // =====================================================
+
+    const {
+      data: course,
+      error: courseError
+    } =
+      await secoraSupabase
+        .from("courses")
+        .select(`
+          id,
+          title,
+          slug,
+          description,
+          level
+        `)
+        .eq(
+          "slug",
+          slug
+        )
+        .eq(
+          "published",
+          true
+        )
+        .single();
 
 
-  // =======================================================
-  // CALCULATE PERCENTAGE
-  // =======================================================
+    if (
+      courseError ||
+      !course
+    ) {
 
-  const percentage =
-    totalLessons === 0
-      ? 0
-      : Math.round(
-          (completedLessons / totalLessons) * 100
+      console.error(
+        "SECORA course error:",
+        courseError
+      );
+
+      showError(
+        modulesContainer,
+        "This course could not be found."
+      );
+
+      return;
+
+    }
+
+
+    // =====================================================
+    // COURSE HEADER
+    // =====================================================
+
+    if (title) {
+
+      title.textContent =
+        course.title;
+
+    }
+
+
+    if (description) {
+
+      description.textContent =
+        course.description || "";
+
+    }
+
+
+    if (level) {
+
+      level.textContent =
+        String(
+          course.level || "beginner"
+        ).toUpperCase();
+
+    }
+
+
+    document.title =
+      `${course.title} — Secora`;
+
+
+    // =====================================================
+    // LOAD MODULES
+    // =====================================================
+
+    const {
+      data: modules,
+      error: modulesError
+    } =
+      await secoraSupabase
+        .from("modules")
+        .select(`
+          id,
+          title,
+          description,
+          position
+        `)
+        .eq(
+          "course_id",
+          course.id
+        )
+        .order(
+          "position",
+          {
+            ascending: true
+          }
         );
 
 
-  if (progressPercent) {
+    if (modulesError) {
 
-    progressPercent.textContent =
-      `${percentage}%`;
+      console.error(
+        "SECORA module error:",
+        modulesError
+      );
+
+      showError(
+        modulesContainer,
+        "Unable to load course modules."
+      );
+
+      return;
+
+    }
+
+
+    const safeModules =
+      modules || [];
+
+
+    const totalModules =
+      safeModules.length;
+
+
+    // -----------------------------------------------------
+    // MODULE COUNT
+    // -----------------------------------------------------
+    // Only write the number here.
+    // The visual label is handled by HTML/CSS.
+    // This prevents:
+    // "7 MODULESMODULES"
+    // -----------------------------------------------------
+
+    setText(
+      moduleCount,
+      totalModules
+    );
+
+
+    // =====================================================
+    // LOAD ALL LESSONS
+    // =====================================================
+
+    let allLessons = [];
+
+
+    if (
+      safeModules.length > 0
+    ) {
+
+      const moduleIds =
+        safeModules.map(
+          module =>
+            module.id
+        );
+
+
+      const {
+        data: lessons,
+        error: lessonsError
+      } =
+        await secoraSupabase
+          .from("lessons")
+          .select(`
+            id,
+            module_id,
+            title,
+            slug,
+            position,
+            duration_minutes
+          `)
+          .in(
+            "module_id",
+            moduleIds
+          )
+          .eq(
+            "published",
+            true
+          )
+          .order(
+            "position",
+            {
+              ascending: true
+            }
+          );
+
+
+      if (lessonsError) {
+
+        console.error(
+          "SECORA lesson error:",
+          lessonsError
+        );
+
+        showError(
+          modulesContainer,
+          "Unable to load course lessons."
+        );
+
+        return;
+
+      }
+
+
+      allLessons =
+        lessons || [];
+
+    }
+
+
+    // =====================================================
+    // LESSON COUNT
+    // =====================================================
+
+    const totalLessons =
+      allLessons.length;
+
+
+    // -----------------------------------------------------
+    // WRITE NUMBER ONLY
+    // Prevent:
+    // "61 LESSONSLESSONS"
+    // -----------------------------------------------------
+
+    setText(
+      lessonCount,
+      totalLessons
+    );
+
+
+    // -----------------------------------------------------
+    // CURRICULUM HEADER COUNT
+    // -----------------------------------------------------
+
+    if (
+      curriculumLessonCount
+    ) {
+
+      curriculumLessonCount.textContent =
+        `${totalLessons} ${totalLessons === 1 ? "lesson" : "lessons"}`;
+
+    }
+
+
+    // =====================================================
+    // LOAD USER PROGRESS
+    // =====================================================
+
+    let completedLessons = 0;
+
+
+    if (
+      totalLessons > 0
+    ) {
+
+      const lessonIds =
+        allLessons.map(
+          lesson =>
+            lesson.id
+        );
+
+
+      const {
+        data: progress,
+        error: progressError
+      } =
+        await secoraSupabase
+          .from("lesson_progress")
+          .select(
+            "lesson_id, completed"
+          )
+          .eq(
+            "user_id",
+            user.id
+          )
+          .in(
+            "lesson_id",
+            lessonIds
+          );
+
+
+      if (progressError) {
+
+        console.warn(
+          "SECORA progress could not be loaded:",
+          progressError
+        );
+
+      } else if (
+        progress
+      ) {
+
+        completedLessons =
+          progress.filter(
+            item =>
+              item.completed === true
+          ).length;
+
+      }
+
+    }
+
+
+    // =====================================================
+    // CALCULATE PROGRESS
+    // =====================================================
+
+    const percentage =
+      totalLessons === 0
+        ? 0
+        : Math.round(
+            (
+              completedLessons /
+              totalLessons
+            ) * 100
+          );
+
+
+    // =====================================================
+    // UPDATE PROGRESS UI
+    // =====================================================
+
+    if (
+      progressPercent
+    ) {
+
+      progressPercent.textContent =
+        `${percentage}%`;
+
+    }
+
+
+    if (
+      progressLessons
+    ) {
+
+      progressLessons.textContent =
+        `${completedLessons} / ${totalLessons} lessons`;
+
+    }
+
+
+    // =====================================================
+    // RENDER CURRICULUM
+    // =====================================================
+
+    renderModules(
+      safeModules,
+      allLessons,
+      modulesContainer
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "SECORA course page error:",
+      error
+    );
+
+    showError(
+      modulesContainer,
+      "Something went wrong while loading this course."
+    );
 
   }
 
-
-  if (progressLessons) {
-
-    progressLessons.textContent =
-      `${completedLessons} / ${totalLessons} lessons`;
-
-  }
+}
 
 
-  // =======================================================
-  // RENDER MODULES
-  // =======================================================
+// =========================================================
+// RENDER MODULES
+// =========================================================
 
-  modulesContainer.innerHTML = "";
+function renderModules(
+  modules,
+  allLessons,
+  container
+) {
+
+  container.innerHTML = "";
 
 
-  if (!modules?.length) {
+  if (
+    !modules.length
+  ) {
 
-    modulesContainer.innerHTML = `
-
-      <div class="loading">
-        Course modules are being prepared.
+    container.innerHTML = `
+      <div class="empty-state">
+        <h3>No modules available</h3>
+        <p>
+          Course modules are being prepared.
+        </p>
       </div>
-
     `;
 
     return;
+
   }
 
 
@@ -330,7 +540,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     (module, index) => {
 
       const article =
-        document.createElement("article");
+        document.createElement(
+          "article"
+        );
 
 
       article.className =
@@ -338,53 +550,75 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
       const number =
-        String(index + 1)
-          .padStart(2, "0");
+        String(
+          index + 1
+        ).padStart(
+          2,
+          "0"
+        );
 
 
       const moduleLessons =
         allLessons.filter(
           lesson =>
-            lesson.module_id === module.id
+            lesson.module_id ===
+            module.id
         );
+
+
+      const completedModuleLessons =
+        moduleLessons.filter(
+          lesson =>
+            lessonIsCompleted(
+              lesson.id
+            )
+        ).length;
 
 
       article.innerHTML = `
 
-        <div
+        <button
+          type="button"
           class="module-header"
-          data-module-id="${module.id}"
+          data-module-id="${escapeHTML(module.id)}"
+          aria-expanded="false"
         >
 
-          <div class="module-number">
+          <span
+            class="module-number"
+            aria-hidden="true"
+          >
             ${number}
-          </div>
+          </span>
 
 
-          <div class="module-info">
+          <span class="module-info">
 
-            <h3>
+            <span class="module-title">
               ${escapeHTML(module.title)}
-            </h3>
+            </span>
 
-            <p>
+            <span class="module-description">
               ${escapeHTML(module.description || "")}
-            </p>
+            </span>
 
-          </div>
+          </span>
 
 
-          <div class="module-meta">
+          <span class="module-meta">
             ${moduleLessons.length}
-            LESSON${moduleLessons.length === 1 ? "" : "S"}
-          </div>
+            ${moduleLessons.length === 1 ? "LESSON" : "LESSONS"}
+          </span>
 
 
-          <div class="module-arrow">
+          <span
+            class="module-arrow"
+            aria-hidden="true"
+          >
             →
-          </div>
+          </span>
 
-        </div>
+        </button>
 
 
         <div class="lesson-list">
@@ -396,7 +630,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       `;
 
 
-      modulesContainer.appendChild(
+      container.appendChild(
         article
       );
 
@@ -408,46 +642,66 @@ document.addEventListener("DOMContentLoaded", async () => {
   // MODULE TOGGLE
   // =======================================================
 
-  document
-    .querySelectorAll(".module-header")
-    .forEach(header => {
+  container
+    .querySelectorAll(
+      ".module-header"
+    )
+    .forEach(
+      header => {
 
-      header.addEventListener(
-        "click",
-        () => {
+        header.addEventListener(
+          "click",
+          () => {
 
-          const module =
-            header.parentElement;
+            const module =
+              header.closest(
+                ".module"
+              );
 
 
-          module.classList.toggle(
-            "open"
-          );
+            if (!module) {
 
-        }
-      );
+              return;
 
-    });
+            }
 
-});
+
+            const isOpen =
+              module.classList.toggle(
+                "open"
+              );
+
+
+            header.setAttribute(
+              "aria-expanded",
+              String(isOpen)
+            );
+
+          }
+        );
+
+      }
+    );
+
+}
 
 
 // =========================================================
-// RENDER LESSONS
+// RENDER LESSON LIST
 // =========================================================
 
 function renderLessonList(
   lessons
 ) {
 
-  if (!lessons.length) {
+  if (
+    !lessons.length
+  ) {
 
     return `
-
       <div class="lesson-loading">
         Lessons are being prepared.
       </div>
-
     `;
 
   }
@@ -458,8 +712,12 @@ function renderLessonList(
       (lesson, index) => {
 
         const number =
-          String(index + 1)
-            .padStart(2, "0");
+          String(
+            index + 1
+          ).padStart(
+            2,
+            "0"
+          );
 
 
         return `
@@ -469,7 +727,10 @@ function renderLessonList(
             class="lesson-item"
           >
 
-            <span class="lesson-number">
+            <span
+              class="lesson-number"
+              aria-hidden="true"
+            >
               ${number}
             </span>
 
@@ -484,7 +745,10 @@ function renderLessonList(
             </span>
 
 
-            <span class="lesson-arrow">
+            <span
+              class="lesson-arrow"
+              aria-hidden="true"
+            >
               →
             </span>
 
@@ -500,6 +764,45 @@ function renderLessonList(
 
 
 // =========================================================
+// PROGRESS HELPER
+// =========================================================
+// Kept intentionally lightweight.
+// The main progress calculation happens directly from
+// Supabase data in initializeCourse().
+// =========================================================
+
+function lessonIsCompleted(
+  lessonId
+) {
+
+  return false;
+
+}
+
+
+// =========================================================
+// TEXT HELPER
+// =========================================================
+
+function setText(
+  element,
+  value
+) {
+
+  if (!element) {
+
+    return;
+
+  }
+
+
+  element.textContent =
+    value;
+
+}
+
+
+// =========================================================
 // HTML SAFETY
 // =========================================================
 
@@ -507,18 +810,35 @@ function escapeHTML(
   value
 ) {
 
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+  return String(
+    value ?? ""
+  )
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
 
 }
 
 
 // =========================================================
-// ERROR
+// ERROR STATE
 // =========================================================
 
 function showError(
@@ -527,14 +847,24 @@ function showError(
 ) {
 
   if (!element) {
+
     return;
+
   }
 
 
   element.innerHTML = `
 
     <div class="error-state">
-      ${escapeHTML(message)}
+
+      <h3>
+        Unable to load course
+      </h3>
+
+      <p>
+        ${escapeHTML(message)}
+      </p>
+
     </div>
 
   `;
