@@ -1,22 +1,8 @@
- // =========================================================
-// SECORA V0.4
-// PREMIUM DYNAMIC DASHBOARD
-//
-// FEATURES
-// - Dynamic user greeting
-// - First visit / returning user greeting
-// - Profile-based display name
-// - Real course data
-// - Real lesson progress
-// - Course percentages
-// - Completed lesson count
-// - Started course count
-// - Overall progress
-// - Functional course navigation
-// - Logout
-// - NO REDUNDANT CONTINUE LEARNING HERO
-// =========================================================
-
+ /* =========================================================
+   SECORA
+   PREMIUM DYNAMIC DASHBOARD
+   V0.5
+   ========================================================= */
 
 document.addEventListener(
   "DOMContentLoaded",
@@ -24,25 +10,20 @@ document.addEventListener(
 );
 
 
-// =========================================================
-// INITIALIZE
-// =========================================================
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
 
 async function initializeDashboard() {
 
   try {
-
-    // -----------------------------------------------------
-    // AUTH SESSION
-    // -----------------------------------------------------
 
     const {
       data: {
         session
       },
       error: sessionError
-    } =
-      await secoraSupabase.auth.getSession();
+    } = await secoraSupabase.auth.getSession();
 
 
     if (
@@ -50,9 +31,7 @@ async function initializeDashboard() {
       !session
     ) {
 
-      window.location.replace(
-        "index.html"
-      );
+      window.location.replace("index.html");
 
       return;
 
@@ -63,9 +42,9 @@ async function initializeDashboard() {
       session.user;
 
 
-    // -----------------------------------------------------
-    // USER INFORMATION
-    // -----------------------------------------------------
+    /* -------------------------------------------------------
+       PROFILE
+       ------------------------------------------------------- */
 
     const profile =
       await loadUserProfile(
@@ -80,9 +59,9 @@ async function initializeDashboard() {
       );
 
 
-    // -----------------------------------------------------
-    // HEADER
-    // -----------------------------------------------------
+    /* -------------------------------------------------------
+       USER INTERFACE
+       ------------------------------------------------------- */
 
     setupUserInterface(
       user,
@@ -91,16 +70,16 @@ async function initializeDashboard() {
     );
 
 
-    // -----------------------------------------------------
-    // LOGOUT
-    // -----------------------------------------------------
+    /* -------------------------------------------------------
+       LOGOUT
+       ------------------------------------------------------- */
 
     setupLogout();
 
 
-    // -----------------------------------------------------
-    // LOAD PLATFORM
-    // -----------------------------------------------------
+    /* -------------------------------------------------------
+       PLATFORM DATA
+       ------------------------------------------------------- */
 
     const platform =
       await loadPlatformData(
@@ -108,34 +87,31 @@ async function initializeDashboard() {
       );
 
 
-    // -----------------------------------------------------
-    // STATISTICS
-    // -----------------------------------------------------
+    /* -------------------------------------------------------
+       STATS
+       ------------------------------------------------------- */
 
     renderDashboardStats(
       platform
     );
 
 
-    // -----------------------------------------------------
-    // COURSE CARDS
-    // -----------------------------------------------------
+    /* -------------------------------------------------------
+       COURSES
+       ------------------------------------------------------- */
 
     renderCourses(
       platform
     );
 
 
-    // -----------------------------------------------------
-    // REMOVE OLD CONTINUE CARD
-    // -----------------------------------------------------
+    /* -------------------------------------------------------
+       REMOVE OLD CONTINUE CARD
+       ------------------------------------------------------- */
 
     removeContinueLearning();
 
-
-  } catch (
-    error
-  ) {
+  } catch (error) {
 
     console.error(
       "SECORA dashboard error:",
@@ -149,9 +125,9 @@ async function initializeDashboard() {
 }
 
 
-// =========================================================
-// USER PROFILE
-// =========================================================
+/* =========================================================
+   PROFILE
+   ========================================================= */
 
 async function loadUserProfile(
   userId
@@ -163,14 +139,12 @@ async function loadUserProfile(
   } =
     await secoraSupabase
       .from("profiles")
-      .select(
-        `
-          id,
-          display_name,
-          avatar_url,
-          bio
-        `
-      )
+      .select(`
+        id,
+        display_name,
+        avatar_url,
+        bio
+      `)
       .eq(
         "id",
         userId
@@ -195,9 +169,9 @@ async function loadUserProfile(
 }
 
 
-// =========================================================
-// DISPLAY NAME
-// =========================================================
+/* =========================================================
+   DISPLAY NAME
+   ========================================================= */
 
 function getDisplayName(
   user,
@@ -230,9 +204,9 @@ function getDisplayName(
 }
 
 
-// =========================================================
-// CLEAN NAME
-// =========================================================
+/* =========================================================
+   CLEAN NAME
+   ========================================================= */
 
 function cleanName(
   name
@@ -263,9 +237,9 @@ function cleanName(
 }
 
 
-// =========================================================
-// USER INTERFACE
-// =========================================================
+/* =========================================================
+   USER INTERFACE
+   ========================================================= */
 
 function setupUserInterface(
   user,
@@ -273,11 +247,16 @@ function setupUserInterface(
   displayName
 ) {
 
-  // -----------------------------------------------------
-  // GREETING
-  // -----------------------------------------------------
+  /* -------------------------------------------------------
+     GREETING
+     ------------------------------------------------------- */
 
-  const greeting =
+  const welcomeName =
+    document.getElementById(
+      "welcomeName"
+    );
+
+  const userGreeting =
     document.getElementById(
       "userGreeting"
     );
@@ -287,19 +266,31 @@ function setupUserInterface(
     hasUserLearningHistory();
 
 
-  if (greeting) {
+  const greeting =
+    hasLearningHistory
+      ? `Welcome back, ${displayName}.`
+      : `Welcome, ${displayName}.`;
 
-    greeting.textContent =
-      hasLearningHistory
-        ? `Welcome back, ${displayName}.`
-        : `Welcome, ${displayName}.`;
+
+  if (welcomeName) {
+
+    welcomeName.textContent =
+      displayName;
 
   }
 
 
-  // -----------------------------------------------------
-  // USER NAME
-  // -----------------------------------------------------
+  if (userGreeting) {
+
+    userGreeting.textContent =
+      greeting;
+
+  }
+
+
+  /* -------------------------------------------------------
+     SIDEBAR NAME
+     ------------------------------------------------------- */
 
   const userName =
     document.getElementById(
@@ -315,9 +306,27 @@ function setupUserInterface(
   }
 
 
-  // -----------------------------------------------------
-  // EMAIL
-  // -----------------------------------------------------
+  /* -------------------------------------------------------
+     TOPBAR NAME
+     ------------------------------------------------------- */
+
+  const topUserName =
+    document.getElementById(
+      "topUserName"
+    );
+
+
+  if (topUserName) {
+
+    topUserName.textContent =
+      displayName;
+
+  }
+
+
+  /* -------------------------------------------------------
+     EMAIL
+     ------------------------------------------------------- */
 
   const userEmail =
     document.getElementById(
@@ -333,55 +342,29 @@ function setupUserInterface(
   }
 
 
-  // -----------------------------------------------------
-  // AVATAR
-  // -----------------------------------------------------
+  /* -------------------------------------------------------
+     AVATAR
+     ------------------------------------------------------- */
 
-  const avatar =
-    document.getElementById(
-      "userAvatar"
-    );
-
-
-  const avatarUrl =
-    profile?.avatar_url ||
-    user?.user_metadata?.avatar_url ||
-    user?.user_metadata?.picture ||
-    user?.identities?.[0]
-      ?.identity_data
-      ?.avatar_url ||
-    user?.identities?.[0]
-      ?.identity_data
-      ?.picture ||
-    "";
+  setupAvatar(
+    document.getElementById("userAvatar"),
+    user,
+    profile,
+    displayName
+  );
 
 
-  if (avatar) {
-
-    if (avatarUrl) {
-
-      avatar.src =
-        avatarUrl;
-
-      avatar.alt =
-        displayName;
-
-      avatar.style.display =
-        "";
-
-    } else {
-
-      avatar.style.display =
-        "none";
-
-    }
-
-  }
+  setupAvatar(
+    document.getElementById("topUserAvatar"),
+    user,
+    profile,
+    displayName
+  );
 
 
-  // -----------------------------------------------------
-  // DATE
-  // -----------------------------------------------------
+  /* -------------------------------------------------------
+     DATE
+     ------------------------------------------------------- */
 
   const dateElement =
     document.getElementById(
@@ -407,17 +390,184 @@ function setupUserInterface(
 }
 
 
-// =========================================================
-// CHECK LEARNING HISTORY
-// =========================================================
-//
-// We use sessionStorage only for greeting presentation.
-// Actual learning progress remains in Supabase.
-//
-// A brand-new browser session starts with "Welcome".
-// After the dashboard has been loaded once, subsequent
-// visits in that browser session show "Welcome back".
-// =========================================================
+/* =========================================================
+   AVATAR
+   ========================================================= */
+
+function setupAvatar(
+  avatar,
+  user,
+  profile,
+  displayName
+) {
+
+  if (!avatar) {
+
+    return;
+
+  }
+
+
+  const avatarUrl =
+    profile?.avatar_url ||
+    user?.user_metadata?.avatar_url ||
+    user?.user_metadata?.picture ||
+    user?.identities?.[0]
+      ?.identity_data
+      ?.avatar_url ||
+    user?.identities?.[0]
+      ?.identity_data
+      ?.picture ||
+    "";
+
+
+  /* -------------------------------------------------------
+     IMAGE ELEMENT
+     ------------------------------------------------------- */
+
+  if (
+    avatar.tagName === "IMG"
+  ) {
+
+    if (avatarUrl) {
+
+      avatar.src =
+        avatarUrl;
+
+      avatar.alt =
+        displayName;
+
+      avatar.style.display =
+        "";
+
+    } else {
+
+      avatar.removeAttribute(
+        "src"
+      );
+
+      avatar.alt =
+        displayName;
+
+      avatar.style.display =
+        "grid";
+
+      avatar.textContent =
+        getInitials(
+          displayName
+        );
+
+    }
+
+    return;
+
+  }
+
+
+  /* -------------------------------------------------------
+     DIV AVATAR
+     ------------------------------------------------------- */
+
+  avatar.textContent =
+    getInitials(
+      displayName
+    );
+
+
+  if (avatarUrl) {
+
+    avatar.style.backgroundImage =
+      `url("${escapeCSSUrl(avatarUrl)}")`;
+
+    avatar.style.backgroundSize =
+      "cover";
+
+    avatar.style.backgroundPosition =
+      "center";
+
+    avatar.style.color =
+      "transparent";
+
+  } else {
+
+    avatar.style.backgroundImage =
+      "";
+
+    avatar.style.color =
+      "";
+
+  }
+
+}
+
+
+/* =========================================================
+   INITIALS
+   ========================================================= */
+
+function getInitials(
+  name
+) {
+
+  const parts =
+    String(
+      name || "Learner"
+    )
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+
+  if (!parts.length) {
+
+    return "L";
+
+  }
+
+
+  if (parts.length === 1) {
+
+    return parts[0]
+      .charAt(0)
+      .toUpperCase();
+
+  }
+
+
+  return (
+    parts[0].charAt(0) +
+    parts[parts.length - 1].charAt(0)
+  ).toUpperCase();
+
+}
+
+
+/* =========================================================
+   CSS URL SAFETY
+   ========================================================= */
+
+function escapeCSSUrl(
+  value
+) {
+
+  return String(
+    value || ""
+  )
+    .replaceAll(
+      "\\",
+      "\\\\"
+    )
+    .replaceAll(
+      '"',
+      '\\"'
+    );
+
+}
+
+
+/* =========================================================
+   LEARNING HISTORY
+   ========================================================= */
 
 function hasUserLearningHistory() {
 
@@ -449,17 +599,17 @@ function hasUserLearningHistory() {
 }
 
 
-// =========================================================
-// LOAD PLATFORM DATA
-// =========================================================
+/* =========================================================
+   LOAD PLATFORM DATA
+   ========================================================= */
 
 async function loadPlatformData(
   userId
 ) {
 
-  // -----------------------------------------------------
-  // COURSES
-  // -----------------------------------------------------
+  /* -------------------------------------------------------
+     COURSES
+     ------------------------------------------------------- */
 
   const {
     data: courses,
@@ -467,17 +617,15 @@ async function loadPlatformData(
   } =
     await secoraSupabase
       .from("courses")
-      .select(
-        `
-          id,
-          title,
-          slug,
-          description,
-          level,
-          published,
-          created_at
-        `
-      )
+      .select(`
+        id,
+        title,
+        slug,
+        description,
+        level,
+        published,
+        created_at
+      `)
       .eq(
         "published",
         true
@@ -501,9 +649,9 @@ async function loadPlatformData(
     courses || [];
 
 
-  // -----------------------------------------------------
-  // MODULES
-  // -----------------------------------------------------
+  /* -------------------------------------------------------
+     MODULES
+     ------------------------------------------------------- */
 
   const courseIds =
     safeCourses.map(
@@ -525,14 +673,12 @@ async function loadPlatformData(
     } =
       await secoraSupabase
         .from("modules")
-        .select(
-          `
-            id,
-            course_id,
-            title,
-            position
-          `
-        )
+        .select(`
+          id,
+          course_id,
+          title,
+          position
+        `)
         .in(
           "course_id",
           courseIds
@@ -558,9 +704,9 @@ async function loadPlatformData(
   }
 
 
-  // -----------------------------------------------------
-  // LESSONS
-  // -----------------------------------------------------
+  /* -------------------------------------------------------
+     LESSONS
+     ------------------------------------------------------- */
 
   const moduleIds =
     modules.map(
@@ -582,17 +728,15 @@ async function loadPlatformData(
     } =
       await secoraSupabase
         .from("lessons")
-        .select(
-          `
-            id,
-            module_id,
-            title,
-            slug,
-            position,
-            duration_minutes,
-            published
-          `
-        )
+        .select(`
+          id,
+          module_id,
+          title,
+          slug,
+          position,
+          duration_minutes,
+          published
+        `)
         .in(
           "module_id",
           moduleIds
@@ -622,9 +766,9 @@ async function loadPlatformData(
   }
 
 
-  // -----------------------------------------------------
-  // USER PROGRESS
-  // -----------------------------------------------------
+  /* -------------------------------------------------------
+     USER PROGRESS
+     ------------------------------------------------------- */
 
   const lessonIds =
     lessons.map(
@@ -646,14 +790,12 @@ async function loadPlatformData(
     } =
       await secoraSupabase
         .from("lesson_progress")
-        .select(
-          `
-            lesson_id,
-            completed,
-            completed_at,
-            last_opened_at
-          `
-        )
+        .select(`
+          lesson_id,
+          completed,
+          completed_at,
+          last_opened_at
+        `)
         .eq(
           "user_id",
           userId
@@ -693,9 +835,9 @@ async function loadPlatformData(
 }
 
 
-// =========================================================
-// BUILD COURSE DATA
-// =========================================================
+/* =========================================================
+   BUILD COURSE DATA
+   ========================================================= */
 
 function buildCourseData(
   data
@@ -798,9 +940,9 @@ function buildCourseData(
 }
 
 
-// =========================================================
-// DASHBOARD STATISTICS
-// =========================================================
+/* =========================================================
+   DASHBOARD STATISTICS
+   ========================================================= */
 
 function renderDashboardStats(
   data
@@ -848,19 +990,19 @@ function renderDashboardStats(
         );
 
 
-  // -----------------------------------------------------
-  // IDs
-  // -----------------------------------------------------
-
-  setText(
-    "completedLessons",
-    completedLessons
-  );
-
+  /* -------------------------------------------------------
+     DIRECT IDS
+     ------------------------------------------------------- */
 
   setText(
     "coursesStarted",
     startedCourses
+  );
+
+
+  setText(
+    "completedLessons",
+    completedLessons
   );
 
 
@@ -870,9 +1012,9 @@ function renderDashboardStats(
   );
 
 
-  // -----------------------------------------------------
-  // COMPATIBILITY WITH EXISTING HTML
-  // -----------------------------------------------------
+  /* -------------------------------------------------------
+     EXISTING HTML COMPATIBILITY
+     ------------------------------------------------------- */
 
   const statValues =
     document.querySelectorAll(
@@ -884,8 +1026,7 @@ function renderDashboardStats(
     statValues.length >= 1
   ) {
 
-    statValues[0]
-      .textContent =
+    statValues[0].textContent =
       startedCourses;
 
   }
@@ -895,8 +1036,7 @@ function renderDashboardStats(
     statValues.length >= 2
   ) {
 
-    statValues[1]
-      .textContent =
+    statValues[1].textContent =
       completedLessons;
 
   }
@@ -906,18 +1046,62 @@ function renderDashboardStats(
     statValues.length >= 3
   ) {
 
-    statValues[2]
-      .textContent =
+    statValues[2].textContent =
       `${overallPercentage}%`;
+
+  }
+
+
+  /* -------------------------------------------------------
+     FOURTH STAT
+     Replace fake streak with real account state.
+     ------------------------------------------------------- */
+
+  if (
+    statValues.length >= 4
+  ) {
+
+    statValues[3].textContent =
+      "ACTIVE";
+
+
+    const labels =
+      document.querySelectorAll(
+        ".stat-card .stat-label"
+      );
+
+
+    const descriptions =
+      document.querySelectorAll(
+        ".stat-card p"
+      );
+
+
+    if (labels.length >= 4) {
+
+      labels[3].textContent =
+        "STATUS";
+
+    }
+
+
+    if (
+      descriptions.length >= 4
+    ) {
+
+      descriptions[3].textContent =
+        "Learning account";
+
+    }
 
   }
 
 }
 
 
-// =========================================================
-// COURSE CARDS
-// =========================================================
+/* =========================================================
+   COURSE CARDS
+   ========================================================= */
 
 function renderCourses(
   data
@@ -947,7 +1131,6 @@ function renderCourses(
   ) {
 
     grid.innerHTML = `
-
       <div class="course-empty">
 
         <h3>
@@ -959,7 +1142,6 @@ function renderCourses(
         </p>
 
       </div>
-
     `;
 
     return;
@@ -980,9 +1162,9 @@ function renderCourses(
 }
 
 
-// =========================================================
-// COURSE CARD
-// =========================================================
+/* =========================================================
+   COURSE CARD
+   ========================================================= */
 
 function createCourseCard(
   course
@@ -995,12 +1177,57 @@ function createCourseCard(
     ).toUpperCase();
 
 
+  const moduleCount =
+    course.modules.length;
+
+
+  const duration =
+    course.lessons.reduce(
+      (
+        total,
+        lesson
+      ) =>
+        total +
+        (
+          Number(
+            lesson.duration_minutes
+          ) || 0
+        ),
+      0
+    );
+
+
+  const hours =
+    duration > 0
+      ? Math.max(
+          1,
+          Math.round(
+            duration / 60
+          )
+        )
+      : null;
+
+
+  const durationLabel =
+    hours
+      ? `~ ${hours} ${hours === 1 ? "hour" : "hours"}`
+      : `${course.total} ${course.total === 1 ? "lesson" : "lessons"}`;
+
+
   return `
 
     <article
       class="course-card"
       data-course="${escapeHTML(course.slug)}"
     >
+
+      <div class="course-number">
+        ${String(
+          course.modules?.[0]?.position ||
+          1
+        ).padStart(2, "0")}
+      </div>
+
 
       <div class="course-card-top">
 
@@ -1015,8 +1242,20 @@ function createCourseCard(
       </div>
 
 
+      <div class="course-meta">
+
+        <span>
+          ${moduleCount}
+          MODULE${moduleCount === 1 ? "" : "S"}
+        </span>
+
+      </div>
+
+
       <h3>
-        ${escapeHTML(course.title)}
+        ${escapeHTML(
+          course.title
+        )}
       </h3>
 
 
@@ -1056,15 +1295,23 @@ function createCourseCard(
       </div>
 
 
-      <a
-        href="course.html?slug=${encodeURIComponent(
-          course.slug
-        )}"
-        class="course-explore"
-        aria-label="Explore ${escapeHTML(course.title)}"
-      >
-        Explore →
-      </a>
+      <div class="course-footer">
+
+        <span>
+          ${durationLabel}
+        </span>
+
+        <a
+          href="course.html?slug=${encodeURIComponent(
+            course.slug
+          )}"
+          class="course-explore"
+          aria-label="Explore ${escapeHTML(course.title)}"
+        >
+          Explore →
+        </a>
+
+      </div>
 
     </article>
 
@@ -1073,9 +1320,9 @@ function createCourseCard(
 }
 
 
-// =========================================================
-// REMOVE OLD CONTINUE CARD
-// =========================================================
+/* =========================================================
+   REMOVE OLD CONTINUE LEARNING
+   ========================================================= */
 
 function removeContinueLearning() {
 
@@ -1091,15 +1338,15 @@ function removeContinueLearning() {
 }
 
 
-// =========================================================
-// LOGOUT
-// =========================================================
+/* =========================================================
+   LOGOUT
+   ========================================================= */
 
 function setupLogout() {
 
   const logoutButtons =
     document.querySelectorAll(
-      "#logoutBtn, .logout-btn, [data-action='logout']"
+      "#logoutBtn, .logout, .logout-btn, [data-action='logout']"
     );
 
 
@@ -1181,9 +1428,9 @@ function setupLogout() {
 }
 
 
-// =========================================================
-// TEXT HELPER
-// =========================================================
+/* =========================================================
+   TEXT HELPER
+   ========================================================= */
 
 function setText(
   id,
@@ -1206,9 +1453,9 @@ function setText(
 }
 
 
-// =========================================================
-// ERROR
-// =========================================================
+/* =========================================================
+   ERROR
+   ========================================================= */
 
 function showDashboardError() {
 
@@ -1244,9 +1491,9 @@ function showDashboardError() {
 }
 
 
-// =========================================================
-// HTML SAFETY
-// =========================================================
+/* =========================================================
+   HTML SAFETY
+   ========================================================= */
 
 function escapeHTML(
   value
