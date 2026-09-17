@@ -1,16 +1,10 @@
  /* =========================================================
-   SECORA
-   COURSE PAGE
-   V0.5 — PREMIUM DARK LEARNING EXPERIENCE
-   ========================================================= */
-
-
-/* =========================================================
-   FONTS
+   SECORA — COURSE PAGE
+   PREMIUM HD TYPOGRAPHY SYSTEM
    ========================================================= */
 
 @import url(
-  "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
+  "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap"
 );
 
 
@@ -20,82 +14,41 @@
 
 :root {
 
-  --bg:
-    #080c13;
+  --bg: #080c13;
+  --bg-deep: #070b11;
+  --bg-soft: #0b1018;
 
-  --bg-2:
-    #0b1018;
+  --surface: #101722;
+  --surface-2: #121b28;
+  --surface-hover: #151f2d;
 
-  --bg-3:
-    #0e141e;
+  --text: #f4f7fb;
+  --text-strong: #ffffff;
+  --text-body: #c4ccd8;
+  --text-soft: #9aa6b7;
+  --text-muted: #7e8b9e;
+  --text-faint: #667386;
 
-  --surface:
-    rgba(17,24,36,.94);
+  --border: rgba(255,255,255,.085);
+  --border-soft: rgba(255,255,255,.055);
+  --border-strong: rgba(255,255,255,.14);
 
-  --surface-2:
-    rgba(21,29,43,.97);
+  --blue: #5b7fff;
+  --blue-light: #86a1ff;
+  --blue-soft: rgba(91,127,255,.11);
 
-  --surface-soft:
-    rgba(255,255,255,.035);
+  --green: #45c59b;
 
-  --surface-hover:
-    rgba(255,255,255,.055);
-
-  --text:
-    #f3f6fb;
-
-  --text-strong:
-    #ffffff;
-
-  --text-soft:
-    #c2cad7;
-
-  --muted:
-    #8792a4;
-
-  --muted-2:
-    #687486;
-
-  --border:
-    rgba(255,255,255,.085);
-
-  --border-soft:
-    rgba(255,255,255,.055);
-
-  --border-bright:
-    rgba(255,255,255,.13);
-
-  --blue:
-    #557cff;
-
-  --blue-light:
-    #7897ff;
-
-  --blue-bright:
-    #8ca7ff;
-
-  --blue-soft:
-    rgba(85,124,255,.11);
-
-  --blue-glow:
-    rgba(85,124,255,.17);
-
-  --green:
-    #42c49a;
-
-  --font-display:
-    "Manrope",
-    Inter,
-    system-ui,
+  --font-body:
+    "Inter",
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
 
-  --font-body:
-    "DM Sans",
-    Inter,
-    system-ui,
+  --font-display:
+    "Manrope",
+    "Inter",
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
@@ -111,149 +64,103 @@
 *,
 *::before,
 *::after {
-  box-sizing:
-    border-box;
+  box-sizing: border-box;
 }
 
 
 html {
+  min-height: 100%;
+  scroll-behavior: smooth;
 
-  min-height:
-    100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
-  scroll-behavior:
-    smooth;
-
-  -webkit-font-smoothing:
-    antialiased;
-
-  -moz-osx-font-smoothing:
-    grayscale;
-
-  text-rendering:
-    optimizeLegibility;
-
+  text-rendering: optimizeLegibility;
 }
 
 
 body {
 
-  margin:
-    0;
+  margin: 0;
 
-  min-height:
-    100vh;
+  min-height: 100vh;
 
-  overflow-x:
-    hidden;
-
-  color:
-    var(--text);
-
-  font-family:
-    var(--font-body);
-
-  font-size:
-    14px;
-
-  line-height:
-    1.6;
+  overflow-x: hidden;
 
   background:
 
     radial-gradient(
-      850px 520px at 82% -8%,
-      rgba(67,99,190,.18),
+      900px 600px at 82% -10%,
+      rgba(72,103,190,.17),
       transparent 68%
     ),
 
     radial-gradient(
-      600px 700px at -15% 40%,
-      rgba(38,64,128,.11),
+      700px 600px at -10% 42%,
+      rgba(38,65,130,.10),
       transparent 72%
     ),
 
     radial-gradient(
-      800px 500px at 55% 110%,
-      rgba(44,73,145,.09),
-      transparent 72%
+      900px 550px at 60% 110%,
+      rgba(49,78,145,.08),
+      transparent 70%
     ),
 
     linear-gradient(
       180deg,
       #080c13 0%,
-      #0a0f17 48%,
-      #080c13 100%
+      #090e16 55%,
+      #070b11 100%
     );
 
-}
+  color: var(--text);
 
+  font-family: var(--font-body);
 
-a {
+  font-size: 15px;
 
-  color:
-    inherit;
+  line-height: 1.6;
 
-  text-decoration:
-    none;
-
-}
-
-
-button,
-input {
-
-  font:
-    inherit;
+  font-weight: 400;
 
 }
 
-
-/* =========================================================
-   TECHNICAL GRID
-   ========================================================= */
 
 body::before {
 
-  content:
-    "";
+  content: "";
 
-  position:
-    fixed;
+  position: fixed;
 
-  inset:
-    0;
+  inset: 0;
 
-  z-index:
-    0;
+  z-index: 0;
 
-  pointer-events:
-    none;
+  pointer-events: none;
 
-  opacity:
-    .27;
+  opacity: .22;
 
   background-image:
 
     linear-gradient(
-      rgba(255,255,255,.024) 1px,
+      rgba(255,255,255,.022) 1px,
       transparent 1px
     ),
 
     linear-gradient(
       90deg,
-      rgba(255,255,255,.024) 1px,
+      rgba(255,255,255,.022) 1px,
       transparent 1px
     );
 
-  background-size:
-    52px 52px;
+  background-size: 52px 52px;
 
   mask-image:
     linear-gradient(
       to bottom,
       black 0%,
-      rgba(0,0,0,.70) 58%,
+      rgba(0,0,0,.72) 55%,
       transparent 100%
     );
 
@@ -261,135 +168,102 @@ body::before {
     linear-gradient(
       to bottom,
       black 0%,
-      rgba(0,0,0,.70) 58%,
+      rgba(0,0,0,.72) 55%,
       transparent 100%
     );
 
 }
 
 
-/* =========================================================
-   ATMOSPHERIC LIGHT
-   ========================================================= */
-
 body::after {
 
-  content:
-    "";
+  content: "";
 
-  position:
-    fixed;
+  position: fixed;
 
-  width:
-    850px;
+  width: 900px;
+  height: 900px;
 
-  height:
-    850px;
+  right: -450px;
+  top: 80px;
 
-  right:
-    -420px;
+  z-index: 0;
 
-  top:
-    70px;
+  pointer-events: none;
 
-  z-index:
-    0;
-
-  pointer-events:
-    none;
-
-  border-radius:
-    50%;
+  border-radius: 50%;
 
   background:
     radial-gradient(
       circle,
-      rgba(82,115,215,.075),
-      rgba(82,115,215,.025) 38%,
-      transparent 70%
+      rgba(75,108,210,.075),
+      transparent 68%
     );
 
 }
 
 
-/* =========================================================
-   PAGE WRAPPER
-   ========================================================= */
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
-.course-page,
-.course-shell,
-main {
 
-  position:
-    relative;
-
-  z-index:
-    1;
-
+button {
+  font-family: inherit;
 }
 
 
 /* =========================================================
-   TOP NAV / BACK BAR
+   TOP NAVIGATION
    ========================================================= */
 
 .course-nav {
 
-  position:
-    sticky;
+  position: sticky;
 
-  top:
-    0;
+  top: 0;
 
-  z-index:
-    50;
+  z-index: 50;
 
-  min-height:
-    64px;
+  min-height: 64px;
 
-  display:
-    flex;
+  display: flex;
 
-  align-items:
-    center;
+  align-items: center;
 
-  padding:
-    0 42px;
+  padding: 0 42px;
 
   border-bottom:
     1px solid rgba(255,255,255,.065);
 
   background:
-    rgba(8,12,19,.78);
+    rgba(7,11,17,.82);
 
   backdrop-filter:
-    blur(22px);
+    blur(24px);
 
   -webkit-backdrop-filter:
-    blur(22px);
+    blur(24px);
 
 }
 
 
-.course-nav a {
+.back-link {
 
-  display:
-    inline-flex;
+  display: inline-flex;
 
-  align-items:
-    center;
+  align-items: center;
 
-  gap:
-    8px;
+  gap: 9px;
 
-  color:
-    #8a95a6;
+  color: #a4afbf;
 
-  font-size:
-    11px;
+  font-size: 13px;
 
-  font-weight:
-    600;
+  font-weight: 600;
+
+  letter-spacing: -.01em;
 
   transition:
     color .2s ease,
@@ -398,51 +272,49 @@ main {
 }
 
 
-.course-nav a:hover {
-
-  color:
-    #edf1f7;
-
-  transform:
-    translateX(-2px);
-
-}
-
-
-/* =========================================================
-   GENERIC TOP LINK
-   ========================================================= */
-
-.back-link {
-
-  color:
-    #8b96a7;
-
-}
-
-
 .back-link:hover {
 
-  color:
-    #f2f5fa;
+  color: #ffffff;
+
+  transform: translateX(-2px);
+
+}
+
+
+.back-link span:first-child {
+
+  color: #7d8ba0;
+
+  font-size: 16px;
+
+}
+
+
+.back-separator {
+
+  color: #465264;
 
 }
 
 
 /* =========================================================
-   COURSE CONTAINER
+   MAIN CONTAINER
    ========================================================= */
 
 .course-container {
 
-  width:
-    min(1280px, calc(100% - 84px));
+  position: relative;
 
-  margin:
-    0 auto;
+  z-index: 1;
 
-  padding:
-    38px 0 90px;
+  width: min(
+    1280px,
+    calc(100% - 84px)
+  );
+
+  margin: 0 auto;
+
+  padding: 40px 0 100px;
 
 }
 
@@ -453,55 +325,47 @@ main {
 
 .course-hero {
 
-  position:
-    relative;
+  position: relative;
 
-  min-height:
-    360px;
+  min-height: 390px;
 
-  display:
-    grid;
+  display: grid;
 
   grid-template-columns:
     minmax(0, 1fr)
-    320px;
+    330px;
 
-  align-items:
-    center;
+  align-items: center;
 
-  gap:
-    50px;
+  gap: 55px;
 
-  padding:
-    48px 52px;
+  padding: 58px 58px;
 
-  overflow:
-    hidden;
+  overflow: hidden;
 
   border:
-    1px solid rgba(255,255,255,.08);
+    1px solid rgba(255,255,255,.085);
 
-  border-radius:
-    22px;
+  border-radius: 23px;
 
   background:
 
     radial-gradient(
-      520px 360px at 84% 35%,
-      rgba(76,110,213,.18),
+      580px 420px at 84% 38%,
+      rgba(73,106,207,.17),
       transparent 70%
     ),
 
     radial-gradient(
-      500px 340px at 8% 105%,
-      rgba(40,69,138,.11),
-      transparent 70%
+      500px 400px at 5% 110%,
+      rgba(40,67,135,.10),
+      transparent 72%
     ),
 
     linear-gradient(
       135deg,
-      #111722 0%,
-      #0d131d 55%,
+      #111823 0%,
+      #0d141e 55%,
       #0a1018 100%
     );
 
@@ -509,69 +373,47 @@ main {
 
     inset 0 1px 0 rgba(255,255,255,.025),
 
-    0 30px 80px rgba(0,0,0,.32);
+    0 30px 90px rgba(0,0,0,.32);
 
 }
 
 
-/* =========================================================
-   HERO TOP LIGHT
-   ========================================================= */
-
 .course-hero::before {
 
-  content:
-    "";
+  content: "";
 
-  position:
-    absolute;
+  position: absolute;
 
-  top:
-    0;
+  left: 8%;
 
-  left:
-    8%;
+  right: 8%;
 
-  width:
-    84%;
+  top: 0;
 
-  height:
-    1px;
+  height: 1px;
 
   background:
     linear-gradient(
       90deg,
       transparent,
-      rgba(120,151,255,.75),
+      rgba(120,151,255,.65),
       transparent
     );
-
-  opacity:
-    .8;
 
 }
 
 
-/* =========================================================
-   HERO GRID
-   ========================================================= */
-
 .course-hero::after {
 
-  content:
-    "";
+  content: "";
 
-  position:
-    absolute;
+  position: absolute;
 
-  inset:
-    0;
+  inset: 0;
 
-  pointer-events:
-    none;
+  pointer-events: none;
 
-  opacity:
-    .25;
+  opacity: .22;
 
   background-image:
 
@@ -586,15 +428,14 @@ main {
       transparent 1px
     );
 
-  background-size:
-    44px 44px;
+  background-size: 48px 48px;
 
   mask-image:
     linear-gradient(
       90deg,
       transparent,
-      black 35%,
-      black 70%,
+      black 32%,
+      black 75%,
       transparent
     );
 
@@ -602,8 +443,8 @@ main {
     linear-gradient(
       90deg,
       transparent,
-      black 35%,
-      black 70%,
+      black 32%,
+      black 75%,
       transparent
     );
 
@@ -616,160 +457,124 @@ main {
 
 .course-hero-content {
 
-  position:
-    relative;
+  position: relative;
 
-  z-index:
-    2;
+  z-index: 2;
 
 }
 
 
-.course-eyebrow,
-.hero-eyebrow {
+.course-eyebrow {
 
-  margin:
-    0 0 13px;
+  margin: 0 0 15px;
 
-  color:
-    var(--blue-light);
+  color: var(--blue-light);
 
-  font-size:
-    9px;
+  font-size: 11px;
 
-  font-weight:
-    800;
+  line-height: 1;
 
-  letter-spacing:
-    .19em;
+  font-weight: 800;
 
-  text-transform:
-    uppercase;
+  letter-spacing: .20em;
+
+  text-transform: uppercase;
 
 }
 
-
-/* =========================================================
-   HERO TITLE
-   ========================================================= */
 
 .course-hero h1 {
 
-  max-width:
-    800px;
+  max-width: 850px;
 
-  margin:
-    0;
+  margin: 0;
 
-  color:
-    #f5f7fb;
+  color: var(--text-strong);
 
-  font-family:
-    var(--font-display);
+  font-family: var(--font-display);
 
-  font-size:
-    clamp(38px, 5vw, 67px);
+  font-size: clamp(
+    48px,
+    5.3vw,
+    72px
+  );
 
-  font-weight:
-    800;
+  font-weight: 800;
 
-  line-height:
-    .99;
+  line-height: .98;
 
-  letter-spacing:
-    -.065em;
+  letter-spacing: -.065em;
 
-  text-shadow:
-    0 14px 40px rgba(0,0,0,.27);
+  text-wrap: balance;
 
 }
 
-
-/* =========================================================
-   HERO DESCRIPTION
-   ========================================================= */
 
 .course-description {
 
-  max-width:
-    690px;
+  max-width: 760px;
 
-  margin:
-    19px 0 0;
+  margin: 22px 0 0;
 
-  color:
-    #8792a4;
+  color: var(--text-body);
 
-  font-size:
-    12px;
+  font-size: 15px;
 
-  line-height:
-    1.8;
+  font-weight: 400;
+
+  line-height: 1.75;
+
+  letter-spacing: -.005em;
 
 }
 
 
 /* =========================================================
-   HERO META
+   COURSE META
    ========================================================= */
 
 .course-meta {
 
-  display:
-    flex;
+  display: flex;
 
-  align-items:
-    center;
+  align-items: center;
 
-  flex-wrap:
-    wrap;
+  flex-wrap: wrap;
 
-  gap:
-    9px;
+  gap: 10px;
 
-  margin-top:
-    23px;
+  margin-top: 27px;
 
 }
 
 
-.course-meta span {
+.course-meta > span {
 
-  display:
-    inline-flex;
+  display: inline-flex;
 
-  align-items:
-    center;
+  align-items: center;
 
-  min-height:
-    26px;
+  min-height: 32px;
 
-  padding:
-    0 10px;
+  padding: 0 13px;
 
   border:
-    1px solid rgba(255,255,255,.075);
+    1px solid rgba(255,255,255,.09);
 
-  border-radius:
-    999px;
+  border-radius: 999px;
 
   background:
     rgba(255,255,255,.035);
 
-  color:
-    #8c97a8;
+  color: #8f9bad;
 
-  font-size:
-    8px;
+  font-size: 10px;
 
-  font-weight:
-    800;
+  font-weight: 700;
 
-  letter-spacing:
-    .08em;
+  letter-spacing: .075em;
 
-  text-transform:
-    uppercase;
+  text-transform: uppercase;
 
 }
 
@@ -777,194 +582,156 @@ main {
 .course-meta .level {
 
   border-color:
-    rgba(93,131,255,.16);
+    rgba(91,127,255,.25);
 
   background:
-    rgba(93,131,255,.10);
+    rgba(91,127,255,.11);
 
   color:
-    #7f9bff;
+    #91a8ff;
 
 }
 
 
 /* =========================================================
-   HERO PROGRESS
+   PROGRESS PANEL
    ========================================================= */
 
 .course-progress-panel {
 
-  position:
-    relative;
+  position: relative;
 
-  z-index:
-    3;
+  z-index: 3;
 
-  min-height:
-    270px;
+  min-height: 280px;
 
-  display:
-    flex;
+  display: flex;
 
-  flex-direction:
-    column;
+  flex-direction: column;
 
-  align-items:
-    center;
+  align-items: center;
 
-  justify-content:
-    center;
+  justify-content: center;
 
 }
 
 
-/* =========================================================
-   PROGRESS ORBIT
-   ========================================================= */
-
 .progress-ring {
 
-  position:
-    relative;
+  position: relative;
 
-  width:
-    170px;
+  width: 178px;
 
-  height:
-    170px;
+  height: 178px;
 
-  display:
-    grid;
+  display: grid;
 
-  place-items:
-    center;
+  place-items: center;
 
   border:
-    1px solid rgba(255,255,255,.12);
+    1px solid rgba(255,255,255,.14);
 
-  border-radius:
-    50%;
+  border-radius: 50%;
 
   background:
+
     radial-gradient(
       circle,
-      rgba(82,115,215,.10),
-      rgba(15,21,31,.30) 57%,
-      transparent 58%
+      rgba(79,111,207,.12),
+      rgba(15,21,31,.20) 58%,
+      transparent 59%
     );
 
   box-shadow:
 
     0 0 0 13px rgba(255,255,255,.018),
-    0 0 0 35px rgba(255,255,255,.012),
-    0 20px 60px rgba(0,0,0,.30);
+
+    0 0 0 35px rgba(255,255,255,.011),
+
+    0 25px 70px rgba(0,0,0,.28);
 
 }
 
 
 .progress-ring::before {
 
-  content:
-    "";
+  content: "";
 
-  position:
-    absolute;
+  position: absolute;
 
-  inset:
-    13px;
+  inset: 14px;
 
   border:
     1px solid rgba(255,255,255,.075);
 
-  border-radius:
-    50%;
+  border-radius: 50%;
 
 }
 
 
 .progress-ring::after {
 
-  content:
-    "";
+  content: "";
 
-  position:
-    absolute;
+  position: absolute;
 
-  inset:
-    -35px;
+  inset: -35px;
 
   border:
-    1px solid rgba(255,255,255,.055);
+    1px solid rgba(255,255,255,.05);
 
-  border-radius:
-    50%;
+  border-radius: 50%;
 
 }
 
 
-/* =========================================================
-   PROGRESS VALUE
-   ========================================================= */
-
 .progress-value {
 
-  position:
-    relative;
+  position: relative;
 
-  z-index:
-    2;
+  z-index: 2;
 
-  color:
-    #f1f5fa;
+  color: #f5f7fb;
 
-  font-family:
-    var(--font-display);
+  font-family: var(--font-display);
 
-  font-size:
-    30px;
+  font-size: 34px;
 
-  font-weight:
-    800;
+  font-weight: 800;
 
-  letter-spacing:
-    -.055em;
+  line-height: 1;
+
+  letter-spacing: -.055em;
 
 }
 
 
 .progress-label {
 
-  margin-top:
-    19px;
+  margin-top: 22px;
 
-  color:
-    #718094;
+  color: #7f8b9d;
 
-  font-size:
-    8px;
+  font-size: 10px;
 
-  font-weight:
-    800;
+  font-weight: 800;
 
-  letter-spacing:
-    .17em;
+  letter-spacing: .19em;
 
-  text-transform:
-    uppercase;
+  text-transform: uppercase;
 
 }
 
 
 .progress-count {
 
-  margin-top:
-    5px;
+  margin-top: 6px;
 
-  color:
-    #8792a4;
+  color: #98a3b3;
 
-  font-size:
-    9px;
+  font-size: 11px;
+
+  font-weight: 500;
 
 }
 
@@ -975,83 +742,81 @@ main {
 
 .curriculum-header {
 
-  display:
-    flex;
+  display: flex;
 
-  align-items:
-    flex-end;
+  align-items: flex-end;
 
-  justify-content:
-    space-between;
+  justify-content: space-between;
 
-  gap:
-    25px;
+  gap: 30px;
 
-  margin:
-    53px 0 19px;
+  margin: 62px 0 24px;
 
 }
 
 
 .curriculum-kicker {
 
-  margin:
-    0 0 8px;
+  margin: 0 0 9px;
 
-  color:
-    var(--blue-light);
+  color: var(--blue-light);
 
-  font-size:
-    9px;
+  font-size: 10px;
 
-  font-weight:
-    800;
+  line-height: 1;
 
-  letter-spacing:
-    .19em;
+  font-weight: 800;
 
-  text-transform:
-    uppercase;
+  letter-spacing: .20em;
+
+  text-transform: uppercase;
 
 }
 
 
 .curriculum-header h2 {
 
-  margin:
-    0;
+  margin: 0;
 
-  color:
-    #eef2f8;
+  color: #f3f6fa;
 
-  font-family:
-    var(--font-display);
+  font-family: var(--font-display);
 
-  font-size:
-    27px;
+  font-size: 32px;
 
-  font-weight:
-    800;
+  font-weight: 800;
 
-  line-height:
-    1.15;
+  line-height: 1.15;
 
-  letter-spacing:
-    -.045em;
+  letter-spacing: -.045em;
 
 }
 
 
 .curriculum-header p {
 
-  margin:
-    7px 0 0;
+  margin: 9px 0 0;
 
-  color:
-    #748095;
+  color: #8793a5;
 
-  font-size:
-    11px;
+  font-size: 13px;
+
+  font-weight: 400;
+
+  line-height: 1.6;
+
+}
+
+
+.course-overview-meta {
+
+  color: #c1c9d5;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
 
 }
 
@@ -1060,127 +825,112 @@ main {
    MODULE LIST
    ========================================================= */
 
-.module-list,
-.modules {
+.module-list {
 
-  display:
-    flex;
+  display: flex;
 
-  flex-direction:
-    column;
+  flex-direction: column;
 
-  gap:
-    9px;
+  gap: 12px;
 
 }
 
 
 /* =========================================================
-   MODULE CARD
+   MODULE
    ========================================================= */
 
-.module-card,
-.module-item {
+.module {
 
-  position:
-    relative;
+  position: relative;
 
-  overflow:
-    hidden;
+  overflow: hidden;
 
   border:
-    1px solid rgba(255,255,255,.075);
+    1px solid rgba(255,255,255,.085);
 
-  border-radius:
-    15px;
+  border-radius: 16px;
 
   background:
 
     linear-gradient(
       135deg,
-      rgba(19,27,39,.94),
-      rgba(12,18,28,.97)
+      rgba(17,24,35,.96),
+      rgba(11,17,26,.98)
     );
 
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.022),
-    0 10px 30px rgba(0,0,0,.14);
+
+    inset 0 1px 0 rgba(255,255,255,.02),
+
+    0 12px 35px rgba(0,0,0,.14);
 
   transition:
-    border-color .22s ease,
-    background .22s ease,
-    transform .22s ease,
-    box-shadow .22s ease;
+    border-color .2s ease,
+    background .2s ease,
+    box-shadow .2s ease,
+    transform .2s ease;
 
 }
 
 
-.module-card::before,
-.module-item::before {
+.module::before {
 
-  content:
-    "";
+  content: "";
 
-  position:
-    absolute;
+  position: absolute;
 
-  left:
-    0;
+  left: 0;
 
-  top:
-    0;
+  top: 0;
 
-  width:
-    2px;
+  bottom: 0;
 
-  height:
-    100%;
+  width: 3px;
 
   background:
     linear-gradient(
       180deg,
-      rgba(86,125,255,.80),
+      #6485ff,
       transparent
     );
 
-  opacity:
-    0;
+  opacity: 0;
 
   transition:
-    opacity .22s ease;
+    opacity .2s ease;
 
 }
 
 
-.module-card:hover,
-.module-item:hover {
+.module:hover {
 
   border-color:
-    rgba(93,131,255,.22);
+    rgba(96,130,255,.22);
 
   background:
 
     linear-gradient(
       135deg,
-      rgba(22,30,44,.97),
-      rgba(13,20,30,.98)
+      rgba(20,29,42,.98),
+      rgba(12,19,29,.99)
     );
 
-  transform:
-    translateY(-2px);
-
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.03),
-    0 17px 40px rgba(0,0,0,.22);
+
+    inset 0 1px 0 rgba(255,255,255,.025),
+
+    0 18px 45px rgba(0,0,0,.22);
+
+  transform:
+    translateY(-1px);
 
 }
 
 
-.module-card:hover::before,
-.module-item:hover::before {
+.module:hover::before {
 
-  opacity:
-    1;
+  opacity: 1;
 
 }
 
@@ -1191,23 +941,27 @@ main {
 
 .module-header {
 
-  min-height:
-    96px;
+  width: 100%;
 
-  display:
-    flex;
+  min-height: 108px;
 
-  align-items:
-    center;
+  display: flex;
 
-  gap:
-    17px;
+  align-items: center;
 
-  padding:
-    18px 22px;
+  gap: 19px;
 
-  cursor:
-    pointer;
+  padding: 21px 24px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: inherit;
+
+  text-align: left;
+
+  cursor: pointer;
 
 }
 
@@ -1218,184 +972,158 @@ main {
 
 .module-number {
 
-  width:
-    43px;
+  width: 48px;
 
-  height:
-    43px;
+  height: 48px;
 
-  flex:
-    0 0 43px;
+  flex: 0 0 48px;
 
-  display:
-    grid;
+  display: grid;
 
-  place-items:
-    center;
+  place-items: center;
 
   border:
-    1px solid rgba(255,255,255,.075);
+    1px solid rgba(255,255,255,.10);
 
-  border-radius:
-    11px;
+  border-radius: 12px;
 
   background:
     rgba(255,255,255,.035);
 
-  color:
-    #7c889a;
+  color: #8490a2;
 
-  font-family:
-    var(--font-display);
+  font-family: var(--font-display);
 
-  font-size:
-    10px;
+  font-size: 11px;
 
-  font-weight:
-    800;
+  font-weight: 800;
+
+  letter-spacing: .01em;
 
 }
 
 
 /* =========================================================
-   MODULE INFORMATION
+   MODULE INFO
    ========================================================= */
 
 .module-info {
 
-  flex:
-    1;
+  flex: 1;
 
-  min-width:
-    0;
+  min-width: 0;
 
-}
+  display: flex;
 
-
-.module-info h3 {
-
-  margin:
-    0;
-
-  color:
-    #edf1f7;
-
-  font-family:
-    var(--font-display);
-
-  font-size:
-    15px;
-
-  font-weight:
-    800;
-
-  line-height:
-    1.25;
-
-  letter-spacing:
-    -.025em;
+  flex-direction: column;
 
 }
 
 
-.module-info p {
+.module-title {
 
-  max-width:
-    850px;
+  color: #f1f4f8;
 
-  margin:
-    5px 0 0;
+  font-family: var(--font-display);
 
-  color:
-    #727f91;
+  font-size: 18px;
 
-  font-size:
-    10px;
+  font-weight: 700;
 
-  line-height:
-    1.6;
+  line-height: 1.3;
+
+  letter-spacing: -.025em;
+
+}
+
+
+.module-description {
+
+  max-width: 920px;
+
+  margin-top: 6px;
+
+  color: #8f9bad;
+
+  font-size: 13px;
+
+  font-weight: 400;
+
+  line-height: 1.55;
+
+  letter-spacing: 0;
 
 }
 
 
 /* =========================================================
-   MODULE RIGHT SIDE
+   MODULE META
    ========================================================= */
 
 .module-meta {
 
-  flex:
-    0 0 auto;
+  flex: 0 0 auto;
 
-  display:
-    flex;
+  color: #8490a1;
 
-  align-items:
-    center;
+  font-size: 10px;
 
-  gap:
-    16px;
+  font-weight: 700;
 
-  color:
-    #6f7c8e;
+  letter-spacing: .07em;
 
-  font-size:
-    8px;
-
-  font-weight:
-    800;
-
-  letter-spacing:
-    .06em;
-
-  text-transform:
-    uppercase;
+  text-transform: uppercase;
 
 }
 
 
 .module-arrow {
 
-  width:
-    30px;
+  width: 36px;
 
-  height:
-    30px;
+  height: 36px;
 
-  display:
-    grid;
+  flex: 0 0 36px;
 
-  place-items:
-    center;
+  display: grid;
+
+  place-items: center;
 
   border:
-    1px solid rgba(255,255,255,.075);
+    1px solid rgba(255,255,255,.085);
 
-  border-radius:
-    8px;
+  border-radius: 9px;
 
   background:
     rgba(255,255,255,.025);
 
-  color:
-    #8a96a8;
+  color: #96a1b1;
+
+  font-size: 14px;
 
   transition:
-    transform .22s ease,
-    background .22s ease,
-    color .22s ease;
+    color .2s ease,
+    background .2s ease,
+    transform .2s ease;
 
 }
 
 
-.module-card:hover .module-arrow,
-.module-item:hover .module-arrow {
+.module:hover .module-arrow {
+
+  color: #9bb0ff;
 
   background:
-    rgba(93,131,255,.09);
+    rgba(91,127,255,.10);
 
-  color:
-    #8ba4ff;
+}
+
+
+.module.open .module-arrow {
+
+  transform: rotate(90deg);
+
+  color: #9bb0ff;
 
 }
 
@@ -1406,47 +1134,50 @@ main {
 
 .lesson-list {
 
-  display:
-    flex;
-
-  flex-direction:
-    column;
+  display: none;
 
   padding:
-    0 18px 18px 82px;
+    0 24px 20px 91px;
 
   border-top:
-    1px solid rgba(255,255,255,.055);
+    1px solid rgba(255,255,255,.06);
 
 }
 
 
+.module.open .lesson-list {
+
+  display: flex;
+
+  flex-direction: column;
+
+}
+
+
+/* =========================================================
+   LESSON ITEM
+   ========================================================= */
+
 .lesson-item {
 
-  display:
-    flex;
+  min-height: 66px;
 
-  align-items:
-    center;
+  display: flex;
 
-  gap:
-    13px;
+  align-items: center;
 
-  min-height:
-    53px;
+  gap: 15px;
 
-  padding:
-    8px 12px;
+  padding: 10px 13px;
 
   border-bottom:
     1px solid rgba(255,255,255,.045);
 
-  color:
-    #a3adbb;
+  color: #b4bdca;
 
   transition:
-    background .18s ease,
     color .18s ease,
+    background .18s ease,
     padding .18s ease;
 
 }
@@ -1454,263 +1185,225 @@ main {
 
 .lesson-item:last-child {
 
-  border-bottom:
-    0;
+  border-bottom: 0;
 
 }
 
 
 .lesson-item:hover {
 
-  padding-left:
-    17px;
+  padding-left: 18px;
 
-  border-radius:
-    7px;
+  border-radius: 8px;
 
   background:
     rgba(255,255,255,.035);
 
-  color:
-    #f0f3f8;
+  color: #f4f6fa;
 
 }
 
+
+/* =========================================================
+   LESSON NUMBER
+   ========================================================= */
 
 .lesson-number {
 
-  width:
-    27px;
+  width: 34px;
 
-  height:
-    27px;
+  height: 34px;
 
-  flex:
-    0 0 27px;
+  flex: 0 0 34px;
 
-  display:
-    grid;
+  display: grid;
 
-  place-items:
-    center;
-
-  border:
-    1px solid rgba(255,255,255,.065);
-
-  border-radius:
-    7px;
-
-  background:
-    rgba(255,255,255,.025);
-
-  color:
-    #697587;
-
-  font-size:
-    8px;
-
-  font-weight:
-    800;
-
-}
-
-
-.lesson-title {
-
-  flex:
-    1;
-
-  color:
-    inherit;
-
-  font-size:
-    10px;
-
-  font-weight:
-    600;
-
-}
-
-
-.lesson-duration {
-
-  color:
-    #647083;
-
-  font-size:
-    8px;
-
-}
-
-
-/* =========================================================
-   COMPLETED LESSON
-   ========================================================= */
-
-.lesson-item.completed {
-
-  color:
-    #94a0b0;
-
-}
-
-
-.lesson-item.completed .lesson-number {
-
-  border-color:
-    rgba(66,196,154,.18);
-
-  background:
-    rgba(66,196,154,.08);
-
-  color:
-    var(--green);
-
-}
-
-
-/* =========================================================
-   COURSE FOOTER
-   ========================================================= */
-
-.course-footer {
-
-  margin-top:
-    52px;
-
-  padding-top:
-    25px;
-
-  border-top:
-    1px solid rgba(255,255,255,.065);
-
-  color:
-    #647083;
-
-  font-size:
-    9px;
-
-}
-
-
-/* =========================================================
-   ERROR / LOADING
-   ========================================================= */
-
-.course-loading,
-.course-error {
-
-  min-height:
-    220px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  padding:
-    30px;
+  place-items: center;
 
   border:
     1px solid rgba(255,255,255,.075);
 
-  border-radius:
-    15px;
+  border-radius: 8px;
 
   background:
-    rgba(16,23,34,.80);
+    rgba(255,255,255,.025);
 
-  color:
-    #788496;
+  color: #7d899b;
 
-  text-align:
-    center;
+  font-size: 10px;
+
+  font-weight: 700;
 
 }
 
 
 /* =========================================================
-   BUTTONS / LINKS
+   LESSON TITLE
    ========================================================= */
 
-.course-button,
-.primary-button {
+.lesson-title {
 
-  display:
-    inline-flex;
+  flex: 1;
 
-  align-items:
-    center;
+  min-width: 0;
 
-  justify-content:
-    center;
+  color: inherit;
 
-  min-height:
-    40px;
+  font-size: 14px;
 
-  padding:
-    0 17px;
+  font-weight: 600;
 
-  border:
-    1px solid rgba(93,131,255,.22);
+  line-height: 1.45;
 
-  border-radius:
-    9px;
-
-  background:
-    rgba(93,131,255,.10);
-
-  color:
-    #8ba4ff;
-
-  font-size:
-    10px;
-
-  font-weight:
-    800;
-
-  cursor:
-    pointer;
-
-  transition:
-    background .2s ease,
-    border-color .2s ease,
-    transform .2s ease;
-
-}
-
-
-.course-button:hover,
-.primary-button:hover {
-
-  background:
-    rgba(93,131,255,.16);
-
-  border-color:
-    rgba(93,131,255,.35);
-
-  transform:
-    translateY(-2px);
+  letter-spacing: -.005em;
 
 }
 
 
 /* =========================================================
-   FOCUS
+   LESSON DURATION
+   ========================================================= */
+
+.lesson-duration {
+
+  color: #748094;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  letter-spacing: .06em;
+
+  white-space: nowrap;
+
+}
+
+
+.lesson-arrow {
+
+  color: #7f8b9c;
+
+  font-size: 14px;
+
+  transition:
+    color .18s ease,
+    transform .18s ease;
+
+}
+
+
+.lesson-item:hover .lesson-arrow {
+
+  color: #8ea5ff;
+
+  transform: translateX(3px);
+
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.course-loading {
+
+  min-height: 230px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border:
+    1px solid rgba(255,255,255,.075);
+
+  border-radius: 16px;
+
+  background:
+    rgba(15,22,32,.78);
+
+  color: #8490a2;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.error-state {
+
+  padding: 55px 30px;
+
+  text-align: center;
+
+}
+
+
+.error-state h3 {
+
+  margin: 0;
+
+  color: #f1f4f8;
+
+  font-family: var(--font-display);
+
+  font-size: 22px;
+
+  font-weight: 800;
+
+}
+
+
+.error-state p {
+
+  margin: 8px 0 0;
+
+  color: #8995a7;
+
+  font-size: 13px;
+
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.course-footer {
+
+  margin-top: 60px;
+
+  padding-top: 25px;
+
+  border-top:
+    1px solid rgba(255,255,255,.06);
+
+  color: #667386;
+
+  font-size: 11px;
+
+  font-weight: 500;
+
+}
+
+
+/* =========================================================
+   FOCUS ACCESSIBILITY
    ========================================================= */
 
 a:focus-visible,
 button:focus-visible {
 
   outline:
-    2px solid rgba(93,131,255,.65);
+    2px solid rgba(100,133,255,.75);
 
-  outline-offset:
-    3px;
+  outline-offset: 4px;
 
 }
 
@@ -1721,58 +1414,48 @@ button:focus-visible {
 
 * {
 
-  scrollbar-width:
-    thin;
+  scrollbar-width: thin;
 
   scrollbar-color:
-    #2d3849 transparent;
+    #2b3647 transparent;
 
 }
 
 
 ::-webkit-scrollbar {
 
-  width:
-    9px;
+  width: 9px;
 
 }
 
 
 ::-webkit-scrollbar-track {
 
-  background:
-    transparent;
+  background: transparent;
 
 }
 
 
 ::-webkit-scrollbar-thumb {
 
-  background:
-    #293444;
+  background: #2b3647;
 
-  border:
-    2px solid transparent;
+  border: 2px solid transparent;
 
-  border-radius:
-    999px;
+  border-radius: 999px;
 
-  background-clip:
-    padding-box;
+  background-clip: padding-box;
 
 }
 
 
 ::-webkit-scrollbar-thumb:hover {
 
-  background:
-    #3b475a;
+  background: #3a475b;
 
-  border:
-    2px solid transparent;
+  border: 2px solid transparent;
 
-  background-clip:
-    padding-box;
+  background-clip: padding-box;
 
 }
 
@@ -1793,49 +1476,34 @@ button:focus-visible {
 
   .course-hero {
 
-    grid-template-columns:
-      1fr;
+    grid-template-columns: 1fr;
 
-    gap:
-      30px;
+    gap: 25px;
 
-    padding:
-      38px;
+    padding: 45px;
 
   }
 
 
   .course-progress-panel {
 
-    min-height:
-      190px;
+    min-height: 190px;
 
   }
 
 
   .progress-ring {
 
-    width:
-      145px;
+    width: 150px;
 
-    height:
-      145px;
+    height: 150px;
 
   }
 
 
-  .module-header {
+  .module-description {
 
-    min-height:
-      88px;
-
-  }
-
-
-  .lesson-list {
-
-    padding-left:
-      78px;
+    max-width: 700px;
 
   }
 
@@ -1848,13 +1516,18 @@ button:focus-visible {
 
 @media (max-width: 650px) {
 
+  body {
+
+    font-size: 14px;
+
+  }
+
+
   .course-nav {
 
-    min-height:
-      58px;
+    min-height: 58px;
 
-    padding:
-      0 18px;
+    padding: 0 18px;
 
   }
 
@@ -1864,147 +1537,154 @@ button:focus-visible {
     width:
       calc(100% - 24px);
 
-    padding-top:
-      20px;
+    padding-top: 20px;
 
   }
 
 
   .course-hero {
 
-    min-height:
-      auto;
+    min-height: auto;
 
-    padding:
-      30px 23px;
+    padding: 32px 24px;
 
-    border-radius:
-      17px;
+    border-radius: 17px;
 
   }
 
 
   .course-hero h1 {
 
-    font-size:
-      39px;
+    font-size: 42px;
+
+    letter-spacing: -.055em;
 
   }
 
 
   .course-description {
 
-    font-size:
-      11px;
+    font-size: 13px;
+
+  }
+
+
+  .course-meta {
+
+    gap: 7px;
+
+  }
+
+
+  .course-meta > span {
+
+    min-height: 29px;
+
+    padding: 0 10px;
+
+    font-size: 9px;
 
   }
 
 
   .course-progress-panel {
 
-    min-height:
-      175px;
+    min-height: 175px;
 
   }
 
 
   .progress-ring {
 
-    width:
-      130px;
+    width: 132px;
 
-    height:
-      130px;
+    height: 132px;
 
   }
 
 
   .progress-value {
 
-    font-size:
-      25px;
+    font-size: 27px;
 
   }
 
 
   .curriculum-header {
 
-    align-items:
-      flex-start;
+    align-items: flex-start;
 
-    flex-direction:
-      column;
+    flex-direction: column;
 
-    margin-top:
-      38px;
+    margin-top: 42px;
 
   }
 
 
   .curriculum-header h2 {
 
-    font-size:
-      23px;
+    font-size: 27px;
+
+  }
+
+
+  .curriculum-header p {
+
+    font-size: 12px;
 
   }
 
 
   .module-header {
 
-    min-height:
-      82px;
+    min-height: 88px;
 
-    padding:
-      15px;
+    padding: 16px;
 
-    gap:
-      11px;
+    gap: 12px;
 
   }
 
 
   .module-number {
 
-    width:
-      37px;
+    width: 40px;
 
-    height:
-      37px;
+    height: 40px;
 
-    flex-basis:
-      37px;
+    flex-basis: 40px;
 
   }
 
 
-  .module-info h3 {
+  .module-title {
 
-    font-size:
-      13px;
+    font-size: 15px;
 
   }
 
 
-  .module-info p {
+  .module-description {
 
-    display:
-      none;
+    display: none;
 
   }
 
 
   .module-meta {
 
-    gap:
-      7px;
+    display: none;
 
   }
 
 
-  .module-meta > span:not(.module-arrow) {
+  .module-arrow {
 
-    display:
-      none;
+    width: 32px;
+
+    height: 32px;
+
+    flex-basis: 32px;
 
   }
 
@@ -2012,23 +1692,30 @@ button:focus-visible {
   .lesson-list {
 
     padding:
-      0 11px 11px 62px;
+      0 10px 10px 55px;
 
   }
 
 
   .lesson-item {
 
-    min-height:
-      48px;
+    min-height: 56px;
+
+    gap: 11px;
+
+  }
+
+
+  .lesson-title {
+
+    font-size: 13px;
 
   }
 
 
   .lesson-duration {
 
-    display:
-      none;
+    display: none;
 
   }
 
@@ -2045,17 +1732,13 @@ button:focus-visible {
   *::before,
   *::after {
 
-    scroll-behavior:
-      auto !important;
+    scroll-behavior: auto !important;
 
-    transition-duration:
-      .01ms !important;
+    transition-duration: .01ms !important;
 
-    animation-duration:
-      .01ms !important;
+    animation-duration: .01ms !important;
 
-    animation-iteration-count:
-      1 !important;
+    animation-iteration-count: 1 !important;
 
   }
 
