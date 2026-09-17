@@ -1,29 +1,34 @@
- /* =========================================================
-   SECORA
-   PREMIUM DYNAMIC DASHBOARD
-   V0.5
-   ========================================================= */
+ // =========================================================
+// SECORA
+// DYNAMIC DASHBOARD
+// V0.4.2
+//
+// LEARNING TRACK ARCHITECTURE
+// FUNDAMENTALS → INTERMEDIATE → ADVANCED
+//
+// Existing authentication, courses, modules, lessons,
+// progress and navigation are preserved.
+// =========================================================
+
 
 document.addEventListener(
   "DOMContentLoaded",
-  initializeDashboard
-);
+  async () => {
 
 
-/* =========================================================
-   INITIALIZE
-   ========================================================= */
-
-async function initializeDashboard() {
-
-  try {
+    // =====================================================
+    // AUTHENTICATION
+    // =====================================================
 
     const {
       data: {
         session
       },
       error: sessionError
-    } = await secoraSupabase.auth.getSession();
+    } =
+      await secoraSupabase
+        .auth
+        .getSession();
 
 
     if (
@@ -31,7 +36,9 @@ async function initializeDashboard() {
       !session
     ) {
 
-      window.location.replace("index.html");
+      window.location.replace(
+        "index.html"
+      );
 
       return;
 
@@ -42,255 +49,179 @@ async function initializeDashboard() {
       session.user;
 
 
-    /* -------------------------------------------------------
-       PROFILE
-       ------------------------------------------------------- */
-
-    const profile =
-      await loadUserProfile(
-        user.id
-      );
-
-
-    const displayName =
-      getDisplayName(
-        user,
-        profile
-      );
-
-
-    /* -------------------------------------------------------
-       USER INTERFACE
-       ------------------------------------------------------- */
+    // =====================================================
+    // USER INTERFACE
+    // =====================================================
 
     setupUserInterface(
-      user,
-      profile,
-      displayName
+      user
     );
 
 
-    /* -------------------------------------------------------
-       LOGOUT
-       ------------------------------------------------------- */
+    // =====================================================
+    // LOAD PLATFORM DATA
+    // =====================================================
 
-    setupLogout();
+    try {
+
+      const data =
+        await loadPlatformData(
+          user.id
+        );
 
 
-    /* -------------------------------------------------------
-       PLATFORM DATA
-       ------------------------------------------------------- */
+      // ---------------------------------------------------
+      // STATISTICS
+      // ---------------------------------------------------
 
-    const platform =
-      await loadPlatformData(
-        user.id
+      renderDashboardStats(
+        data
       );
 
 
-    /* -------------------------------------------------------
-       STATS
-       ------------------------------------------------------- */
+      // ---------------------------------------------------
+      // CONTINUE LEARNING
+      // ---------------------------------------------------
 
-    renderDashboardStats(
-      platform
-    );
-
-
-    /* -------------------------------------------------------
-       COURSES
-       ------------------------------------------------------- */
-
-    renderCourses(
-      platform
-    );
+      renderContinueLearning(
+        data
+      );
 
 
-    /* -------------------------------------------------------
-       REMOVE OLD CONTINUE CARD
-       ------------------------------------------------------- */
+      // ---------------------------------------------------
+      // COURSES
+      // ---------------------------------------------------
 
-    removeContinueLearning();
+      renderCourses(
+        data
+      );
 
-  } catch (error) {
 
-    console.error(
-      "SECORA dashboard error:",
-      error
-    );
+    } catch (error) {
 
-    showDashboardError();
+      console.error(
+        "Secora dashboard error:",
+        error
+      );
+
+
+      showDashboardError();
+
+    }
+
+
+    // =====================================================
+    // LOGOUT
+    // =====================================================
+
+    const logoutButton =
+      document.getElementById(
+        "logoutBtn"
+      );
+
+
+    if (
+      logoutButton
+    ) {
+
+      logoutButton.addEventListener(
+        "click",
+        async () => {
+
+          logoutButton.disabled =
+            true;
+
+
+          logoutButton.textContent =
+            "Logging out...";
+
+
+          const {
+            error
+          } =
+            await secoraSupabase
+              .auth
+              .signOut();
+
+
+          if (error) {
+
+            console.error(
+              "Logout error:",
+              error
+            );
+
+
+            logoutButton.disabled =
+              false;
+
+
+            logoutButton.textContent =
+              "Logout";
+
+
+            return;
+
+          }
+
+
+          window.location.replace(
+            "index.html"
+          );
+
+        }
+      );
+
+    }
 
   }
-
-}
-
-
-/* =========================================================
-   PROFILE
-   ========================================================= */
-
-async function loadUserProfile(
-  userId
-) {
-
-  const {
-    data,
-    error
-  } =
-    await secoraSupabase
-      .from("profiles")
-      .select(`
-        id,
-        display_name,
-        avatar_url,
-        bio
-      `)
-      .eq(
-        "id",
-        userId
-      )
-      .maybeSingle();
+);
 
 
-  if (error) {
 
-    console.warn(
-      "Profile could not be loaded:",
-      error
-    );
+// =========================================================
+// USER INTERFACE
+// =========================================================
 
-    return null;
-
-  }
-
-
-  return data || null;
-
-}
-
-
-/* =========================================================
-   DISPLAY NAME
-   ========================================================= */
-
-function getDisplayName(
-  user,
-  profile
+function setupUserInterface(
+  user
 ) {
 
   const metadata =
-    user?.user_metadata || {};
+    user.user_metadata ||
+    {};
 
 
-  const identity =
-    user?.identities?.[0]
-      ?.identity_data || {};
-
-
-  const name =
-    profile?.display_name ||
+  const displayName =
     metadata.full_name ||
     metadata.name ||
-    identity.full_name ||
-    identity.name ||
-    user?.email?.split("@")[0] ||
+    user.email?.split("@")[0] ||
     "Learner";
 
 
-  return cleanName(
-    name
-  );
+  // -------------------------------------------------------
+  // MAIN GREETING
+  // -------------------------------------------------------
 
-}
-
-
-/* =========================================================
-   CLEAN NAME
-   ========================================================= */
-
-function cleanName(
-  name
-) {
-
-  const value =
-    String(
-      name || "Learner"
-    ).trim();
-
-
-  if (!value) {
-
-    return "Learner";
-
-  }
-
-
-  return value
-    .split(/\s+/)
-    .map(
-      part =>
-        part.charAt(0).toUpperCase() +
-        part.slice(1)
-    )
-    .join(" ");
-
-}
-
-
-/* =========================================================
-   USER INTERFACE
-   ========================================================= */
-
-function setupUserInterface(
-  user,
-  profile,
-  displayName
-) {
-
-  /* -------------------------------------------------------
-     GREETING
-     ------------------------------------------------------- */
-
-  const welcomeName =
-    document.getElementById(
-      "welcomeName"
-    );
-
-  const userGreeting =
+  const greeting =
     document.getElementById(
       "userGreeting"
     );
 
 
-  const hasLearningHistory =
-    hasUserLearningHistory();
+  if (
+    greeting
+  ) {
 
-
-  const greeting =
-    hasLearningHistory
-      ? `Welcome back, ${displayName}.`
-      : `Welcome, ${displayName}.`;
-
-
-  if (welcomeName) {
-
-    welcomeName.textContent =
-      displayName;
+    greeting.textContent =
+      `Welcome back, ${displayName}.`;
 
   }
 
 
-  if (userGreeting) {
-
-    userGreeting.textContent =
-      greeting;
-
-  }
-
-
-  /* -------------------------------------------------------
-     SIDEBAR NAME
-     ------------------------------------------------------- */
+  // -------------------------------------------------------
+  // SIDEBAR NAME
+  // -------------------------------------------------------
 
   const userName =
     document.getElementById(
@@ -298,7 +229,9 @@ function setupUserInterface(
     );
 
 
-  if (userName) {
+  if (
+    userName
+  ) {
 
     userName.textContent =
       displayName;
@@ -306,9 +239,9 @@ function setupUserInterface(
   }
 
 
-  /* -------------------------------------------------------
-     TOPBAR NAME
-     ------------------------------------------------------- */
+  // -------------------------------------------------------
+  // TOPBAR NAME
+  // -------------------------------------------------------
 
   const topUserName =
     document.getElementById(
@@ -316,7 +249,9 @@ function setupUserInterface(
     );
 
 
-  if (topUserName) {
+  if (
+    topUserName
+  ) {
 
     topUserName.textContent =
       displayName;
@@ -324,9 +259,9 @@ function setupUserInterface(
   }
 
 
-  /* -------------------------------------------------------
-     EMAIL
-     ------------------------------------------------------- */
+  // -------------------------------------------------------
+  // EMAIL
+  // -------------------------------------------------------
 
   const userEmail =
     document.getElementById(
@@ -334,37 +269,77 @@ function setupUserInterface(
     );
 
 
-  if (userEmail) {
+  if (
+    userEmail
+  ) {
 
     userEmail.textContent =
-      user?.email || "";
+      user.email ||
+      "";
 
   }
 
 
-  /* -------------------------------------------------------
-     AVATAR
-     ------------------------------------------------------- */
+  // -------------------------------------------------------
+  // AVATAR
+  // -------------------------------------------------------
 
-  setupAvatar(
-    document.getElementById("userAvatar"),
-    user,
-    profile,
-    displayName
+  const avatarUrl =
+    metadata.avatar_url ||
+    metadata.picture ||
+    "";
+
+
+  const avatarElements =
+    document.querySelectorAll(
+      "#userAvatar, #topUserAvatar"
+    );
+
+
+  avatarElements.forEach(
+    avatar => {
+
+      if (
+        avatar.tagName ===
+        "IMG"
+      ) {
+
+        if (
+          avatarUrl
+        ) {
+
+          avatar.src =
+            avatarUrl;
+
+          avatar.alt =
+            displayName;
+
+          avatar.style.display =
+            "";
+
+        } else {
+
+          avatar.style.display =
+            "grid";
+
+          avatar.removeAttribute(
+            "src"
+          );
+
+          avatar.alt =
+            "";
+
+        }
+
+      }
+
+    }
   );
 
 
-  setupAvatar(
-    document.getElementById("topUserAvatar"),
-    user,
-    profile,
-    displayName
-  );
-
-
-  /* -------------------------------------------------------
-     DATE
-     ------------------------------------------------------- */
+  // -------------------------------------------------------
+  // DATE
+  // -------------------------------------------------------
 
   const dateElement =
     document.getElementById(
@@ -372,7 +347,9 @@ function setupUserInterface(
     );
 
 
-  if (dateElement) {
+  if (
+    dateElement
+  ) {
 
     dateElement.textContent =
       new Date().toLocaleDateString(
@@ -390,226 +367,19 @@ function setupUserInterface(
 }
 
 
-/* =========================================================
-   AVATAR
-   ========================================================= */
 
-function setupAvatar(
-  avatar,
-  user,
-  profile,
-  displayName
-) {
-
-  if (!avatar) {
-
-    return;
-
-  }
-
-
-  const avatarUrl =
-    profile?.avatar_url ||
-    user?.user_metadata?.avatar_url ||
-    user?.user_metadata?.picture ||
-    user?.identities?.[0]
-      ?.identity_data
-      ?.avatar_url ||
-    user?.identities?.[0]
-      ?.identity_data
-      ?.picture ||
-    "";
-
-
-  /* -------------------------------------------------------
-     IMAGE ELEMENT
-     ------------------------------------------------------- */
-
-  if (
-    avatar.tagName === "IMG"
-  ) {
-
-    if (avatarUrl) {
-
-      avatar.src =
-        avatarUrl;
-
-      avatar.alt =
-        displayName;
-
-      avatar.style.display =
-        "";
-
-    } else {
-
-      avatar.removeAttribute(
-        "src"
-      );
-
-      avatar.alt =
-        displayName;
-
-      avatar.style.display =
-        "grid";
-
-      avatar.textContent =
-        getInitials(
-          displayName
-        );
-
-    }
-
-    return;
-
-  }
-
-
-  /* -------------------------------------------------------
-     DIV AVATAR
-     ------------------------------------------------------- */
-
-  avatar.textContent =
-    getInitials(
-      displayName
-    );
-
-
-  if (avatarUrl) {
-
-    avatar.style.backgroundImage =
-      `url("${escapeCSSUrl(avatarUrl)}")`;
-
-    avatar.style.backgroundSize =
-      "cover";
-
-    avatar.style.backgroundPosition =
-      "center";
-
-    avatar.style.color =
-      "transparent";
-
-  } else {
-
-    avatar.style.backgroundImage =
-      "";
-
-    avatar.style.color =
-      "";
-
-  }
-
-}
-
-
-/* =========================================================
-   INITIALS
-   ========================================================= */
-
-function getInitials(
-  name
-) {
-
-  const parts =
-    String(
-      name || "Learner"
-    )
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean);
-
-
-  if (!parts.length) {
-
-    return "L";
-
-  }
-
-
-  if (parts.length === 1) {
-
-    return parts[0]
-      .charAt(0)
-      .toUpperCase();
-
-  }
-
-
-  return (
-    parts[0].charAt(0) +
-    parts[parts.length - 1].charAt(0)
-  ).toUpperCase();
-
-}
-
-
-/* =========================================================
-   CSS URL SAFETY
-   ========================================================= */
-
-function escapeCSSUrl(
-  value
-) {
-
-  return String(
-    value || ""
-  )
-    .replaceAll(
-      "\\",
-      "\\\\"
-    )
-    .replaceAll(
-      '"',
-      '\\"'
-    );
-
-}
-
-
-/* =========================================================
-   LEARNING HISTORY
-   ========================================================= */
-
-function hasUserLearningHistory() {
-
-  const key =
-    "secora_dashboard_visited";
-
-
-  const visited =
-    sessionStorage.getItem(
-      key
-    );
-
-
-  if (visited) {
-
-    return true;
-
-  }
-
-
-  sessionStorage.setItem(
-    key,
-    "true"
-  );
-
-
-  return false;
-
-}
-
-
-/* =========================================================
-   LOAD PLATFORM DATA
-   ========================================================= */
+// =========================================================
+// LOAD PLATFORM DATA
+// =========================================================
 
 async function loadPlatformData(
   userId
 ) {
 
-  /* -------------------------------------------------------
-     COURSES
-     ------------------------------------------------------- */
+
+  // =======================================================
+  // COURSES
+  // =======================================================
 
   const {
     data: courses,
@@ -623,6 +393,7 @@ async function loadPlatformData(
         slug,
         description,
         level,
+        track,
         published,
         created_at
       `)
@@ -638,23 +409,24 @@ async function loadPlatformData(
       );
 
 
-  if (coursesError) {
+  if (
+    coursesError
+  ) {
 
     throw coursesError;
 
   }
 
 
-  const safeCourses =
-    courses || [];
-
-
-  /* -------------------------------------------------------
-     MODULES
-     ------------------------------------------------------- */
+  // =======================================================
+  // MODULES
+  // =======================================================
 
   const courseIds =
-    safeCourses.map(
+    (
+      courses ||
+      []
+    ).map(
       course =>
         course.id
     );
@@ -677,6 +449,7 @@ async function loadPlatformData(
           id,
           course_id,
           title,
+          description,
           position
         `)
         .in(
@@ -691,7 +464,9 @@ async function loadPlatformData(
         );
 
 
-    if (error) {
+    if (
+      error
+    ) {
 
       throw error;
 
@@ -699,14 +474,16 @@ async function loadPlatformData(
 
 
     modules =
-      data || [];
+      data ||
+      [];
 
   }
 
 
-  /* -------------------------------------------------------
-     LESSONS
-     ------------------------------------------------------- */
+
+  // =======================================================
+  // LESSONS
+  // =======================================================
 
   const moduleIds =
     modules.map(
@@ -753,7 +530,9 @@ async function loadPlatformData(
         );
 
 
-    if (error) {
+    if (
+      error
+    ) {
 
       throw error;
 
@@ -761,14 +540,16 @@ async function loadPlatformData(
 
 
     lessons =
-      data || [];
+      data ||
+      [];
 
   }
 
 
-  /* -------------------------------------------------------
-     USER PROGRESS
-     ------------------------------------------------------- */
+
+  // =======================================================
+  // USER PROGRESS
+  // =======================================================
 
   const lessonIds =
     lessons.map(
@@ -806,7 +587,9 @@ async function loadPlatformData(
         );
 
 
-    if (error) {
+    if (
+      error
+    ) {
 
       throw error;
 
@@ -814,7 +597,8 @@ async function loadPlatformData(
 
 
     progress =
-      data || [];
+      data ||
+      [];
 
   }
 
@@ -822,7 +606,8 @@ async function loadPlatformData(
   return {
 
     courses:
-      safeCourses,
+      courses ||
+      [],
 
     modules,
 
@@ -835,9 +620,10 @@ async function loadPlatformData(
 }
 
 
-/* =========================================================
-   BUILD COURSE DATA
-   ========================================================= */
+
+// =========================================================
+// BUILD COURSE DATA
+// =========================================================
 
 function buildCourseData(
   data
@@ -848,11 +634,17 @@ function buildCourseData(
     modules,
     lessons,
     progress
-  } = data;
+  } =
+    data;
 
 
   return courses.map(
     course => {
+
+
+      // ---------------------------------------------------
+      // COURSE MODULES
+      // ---------------------------------------------------
 
       const courseModules =
         modules.filter(
@@ -862,12 +654,20 @@ function buildCourseData(
         );
 
 
+      // ---------------------------------------------------
+      // COURSE MODULE IDS
+      // ---------------------------------------------------
+
       const moduleIds =
         courseModules.map(
           module =>
             module.id
         );
 
+
+      // ---------------------------------------------------
+      // COURSE LESSONS
+      // ---------------------------------------------------
 
       const courseLessons =
         lessons.filter(
@@ -878,12 +678,20 @@ function buildCourseData(
         );
 
 
+      // ---------------------------------------------------
+      // LESSON IDS
+      // ---------------------------------------------------
+
       const courseLessonIds =
         courseLessons.map(
           lesson =>
             lesson.id
         );
 
+
+      // ---------------------------------------------------
+      // COURSE PROGRESS
+      // ---------------------------------------------------
 
       const courseProgress =
         progress.filter(
@@ -894,16 +702,29 @@ function buildCourseData(
         );
 
 
+      // ---------------------------------------------------
+      // COMPLETED
+      // ---------------------------------------------------
+
       const completed =
         courseProgress.filter(
           item =>
-            item.completed === true
+            item.completed ===
+            true
         ).length;
 
+
+      // ---------------------------------------------------
+      // TOTAL
+      // ---------------------------------------------------
 
       const total =
         courseLessons.length;
 
+
+      // ---------------------------------------------------
+      // PERCENTAGE
+      // ---------------------------------------------------
 
       const percentage =
         total === 0
@@ -916,9 +737,21 @@ function buildCourseData(
             );
 
 
+      // ---------------------------------------------------
+      // TRACK
+      // ---------------------------------------------------
+
+      const track =
+        normalizeTrack(
+          course.track
+        );
+
+
       return {
 
         ...course,
+
+        track,
 
         modules:
           courseModules,
@@ -940,9 +773,53 @@ function buildCourseData(
 }
 
 
-/* =========================================================
-   DASHBOARD STATISTICS
-   ========================================================= */
+
+// =========================================================
+// NORMALIZE TRACK
+// =========================================================
+
+function normalizeTrack(
+  track
+) {
+
+  const value =
+    String(
+      track ||
+      "fundamentals"
+    )
+      .trim()
+      .toLowerCase();
+
+
+  if (
+    value ===
+    "intermediate"
+  ) {
+
+    return "intermediate";
+
+  }
+
+
+  if (
+    value ===
+    "advanced"
+  ) {
+
+    return "advanced";
+
+  }
+
+
+  return "fundamentals";
+
+}
+
+
+
+// =========================================================
+// DASHBOARD STATISTICS
+// =========================================================
 
 function renderDashboardStats(
   data
@@ -961,7 +838,8 @@ function renderDashboardStats(
   const completedLessons =
     data.progress.filter(
       item =>
-        item.completed === true
+        item.completed ===
+        true
     ).length;
 
 
@@ -990,19 +868,19 @@ function renderDashboardStats(
         );
 
 
-  /* -------------------------------------------------------
-     DIRECT IDS
-     ------------------------------------------------------- */
-
-  setText(
-    "coursesStarted",
-    startedCourses
-  );
-
+  // -------------------------------------------------------
+  // MODERN IDs
+  // -------------------------------------------------------
 
   setText(
     "completedLessons",
     completedLessons
+  );
+
+
+  setText(
+    "coursesStarted",
+    startedCourses
   );
 
 
@@ -1012,9 +890,9 @@ function renderDashboardStats(
   );
 
 
-  /* -------------------------------------------------------
-     EXISTING HTML COMPATIBILITY
-     ------------------------------------------------------- */
+  // -------------------------------------------------------
+  // LEGACY STAT CARD SUPPORT
+  // -------------------------------------------------------
 
   const statValues =
     document.querySelectorAll(
@@ -1051,57 +929,336 @@ function renderDashboardStats(
 
   }
 
+}
 
-  /* -------------------------------------------------------
-     FOURTH STAT
-     Replace fake streak with real account state.
-     ------------------------------------------------------- */
+
+
+// =========================================================
+// CONTINUE LEARNING
+// =========================================================
+
+function renderContinueLearning(
+  data
+) {
+
+  const {
+    lessons,
+    progress
+  } =
+    data;
+
+
+  // -------------------------------------------------------
+  // FIND OPENED LESSONS
+  // -------------------------------------------------------
+
+  const openedLessons =
+    lessons
+      .map(
+        lesson => {
+
+          const record =
+            progress.find(
+              item =>
+                item.lesson_id ===
+                lesson.id
+            );
+
+
+          if (
+            !record?.last_opened_at
+          ) {
+
+            return null;
+
+          }
+
+
+          return {
+
+            lesson,
+
+            progress:
+              record
+
+          };
+
+        }
+      )
+      .filter(
+        Boolean
+      );
+
+
+  // -------------------------------------------------------
+  // NOTHING OPENED
+  // -------------------------------------------------------
 
   if (
-    statValues.length >= 4
+    !openedLessons.length
   ) {
 
-    statValues[3].textContent =
-      "ACTIVE";
+    renderEmptyContinueLearning();
+
+    return;
+
+  }
 
 
-    const labels =
-      document.querySelectorAll(
-        ".stat-card .stat-label"
-      );
+  // -------------------------------------------------------
+  // SORT MOST RECENT
+  // -------------------------------------------------------
+
+  openedLessons.sort(
+    (a, b) =>
+      new Date(
+        b.progress.last_opened_at
+      ) -
+      new Date(
+        a.progress.last_opened_at
+      )
+  );
 
 
-    const descriptions =
-      document.querySelectorAll(
-        ".stat-card p"
-      );
+  const current =
+    openedLessons[0];
 
 
-    if (labels.length >= 4) {
-
-      labels[3].textContent =
-        "STATUS";
-
-    }
+  const lesson =
+    current.lesson;
 
 
-    if (
-      descriptions.length >= 4
-    ) {
+  const module =
+    data.modules.find(
+      item =>
+        item.id ===
+        lesson.module_id
+    );
 
-      descriptions[3].textContent =
-        "Learning account";
 
-    }
+  const course =
+    data.courses.find(
+      item =>
+        item.id ===
+        module?.course_id
+    );
+
+
+  if (
+    !course
+  ) {
+
+    return;
+
+  }
+
+
+  // -------------------------------------------------------
+  // EXISTING CONTINUE ELEMENTS
+  // -------------------------------------------------------
+
+  setText(
+    "continueCourse",
+    course.title
+  );
+
+
+  setText(
+    "continueLesson",
+    lesson.title
+  );
+
+
+  setText(
+    "continueModule",
+    module?.title ||
+    ""
+  );
+
+
+  const continueButton =
+    document.getElementById(
+      "continueBtn"
+    );
+
+
+  if (
+    continueButton
+  ) {
+
+    continueButton.href =
+      `lesson.html?slug=${encodeURIComponent(
+        lesson.slug
+      )}`;
+
+  }
+
+
+  // -------------------------------------------------------
+  // CREATE CONTINUE CARD IF NECESSARY
+  // -------------------------------------------------------
+
+  if (
+    !document.querySelector(
+      ".continue-learning"
+    )
+  ) {
+
+    createContinueCard(
+      course,
+      module,
+      lesson,
+      current.progress
+    );
 
   }
 
 }
 
 
-/* =========================================================
-   COURSE CARDS
-   ========================================================= */
+
+// =========================================================
+// CREATE CONTINUE CARD
+// =========================================================
+
+function createContinueCard(
+  course,
+  module,
+  lesson,
+  progress
+) {
+
+  const courseGrid =
+    document.querySelector(
+      ".course-grid"
+    );
+
+
+  if (
+    !courseGrid
+  ) {
+
+    return;
+
+  }
+
+
+  const card =
+    document.createElement(
+      "section"
+    );
+
+
+  card.className =
+    "continue-learning";
+
+
+  const status =
+    progress.completed
+      ? "Completed"
+      : "In progress";
+
+
+  card.innerHTML = `
+
+    <div class="continue-content">
+
+      <span class="continue-eyebrow">
+        CONTINUE LEARNING
+      </span>
+
+      <h2>
+        ${escapeHTML(
+          lesson.title
+        )}
+      </h2>
+
+      <p class="continue-course">
+        ${escapeHTML(
+          course.title
+        )}
+      </p>
+
+      <p class="continue-module">
+        ${escapeHTML(
+          module?.title ||
+          ""
+        )}
+      </p>
+
+    </div>
+
+
+    <div class="continue-action">
+
+      <span class="continue-status">
+        ${status}
+      </span>
+
+      <a
+        href="lesson.html?slug=${encodeURIComponent(
+          lesson.slug
+        )}"
+        class="continue-button"
+      >
+        Continue →
+      </a>
+
+    </div>
+
+  `;
+
+
+  courseGrid.parentNode.insertBefore(
+    card,
+    courseGrid
+  );
+
+}
+
+
+
+// =========================================================
+// EMPTY CONTINUE STATE
+// =========================================================
+
+function renderEmptyContinueLearning() {
+
+  const existing =
+    document.querySelector(
+      ".continue-learning"
+    );
+
+
+  if (
+    existing
+  ) {
+
+    existing.remove();
+
+  }
+
+}
+
+
+
+// =========================================================
+// RENDER COURSES
+// =========================================================
+//
+// IMPORTANT:
+//
+// This is the new learning architecture.
+//
+// The existing .course-grid remains the mounting point,
+// but its contents are now grouped automatically:
+//
+// FUNDAMENTALS
+// INTERMEDIATE
+// ADVANCED
+//
+// No course is hard-coded.
+// =========================================================
 
 function renderCourses(
   data
@@ -1113,7 +1270,9 @@ function renderCourses(
     );
 
 
-  if (!grid) {
+  if (
+    !grid
+  ) {
 
     return;
 
@@ -1126,45 +1285,315 @@ function renderCourses(
     );
 
 
-  if (
-    !courseData.length
-  ) {
+  // -------------------------------------------------------
+  // ENABLE TRACK LAYOUT
+  // -------------------------------------------------------
 
-    grid.innerHTML = `
-      <div class="course-empty">
-
-        <h3>
-          No courses available
-        </h3>
-
-        <p>
-          Published courses will appear here.
-        </p>
-
-      </div>
-    `;
-
-    return;
-
-  }
+  grid.classList.add(
+    "course-track-layout"
+  );
 
 
-  grid.innerHTML =
-    courseData
-      .map(
-        course =>
-          createCourseCard(
-            course
-          )
-      )
-      .join("");
+  // -------------------------------------------------------
+  // GROUP COURSES
+  // -------------------------------------------------------
+
+  const grouped = {
+
+    fundamentals:
+      [],
+
+    intermediate:
+      [],
+
+    advanced:
+      []
+
+  };
+
+
+  courseData.forEach(
+    course => {
+
+      const track =
+        normalizeTrack(
+          course.track
+        );
+
+
+      grouped[
+        track
+      ].push(
+        course
+      );
+
+    }
+  );
+
+
+  // -------------------------------------------------------
+  // SORT EACH TRACK
+  // -------------------------------------------------------
+
+  Object.keys(
+    grouped
+  ).forEach(
+    track => {
+
+      grouped[
+        track
+      ].sort(
+        (
+          a,
+          b
+        ) => {
+
+          return (
+            new Date(
+              a.created_at ||
+              0
+            ) -
+            new Date(
+              b.created_at ||
+              0
+            )
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  // -------------------------------------------------------
+  // RENDER
+  // -------------------------------------------------------
+
+  grid.innerHTML = `
+
+    ${createTrackSection(
+      "fundamentals",
+      grouped.fundamentals
+    )}
+
+    ${createTrackSection(
+      "intermediate",
+      grouped.intermediate
+    )}
+
+    ${createTrackSection(
+      "advanced",
+      grouped.advanced
+    )}
+
+  `;
 
 }
 
 
-/* =========================================================
-   COURSE CARD
-   ========================================================= */
+
+// =========================================================
+// CREATE TRACK SECTION
+// =========================================================
+
+function createTrackSection(
+  track,
+  courses
+) {
+
+  const config =
+    getTrackConfig(
+      track
+    );
+
+
+  const courseMarkup =
+    courses.length
+      ? courses
+          .map(
+            course =>
+              createCourseCard(
+                course
+              )
+          )
+          .join("")
+      : createEmptyTrack();
+
+
+  return `
+
+    <section
+      class="course-track course-track-${track}"
+      data-track="${track}"
+    >
+
+      <header class="course-track-header">
+
+        <div class="course-track-heading">
+
+          <span class="course-track-index">
+            ${config.index}
+          </span>
+
+          <div>
+
+            <span class="course-track-eyebrow">
+              ${config.eyebrow}
+            </span>
+
+            <h2>
+              ${config.title}
+            </h2>
+
+            <p>
+              ${config.description}
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <span class="course-track-count">
+
+          ${courses.length}
+
+          ${courses.length === 1
+            ? "COURSE"
+            : "COURSES"}
+
+        </span>
+
+      </header>
+
+
+      <div class="course-track-grid">
+
+        ${courseMarkup}
+
+      </div>
+
+    </section>
+
+  `;
+
+}
+
+
+
+// =========================================================
+// TRACK CONFIGURATION
+// =========================================================
+
+function getTrackConfig(
+  track
+) {
+
+  const configurations = {
+
+    fundamentals: {
+
+      index:
+        "01",
+
+      eyebrow:
+        "FOUNDATION",
+
+      title:
+        "Fundamentals",
+
+      description:
+        "Build the technical foundation required to understand modern cybersecurity."
+
+    },
+
+
+    intermediate: {
+
+      index:
+        "02",
+
+      eyebrow:
+        "APPLICATION",
+
+      title:
+        "Intermediate",
+
+      description:
+        "Apply your foundation to practical security concepts, technologies, and workflows."
+
+    },
+
+
+    advanced: {
+
+      index:
+        "03",
+
+      eyebrow:
+        "PROFESSIONAL",
+
+      title:
+        "Advanced",
+
+      description:
+        "Develop deeper expertise across offensive, defensive, enterprise, and cloud security."
+
+    }
+
+  };
+
+
+  return (
+    configurations[
+      track
+    ] ||
+    configurations.fundamentals
+  );
+
+}
+
+
+
+// =========================================================
+// EMPTY TRACK
+// =========================================================
+
+function createEmptyTrack() {
+
+  return `
+
+    <div class="course-track-empty">
+
+      <span class="course-track-empty-index">
+        —
+      </span>
+
+      <div>
+
+        <strong>
+          Courses coming soon
+        </strong>
+
+        <p>
+          New learning material is being prepared
+          for this learning stage.
+        </p>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+
+// =========================================================
+// CREATE COURSE CARD
+// =========================================================
 
 function createCourseCard(
   course
@@ -1177,79 +1606,56 @@ function createCourseCard(
     ).toUpperCase();
 
 
-  const moduleCount =
-    course.modules.length;
-
-
-  const duration =
-    course.lessons.reduce(
-      (
-        total,
-        lesson
-      ) =>
-        total +
-        (
-          Number(
-            lesson.duration_minutes
-          ) || 0
-        ),
-      0
+  const track =
+    normalizeTrack(
+      course.track
     );
 
 
-  const hours =
-    duration > 0
-      ? Math.max(
-          1,
-          Math.round(
-            duration / 60
-          )
-        )
-      : null;
-
-
-  const durationLabel =
-    hours
-      ? `~ ${hours} ${hours === 1 ? "hour" : "hours"}`
-      : `${course.total} ${course.total === 1 ? "lesson" : "lessons"}`;
+  const trackLabel =
+    track ===
+    "fundamentals"
+      ? "FOUNDATION"
+      : track ===
+        "intermediate"
+        ? "INTERMEDIATE"
+        : "ADVANCED";
 
 
   return `
 
     <article
       class="course-card"
-      data-course="${escapeHTML(course.slug)}"
+      data-course="${escapeHTML(
+        course.slug
+      )}"
+      data-track="${escapeHTML(
+        track
+      )}"
     >
-
-      <div class="course-number">
-        ${String(
-          course.modules?.[0]?.position ||
-          1
-        ).padStart(2, "0")}
-      </div>
 
 
       <div class="course-card-top">
 
+
         <span class="course-level">
-          ${escapeHTML(level)}
+          ${escapeHTML(
+            level
+          )}
         </span>
+
 
         <span class="course-percentage">
           ${course.percentage}%
         </span>
 
-      </div>
-
-
-      <div class="course-meta">
-
-        <span>
-          ${moduleCount}
-          MODULE${moduleCount === 1 ? "" : "S"}
-        </span>
 
       </div>
+
+
+      <span class="course-track-label">
+        ${trackLabel}
+      </span>
 
 
       <h3>
@@ -1262,56 +1668,71 @@ function createCourseCard(
       <p>
         ${escapeHTML(
           course.description ||
-          "Build your cybersecurity knowledge through structured lessons."
+          ""
         )}
       </p>
 
 
       <div class="course-card-meta">
 
+
         <span>
           ${course.total}
-          LESSON${course.total === 1 ? "" : "S"}
+
+          LESSON${course.total === 1
+            ? ""
+            : "S"}
+
         </span>
+
 
         <span>
           ${course.completed}
           COMPLETED
         </span>
 
+
       </div>
 
 
-      <div
-        class="course-progress"
-        aria-label="Course progress"
-      >
+      <div class="course-progress">
+
 
         <div
           class="course-progress-bar"
           style="width:${course.percentage}%"
         ></div>
 
+
       </div>
 
 
-      <div class="course-footer">
+      <div class="course-card-footer">
 
-        <span>
-          ${durationLabel}
+
+        <span class="course-card-time">
+
+          ${getCourseDuration(
+            course
+          )}
+
         </span>
+
 
         <a
           href="course.html?slug=${encodeURIComponent(
             course.slug
           )}"
           class="course-explore"
-          aria-label="Explore ${escapeHTML(course.title)}"
         >
+
           Explore →
+
         </a>
 
+
       </div>
+
 
     </article>
 
@@ -1320,117 +1741,177 @@ function createCourseCard(
 }
 
 
-/* =========================================================
-   REMOVE OLD CONTINUE LEARNING
-   ========================================================= */
 
-function removeContinueLearning() {
+// =========================================================
+// COURSE DURATION
+// =========================================================
 
-  document
-    .querySelectorAll(
-      ".continue-learning"
-    )
-    .forEach(
-      element =>
-        element.remove()
+function getCourseDuration(
+  course
+) {
+
+  if (
+    !course.total
+  ) {
+
+    return "No lessons";
+
+  }
+
+
+  const totalMinutes =
+    course.lessons.reduce(
+      (
+        total,
+        lesson
+      ) => {
+
+        return (
+          total +
+          (
+            Number(
+              lesson.duration_minutes
+            ) ||
+            0
+          )
+        );
+
+      },
+      0
     );
+
+
+  if (
+    !totalMinutes
+  ) {
+
+    return `${course.total} lessons`;
+
+  }
+
+
+  const hours =
+    totalMinutes /
+    60;
+
+
+  if (
+    hours < 1
+  ) {
+
+    return `~ ${Math.round(
+      totalMinutes
+    )} min`;
+
+  }
+
+
+  return `~ ${formatHours(
+    hours
+  )}`;
 
 }
 
 
-/* =========================================================
-   LOGOUT
-   ========================================================= */
 
-function setupLogout() {
+// =========================================================
+// FORMAT HOURS
+// =========================================================
 
-  const logoutButtons =
-    document.querySelectorAll(
-      "#logoutBtn, .logout, .logout-btn, [data-action='logout']"
-    );
+function formatHours(
+  hours
+) {
 
+  if (
+    hours < 1
+  ) {
 
-  logoutButtons.forEach(
-    button => {
+    return `${Math.round(
+      hours * 60
+    )} min`;
 
-      if (
-        button.dataset.secoraLogoutBound ===
-        "true"
-      ) {
-
-        return;
-
-      }
+  }
 
 
-      button.dataset.secoraLogoutBound =
-        "true";
+  if (
+    Number.isInteger(
+      hours
+    )
+  ) {
+
+    return `${hours} hours`;
+
+  }
 
 
-      button.addEventListener(
-        "click",
-        async event => {
+  return `${hours.toFixed(
+    1
+  )} hours`;
 
-          event.preventDefault();
-
-
-          button.disabled =
-            true;
+}
 
 
-          const originalText =
-            button.textContent;
 
+// =========================================================
+// COURSE CARD CLICK SUPPORT
+// =========================================================
 
-          button.textContent =
-            "Logging out...";
+document.addEventListener(
+  "click",
+  event => {
 
-
-          const {
-            error
-          } =
-            await secoraSupabase
-              .auth
-              .signOut();
-
-
-          if (error) {
-
-            console.error(
-              "Logout error:",
-              error
-            );
-
-
-            button.disabled =
-              false;
-
-
-            button.textContent =
-              originalText;
-
-
-            return;
-
-          }
-
-
-          window.location.replace(
-            "index.html"
-          );
-
-        }
+    const card =
+      event.target.closest(
+        ".course-card"
       );
 
+
+    if (
+      !card
+    ) {
+
+      return;
+
     }
-  );
-
-}
 
 
-/* =========================================================
-   TEXT HELPER
-   ========================================================= */
+    const link =
+      card.querySelector(
+        ".course-explore"
+      );
+
+
+    if (
+      !link
+    ) {
+
+      return;
+
+    }
+
+
+    if (
+      event.target.closest(
+        "a"
+      )
+    ) {
+
+      return;
+
+    }
+
+
+    window.location.href =
+      link.href;
+
+  }
+);
+
+
+
+// =========================================================
+// TEXT HELPER
+// =========================================================
 
 function setText(
   id,
@@ -1443,7 +1924,9 @@ function setText(
     );
 
 
-  if (element) {
+  if (
+    element
+  ) {
 
     element.textContent =
       value;
@@ -1453,9 +1936,10 @@ function setText(
 }
 
 
-/* =========================================================
-   ERROR
-   ========================================================= */
+
+// =========================================================
+// DASHBOARD ERROR
+// =========================================================
 
 function showDashboardError() {
 
@@ -1465,7 +1949,9 @@ function showDashboardError() {
     );
 
 
-  if (!grid) {
+  if (
+    !grid
+  ) {
 
     return;
 
@@ -1491,9 +1977,10 @@ function showDashboardError() {
 }
 
 
-/* =========================================================
-   HTML SAFETY
-   ========================================================= */
+
+// =========================================================
+// HTML SAFETY
+// =========================================================
 
 function escapeHTML(
   value
@@ -1502,22 +1989,27 @@ function escapeHTML(
   return String(
     value ?? ""
   )
+
     .replaceAll(
       "&",
       "&amp;"
     )
+
     .replaceAll(
       "<",
       "&lt;"
     )
+
     .replaceAll(
       ">",
       "&gt;"
     )
+
     .replaceAll(
       '"',
       "&quot;"
     )
+
     .replaceAll(
       "'",
       "&#039;"
