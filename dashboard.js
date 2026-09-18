@@ -1,10 +1,10 @@
- // =========================================================
+// =========================================================
 // SECORA
 // DYNAMIC DASHBOARD
 // V0.4.2
 //
 // LEARNING TRACK ARCHITECTURE
-// FUNDAMENTALS → INTERMEDIATE → ADVANCED
+// SECORA ORIGIN → SECORA CORE → SECORA BLACKLINE
 //
 // Existing authentication, courses, modules, lessons,
 // progress and navigation are preserved.
@@ -182,6 +182,7 @@ document.addEventListener(
 // =========================================================
 // USER INTERFACE
 // =========================================================
+
 
 function setupUserInterface(
   user
@@ -371,6 +372,7 @@ function setupUserInterface(
 // =========================================================
 // LOAD PLATFORM DATA
 // =========================================================
+
 
 async function loadPlatformData(
   userId
@@ -625,6 +627,7 @@ async function loadPlatformData(
 // BUILD COURSE DATA
 // =========================================================
 
+
 function buildCourseData(
   data
 ) {
@@ -778,6 +781,7 @@ function buildCourseData(
 // NORMALIZE TRACK
 // =========================================================
 
+
 function normalizeTrack(
   track
 ) {
@@ -820,6 +824,7 @@ function normalizeTrack(
 // =========================================================
 // DASHBOARD STATISTICS
 // =========================================================
+
 
 function renderDashboardStats(
   data
@@ -936,6 +941,7 @@ function renderDashboardStats(
 // =========================================================
 // CONTINUE LEARNING
 // =========================================================
+
 
 function renderContinueLearning(
   data
@@ -1121,6 +1127,7 @@ function renderContinueLearning(
 // CREATE CONTINUE CARD
 // =========================================================
 
+
 function createContinueCard(
   course,
   module,
@@ -1222,6 +1229,7 @@ function createContinueCard(
 // EMPTY CONTINUE STATE
 // =========================================================
 
+
 function renderEmptyContinueLearning() {
 
   const existing =
@@ -1253,12 +1261,13 @@ function renderEmptyContinueLearning() {
 // The existing .course-grid remains the mounting point,
 // but its contents are now grouped automatically:
 //
-// FUNDAMENTALS
-// INTERMEDIATE
-// ADVANCED
+// SECORA ORIGIN
+// SECORA CORE
+// SECORA BLACKLINE
 //
 // No course is hard-coded.
 // =========================================================
+
 
 function renderCourses(
   data
@@ -1397,6 +1406,7 @@ function renderCourses(
 // CREATE TRACK SECTION
 // =========================================================
 
+
 function createTrackSection(
   track,
   courses
@@ -1486,6 +1496,7 @@ function createTrackSection(
 // TRACK CONFIGURATION
 // =========================================================
 
+
 function getTrackConfig(
   track
 ) {
@@ -1498,13 +1509,13 @@ function getTrackConfig(
         "01",
 
       eyebrow:
-        "FOUNDATION",
+        "ORIGIN",
 
       title:
-        "Fundamentals",
+        "SECORA ORIGIN",
 
       description:
-        "Build the technical foundation required to understand modern cybersecurity."
+        "Understand the Digital Battlefield"
 
     },
 
@@ -1515,13 +1526,13 @@ function getTrackConfig(
         "02",
 
       eyebrow:
-        "APPLICATION",
+        "CORE",
 
       title:
-        "Intermediate",
+        "SECORA CORE",
 
       description:
-        "Apply your foundation to practical security concepts, technologies, and workflows."
+        "Learn How Systems Are Attacked and Defended"
 
     },
 
@@ -1532,13 +1543,13 @@ function getTrackConfig(
         "03",
 
       eyebrow:
-        "PROFESSIONAL",
+        "BLACKLINE",
 
       title:
-        "Advanced",
+        "SECORA BLACKLINE",
 
       description:
-        "Develop deeper expertise across offensive, defensive, enterprise, and cloud security."
+        "Think Like the Adversary. Defend Like the Expert."
 
     }
 
@@ -1559,6 +1570,7 @@ function getTrackConfig(
 // =========================================================
 // EMPTY TRACK
 // =========================================================
+
 
 function createEmptyTrack() {
 
@@ -1595,6 +1607,7 @@ function createEmptyTrack() {
 // CREATE COURSE CARD
 // =========================================================
 
+
 function createCourseCard(
   course
 ) {
@@ -1615,11 +1628,11 @@ function createCourseCard(
   const trackLabel =
     track ===
     "fundamentals"
-      ? "FOUNDATION"
+      ? "ORIGIN"
       : track ===
         "intermediate"
-        ? "INTERMEDIATE"
-        : "ADVANCED";
+        ? "CORE"
+        : "BLACKLINE";
 
 
   return `
@@ -1746,6 +1759,7 @@ function createCourseCard(
 // COURSE DURATION
 // =========================================================
 
+
 function getCourseDuration(
   course
 ) {
@@ -1818,6 +1832,7 @@ function getCourseDuration(
 // FORMAT HOURS
 // =========================================================
 
+
 function formatHours(
   hours
 ) {
@@ -1855,6 +1870,7 @@ function formatHours(
 // =========================================================
 // COURSE CARD CLICK SUPPORT
 // =========================================================
+
 
 document.addEventListener(
   "click",
@@ -1913,6 +1929,7 @@ document.addEventListener(
 // TEXT HELPER
 // =========================================================
 
+
 function setText(
   id,
   value
@@ -1940,6 +1957,7 @@ function setText(
 // =========================================================
 // DASHBOARD ERROR
 // =========================================================
+
 
 function showDashboardError() {
 
@@ -1981,6 +1999,7 @@ function showDashboardError() {
 // =========================================================
 // HTML SAFETY
 // =========================================================
+
 
 function escapeHTML(
   value
