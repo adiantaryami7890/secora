@@ -3595,6 +3595,8 @@ input:focus-visible {
   }
 
 }
+
+
 /* =========================================================
    SECORA — COURSE TRACK ARCHITECTURE
    V0.4.2 FINAL LAYOUT OVERRIDE
@@ -4345,6 +4347,10 @@ input:focus-visible {
 }
 
 
+/* =========================================================
+   EMPTY TRACK INDEX
+   ========================================================= */
+
 .course-track-empty-index {
 
   display: grid !important;
@@ -4367,6 +4373,10 @@ input:focus-visible {
 }
 
 
+/* =========================================================
+   EMPTY TRACK TITLE
+   ========================================================= */
+
 .course-track-empty strong {
 
   display: block !important;
@@ -4384,6 +4394,10 @@ input:focus-visible {
 
 }
 
+
+/* =========================================================
+   EMPTY TRACK DESCRIPTION
+   ========================================================= */
 
 .course-track-empty p {
 
@@ -4675,5 +4689,142 @@ input:focus-visible {
     font-size: 11.5px !important;
 
   }
+
+}
+
+
+/* =========================================================
+   SECORA — TRACK-SPECIFIC CARD GRADIENTS
+   ONLY CARD GRADIENT COLORS ARE CHANGED
+   CARD SIZE / SPACING / TYPOGRAPHY / LAYOUT / ANIMATION
+   REMAIN UNCHANGED
+   ========================================================= */
+
+
+/* =========================================================
+   SECORA ORIGIN
+   GRAPHITE / SILVER
+   ========================================================= */
+
+.course-track[data-track="fundamentals"] .course-card {
+
+  background:
+
+    radial-gradient(
+      500px 260px at 100% 0%,
+      rgba(130,145,160,.10),
+      transparent 65%
+    ),
+
+    linear-gradient(
+      145deg,
+      #18212B 0%,
+      #0D131A 100%
+    ) !important;
+
+}
+
+
+.course-track[data-track="fundamentals"] .course-card:hover {
+
+  background:
+
+    radial-gradient(
+      520px 280px at 100% 0%,
+      rgba(145,160,175,.15),
+      transparent 65%
+    ),
+
+    linear-gradient(
+      145deg,
+      #202B36 0%,
+      #111820 100%
+    ) !important;
+
+}
+
+
+/* =========================================================
+   SECORA CORE
+   DEEP TECHNICAL BLUE
+   ========================================================= */
+
+.course-track[data-track="intermediate"] .course-card {
+
+  background:
+
+    radial-gradient(
+      500px 260px at 100% 0%,
+      rgba(45,105,165,.12),
+      transparent 65%
+    ),
+
+    linear-gradient(
+      145deg,
+      #172B43 0%,
+      #0D141D 100%
+    ) !important;
+
+}
+
+
+.course-track[data-track="intermediate"] .course-card:hover {
+
+  background:
+
+    radial-gradient(
+      520px 280px at 100% 0%,
+      rgba(55,120,185,.17),
+      transparent 65%
+    ),
+
+    linear-gradient(
+      145deg,
+      #1D3855 0%,
+      #101923 100%
+    ) !important;
+
+}
+
+
+/* =========================================================
+   SECORA BLACKLINE
+   DEEP CRIMSON
+   ========================================================= */
+
+.course-track[data-track="advanced"] .course-card {
+
+  background:
+
+    radial-gradient(
+      500px 260px at 100% 0%,
+      rgba(150,45,58,.12),
+      transparent 65%
+    ),
+
+    linear-gradient(
+      145deg,
+      #35191F 0%,
+      #120D10 100%
+    ) !important;
+
+}
+
+
+.course-track[data-track="advanced"] .course-card:hover {
+
+  background:
+
+    radial-gradient(
+      520px 280px at 100% 0%,
+      rgba(170,50,65,.17),
+      transparent 65%
+    ),
+
+    linear-gradient(
+      145deg,
+      #432027 0%,
+      #171013 100%
+    ) !important;
 
 }
