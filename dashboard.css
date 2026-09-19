@@ -10179,3 +10179,819 @@ body {
 /* ============================================================
    END — SECORA INTELLIGENCE METRICS V2
    ============================================================ */
+/* ============================================================
+   SECORA — COURSE TRACK ACCESS / UNLOCK V2
+   ============================================================
+   Applies to:
+   • SECORA ORIGIN
+   • SECORA CORE
+   • SECORA BLACKLINE
+
+   PURPOSE:
+   • Larger access / unlock controls
+   • UHD+ typography
+   • Stronger visibility
+   • Premium glass treatment
+   • Track-specific accent identity
+   • Ambient hover animation
+   • Does NOT alter course-card palettes
+
+   IMPORTANT:
+   Paste this ENTIRE block at the VERY BOTTOM
+   of dashboard.css.
+   ============================================================ */
+
+
+/* ============================================================
+   01 — COMMON ACCESS / UNLOCK TARGETS
+   ------------------------------------------------------------
+   Supports the common class names used for these controls.
+   ============================================================ */
+
+.course-track .track-access,
+.course-track .course-access,
+.course-track .course-track-access,
+.course-track .access-badge,
+.course-track .access-status,
+.course-track .track-status,
+.course-track .unlock-btn,
+.course-track .track-unlock,
+.course-track .course-unlock,
+.course-track button[class*="access"],
+.course-track button[class*="unlock"],
+.course-track a[class*="access"],
+.course-track a[class*="unlock"] {
+
+  position: relative !important;
+
+  display: inline-flex !important;
+
+  align-items: center !important;
+  justify-content: center !important;
+
+  min-height: 34px !important;
+
+  padding: 7px 13px !important;
+
+  border-radius: 9px !important;
+
+  font-size: 12px !important;
+
+  line-height: 1 !important;
+
+  font-weight: 850 !important;
+
+  letter-spacing: 0.075em !important;
+
+  text-transform: uppercase !important;
+
+  white-space: nowrap !important;
+
+  text-rendering: geometricPrecision;
+
+  -webkit-font-smoothing: antialiased;
+
+  backdrop-filter:
+    blur(14px) saturate(135%) !important;
+
+  -webkit-backdrop-filter:
+    blur(14px) saturate(135%) !important;
+
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 240ms ease,
+    border-color 240ms ease,
+    box-shadow 240ms ease,
+    color 200ms ease,
+    letter-spacing 200ms ease !important;
+
+  overflow: hidden !important;
+}
+
+
+/* ============================================================
+   02 — INNER GLASS HIGHLIGHT
+   ============================================================ */
+
+.course-track .track-access::before,
+.course-track .course-access::before,
+.course-track .course-track-access::before,
+.course-track .access-badge::before,
+.course-track .access-status::before,
+.course-track .track-status::before,
+.course-track .unlock-btn::before,
+.course-track .track-unlock::before,
+.course-track .course-unlock::before,
+.course-track button[class*="access"]::before,
+.course-track button[class*="unlock"]::before,
+.course-track a[class*="access"]::before,
+.course-track a[class*="unlock"]::before {
+
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 12%;
+  right: 12%;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.28),
+      transparent
+    );
+
+  opacity: 0.8;
+
+  pointer-events: none;
+}
+
+
+/* ============================================================
+   03 — SUBTLE LIGHT SWEEP
+   ============================================================ */
+
+.course-track .track-access::after,
+.course-track .course-access::after,
+.course-track .course-track-access::after,
+.course-track .access-badge::after,
+.course-track .access-status::after,
+.course-track .track-status::after,
+.course-track .unlock-btn::after,
+.course-track .track-unlock::after,
+.course-track .course-unlock::after,
+.course-track button[class*="access"]::after,
+.course-track button[class*="unlock"]::after,
+.course-track a[class*="access"]::after,
+.course-track a[class*="unlock"]::after {
+
+  content: "";
+
+  position: absolute;
+
+  top: -20%;
+  left: -65%;
+
+  width: 45%;
+  height: 140%;
+
+  transform: skewX(-20deg);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.12),
+      transparent
+    );
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition:
+    left 600ms ease,
+    opacity 250ms ease;
+}
+
+
+/* ============================================================
+   04 — ORIGIN
+   GRAPHITE × SILVER × ARCTIC
+   ============================================================ */
+
+.course-track[data-track="fundamentals"]
+.track-access,
+
+.course-track[data-track="fundamentals"]
+.course-access,
+
+.course-track[data-track="fundamentals"]
+.course-track-access,
+
+.course-track[data-track="fundamentals"]
+.access-badge,
+
+.course-track[data-track="fundamentals"]
+.access-status,
+
+.course-track[data-track="fundamentals"]
+.track-status,
+
+.course-track[data-track="fundamentals"]
+.unlock-btn,
+
+.course-track[data-track="fundamentals"]
+.track-unlock,
+
+.course-track[data-track="fundamentals"]
+.course-unlock,
+
+.course-track[data-track="fundamentals"]
+button[class*="access"],
+
+.course-track[data-track="fundamentals"]
+button[class*="unlock"],
+
+.course-track[data-track="fundamentals"]
+a[class*="access"],
+
+.course-track[data-track="fundamentals"]
+a[class*="unlock"] {
+
+  color: #EEF2F6 !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(221, 229, 237, 0.13),
+      rgba(174, 184, 197, 0.055)
+    ) !important;
+
+  border:
+    1px solid rgba(174, 184, 197, 0.34) !important;
+
+  box-shadow:
+    0 7px 22px rgba(0, 0, 0, 0.20),
+    0 0 18px rgba(174, 184, 197, 0.06),
+    inset 0 1px rgba(255, 255, 255, 0.10),
+    inset 0 -1px rgba(0, 0, 0, 0.22);
+}
+
+
+/* Origin hover */
+
+.course-track[data-track="fundamentals"]
+.track-access:hover,
+
+.course-track[data-track="fundamentals"]
+.course-access:hover,
+
+.course-track[data-track="fundamentals"]
+.course-track-access:hover,
+
+.course-track[data-track="fundamentals"]
+.access-badge:hover,
+
+.course-track[data-track="fundamentals"]
+.unlock-btn:hover,
+
+.course-track[data-track="fundamentals"]
+.track-unlock:hover,
+
+.course-track[data-track="fundamentals"]
+.course-unlock:hover {
+
+  color: #FFFFFF !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(221, 229, 237, 0.22),
+      rgba(174, 184, 197, 0.09)
+    ) !important;
+
+  border-color:
+    rgba(221, 229, 237, 0.52) !important;
+
+  transform:
+    translateY(-2px)
+    scale(1.025);
+
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.27),
+    0 0 24px rgba(174, 184, 197, 0.11),
+    inset 0 1px rgba(255, 255, 255, 0.16);
+}
+
+
+/* ============================================================
+   05 — CORE
+   MIDNIGHT NAVY × ELECTRIC BLUE × PLATINUM
+   ============================================================ */
+
+.course-track[data-track="intermediate"]
+.track-access,
+
+.course-track[data-track="intermediate"]
+.course-access,
+
+.course-track[data-track="intermediate"]
+.course-track-access,
+
+.course-track[data-track="intermediate"]
+.access-badge,
+
+.course-track[data-track="intermediate"]
+.access-status,
+
+.course-track[data-track="intermediate"]
+.track-status,
+
+.course-track[data-track="intermediate"]
+.unlock-btn,
+
+.course-track[data-track="intermediate"]
+.track-unlock,
+
+.course-track[data-track="intermediate"]
+.course-unlock,
+
+.course-track[data-track="intermediate"]
+button[class*="access"],
+
+.course-track[data-track="intermediate"]
+button[class*="unlock"],
+
+.course-track[data-track="intermediate"]
+a[class*="access"],
+
+.course-track[data-track="intermediate"]
+a[class*="unlock"] {
+
+  color: #EAF2FF !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(77, 141, 255, 0.20),
+      rgba(43, 78, 139, 0.07)
+    ) !important;
+
+  border:
+    1px solid rgba(77, 141, 255, 0.42) !important;
+
+  box-shadow:
+    0 7px 22px rgba(0, 0, 0, 0.20),
+    0 0 20px rgba(77, 141, 255, 0.09),
+    inset 0 1px rgba(255, 255, 255, 0.10),
+    inset 0 -1px rgba(0, 0, 0, 0.22);
+}
+
+
+/* Core hover */
+
+.course-track[data-track="intermediate"]
+.track-access:hover,
+
+.course-track[data-track="intermediate"]
+.course-access:hover,
+
+.course-track[data-track="intermediate"]
+.course-track-access:hover,
+
+.course-track[data-track="intermediate"]
+.access-badge:hover,
+
+.course-track[data-track="intermediate"]
+.unlock-btn:hover,
+
+.course-track[data-track="intermediate"]
+.track-unlock:hover,
+
+.course-track[data-track="intermediate"]
+.course-unlock:hover {
+
+  color: #FFFFFF !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(77, 141, 255, 0.30),
+      rgba(43, 78, 139, 0.12)
+    ) !important;
+
+  border-color:
+    rgba(115, 167, 255, 0.62) !important;
+
+  transform:
+    translateY(-2px)
+    scale(1.025);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.28),
+    0 0 28px rgba(77, 141, 255, 0.16),
+    inset 0 1px rgba(255, 255, 255, 0.15);
+}
+
+
+/* ============================================================
+   06 — BLACKLINE
+   OBSIDIAN × CHAMPAGNE GOLD × PLATINUM
+   ============================================================ */
+
+.course-track[data-track="advanced"]
+.track-access,
+
+.course-track[data-track="advanced"]
+.course-access,
+
+.course-track[data-track="advanced"]
+.course-track-access,
+
+.course-track[data-track="advanced"]
+.access-badge,
+
+.course-track[data-track="advanced"]
+.access-status,
+
+.course-track[data-track="advanced"]
+.track-status,
+
+.course-track[data-track="advanced"]
+.unlock-btn,
+
+.course-track[data-track="advanced"]
+.track-unlock,
+
+.course-track[data-track="advanced"]
+.course-unlock,
+
+.course-track[data-track="advanced"]
+button[class*="access"],
+
+.course-track[data-track="advanced"]
+button[class*="unlock"],
+
+.course-track[data-track="advanced"]
+a[class*="access"],
+
+.course-track[data-track="advanced"]
+a[class*="unlock"] {
+
+  color: #F4EAD2 !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(198, 161, 91, 0.20),
+      rgba(104, 84, 48, 0.065)
+    ) !important;
+
+  border:
+    1px solid rgba(198, 161, 91, 0.46) !important;
+
+  box-shadow:
+    0 7px 22px rgba(0, 0, 0, 0.23),
+    0 0 22px rgba(198, 161, 91, 0.09),
+    inset 0 1px rgba(255, 255, 255, 0.10),
+    inset 0 -1px rgba(0, 0, 0, 0.22);
+}
+
+
+/* Blackline hover */
+
+.course-track[data-track="advanced"]
+.track-access:hover,
+
+.course-track[data-track="advanced"]
+.course-access:hover,
+
+.course-track[data-track="advanced"]
+.course-track-access:hover,
+
+.course-track[data-track="advanced"]
+.access-badge:hover,
+
+.course-track[data-track="advanced"]
+.unlock-btn:hover,
+
+.course-track[data-track="advanced"]
+.track-unlock:hover,
+
+.course-track[data-track="advanced"]
+.course-unlock:hover {
+
+  color: #FFF8E8 !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(198, 161, 91, 0.30),
+      rgba(104, 84, 48, 0.10)
+    ) !important;
+
+  border-color:
+    rgba(226, 201, 138, 0.66) !important;
+
+  transform:
+    translateY(-2px)
+    scale(1.025);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.30),
+    0 0 28px rgba(198, 161, 91, 0.16),
+    inset 0 1px rgba(255, 255, 255, 0.16);
+}
+
+
+/* ============================================================
+   07 — ACCESS GRANTED / UNLOCK ICON SUPPORT
+   ============================================================ */
+
+.course-track .track-access > span:first-child,
+.course-track .course-access > span:first-child,
+.course-track .course-track-access > span:first-child,
+.course-track .access-badge > span:first-child,
+.course-track .access-status > span:first-child,
+.course-track .track-status > span:first-child,
+.course-track .unlock-btn > span:first-child,
+.course-track .track-unlock > span:first-child,
+.course-track .course-unlock > span:first-child {
+
+  font-size: 13px !important;
+
+  font-weight: 850 !important;
+
+  line-height: 1 !important;
+}
+
+
+/* ============================================================
+   08 — ACCESS TEXT
+   ============================================================ */
+
+.course-track .track-access,
+.course-track .course-access,
+.course-track .course-track-access,
+.course-track .access-badge,
+.course-track .access-status,
+.course-track .track-status,
+.course-track .unlock-btn,
+.course-track .track-unlock,
+.course-track .course-unlock {
+
+  text-rendering: geometricPrecision !important;
+
+  font-feature-settings:
+    "kern" 1,
+    "liga" 1 !important;
+}
+
+
+/* ============================================================
+   09 — ACCESS / UNLOCK MICRO ANIMATION
+   ============================================================ */
+
+.course-track .track-access:hover::after,
+.course-track .course-access:hover::after,
+.course-track .course-track-access:hover::after,
+.course-track .access-badge:hover::after,
+.course-track .access-status:hover::after,
+.course-track .track-status:hover::after,
+.course-track .unlock-btn:hover::after,
+.course-track .track-unlock:hover::after,
+.course-track .course-unlock:hover::after {
+
+  left: 120%;
+
+  opacity: 1;
+}
+
+
+/* ============================================================
+   10 — ACCESS GRANTED STATUS
+   Slightly more compact than UNLOCK action
+   ============================================================ */
+
+.course-track .track-access,
+.course-track .course-access,
+.course-track .course-track-access,
+.course-track .access-badge,
+.course-track .access-status,
+.course-track .track-status {
+
+  min-width: 124px !important;
+
+  min-height: 36px !important;
+
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+
+/* ============================================================
+   11 — UNLOCK ACTION
+   More prominent because it is interactive.
+   ============================================================ */
+
+.course-track .unlock-btn,
+.course-track .track-unlock,
+.course-track .course-unlock,
+.course-track button[class*="unlock"],
+.course-track a[class*="unlock"] {
+
+  min-width: 116px !important;
+
+  min-height: 38px !important;
+
+  padding:
+    8px 16px !important;
+
+  font-size: 12.5px !important;
+
+  letter-spacing: 0.08em !important;
+
+  cursor: pointer !important;
+}
+
+
+/* ============================================================
+   12 — ACCESS / UNLOCK FOCUS
+   ============================================================ */
+
+.course-track .track-access:focus-visible,
+.course-track .course-access:focus-visible,
+.course-track .course-track-access:focus-visible,
+.course-track .access-badge:focus-visible,
+.course-track .access-status:focus-visible,
+.course-track .track-status:focus-visible,
+.course-track .unlock-btn:focus-visible,
+.course-track .track-unlock:focus-visible,
+.course-track .course-unlock:focus-visible {
+
+  outline:
+    2px solid rgba(255, 255, 255, 0.55) !important;
+
+  outline-offset: 3px !important;
+}
+
+
+/* ============================================================
+   13 — LARGE / UHD DISPLAY
+   ============================================================ */
+
+@media (min-width: 1440px) {
+
+  .course-track .track-access,
+  .course-track .course-access,
+  .course-track .course-track-access,
+  .course-track .access-badge,
+  .course-track .access-status,
+  .course-track .track-status {
+
+    min-height: 38px !important;
+
+    min-width: 132px !important;
+
+    padding:
+      8px 16px !important;
+
+    font-size: 12.5px !important;
+
+    letter-spacing: 0.085em !important;
+  }
+
+  .course-track .unlock-btn,
+  .course-track .track-unlock,
+  .course-track .course-unlock,
+  .course-track button[class*="unlock"],
+  .course-track a[class*="unlock"] {
+
+    min-height: 40px !important;
+
+    min-width: 122px !important;
+
+    padding:
+      9px 18px !important;
+
+    font-size: 13px !important;
+  }
+}
+
+
+/* ============================================================
+   14 — ULTRA UHD
+   ============================================================ */
+
+@media (min-width: 1800px) {
+
+  .course-track .track-access,
+  .course-track .course-access,
+  .course-track .course-track-access,
+  .course-track .access-badge,
+  .course-track .access-status,
+  .course-track .track-status {
+
+    min-height: 41px !important;
+
+    min-width: 142px !important;
+
+    padding:
+      10px 18px !important;
+
+    font-size: 13.5px !important;
+  }
+
+  .course-track .unlock-btn,
+  .course-track .track-unlock,
+  .course-track .course-unlock,
+  .course-track button[class*="unlock"],
+  .course-track a[class*="unlock"] {
+
+    min-height: 42px !important;
+
+    min-width: 132px !important;
+
+    font-size: 13.5px !important;
+  }
+}
+
+
+/* ============================================================
+   15 — SHORT DESKTOP SCREENS
+   ============================================================ */
+
+@media (max-height: 760px) and (min-width: 901px) {
+
+  .course-track .track-access,
+  .course-track .course-access,
+  .course-track .course-track-access,
+  .course-track .access-badge,
+  .course-track .access-status,
+  .course-track .track-status,
+  .course-track .unlock-btn,
+  .course-track .track-unlock,
+  .course-track .course-unlock {
+
+    min-height: 33px !important;
+
+    padding:
+      7px 12px !important;
+
+    font-size: 11.5px !important;
+  }
+}
+
+
+/* ============================================================
+   16 — MOBILE
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+  .course-track .track-access,
+  .course-track .course-access,
+  .course-track .course-track-access,
+  .course-track .access-badge,
+  .course-track .access-status,
+  .course-track .track-status,
+  .course-track .unlock-btn,
+  .course-track .track-unlock,
+  .course-track .course-unlock {
+
+    min-height: 34px !important;
+
+    min-width: auto !important;
+
+    padding:
+      7px 11px !important;
+
+    font-size: 10.5px !important;
+
+    letter-spacing: 0.065em !important;
+  }
+}
+
+
+/* ============================================================
+   17 — REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .course-track .track-access,
+  .course-track .course-access,
+  .course-track .course-track-access,
+  .course-track .access-badge,
+  .course-track .access-status,
+  .course-track .track-status,
+  .course-track .unlock-btn,
+  .course-track .track-unlock,
+  .course-track .course-unlock {
+
+    transition: none !important;
+  }
+
+  .course-track .track-access::after,
+  .course-track .course-access::after,
+  .course-track .course-track-access::after,
+  .course-track .access-badge::after,
+  .course-track .access-status::after,
+  .course-track .track-status::after,
+  .course-track .unlock-btn::after,
+  .course-track .track-unlock::after,
+  .course-track .course-unlock::after {
+
+    display: none !important;
+  }
+}
+
+
+/* ============================================================
+   END — SECORA COURSE TRACK ACCESS / UNLOCK V2
+   ============================================================ */
