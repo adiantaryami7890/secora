@@ -7795,3 +7795,352 @@ input[type="text"]:focus {
 /* ============================================================
    END — SECORA SPLIT-SIGIL
    ============================================================ */
+/* ============================================================
+   SECORA — APERTURE MARK
+   ------------------------------------------------------------
+   Permanent Brand Identity
+   Four-sided geometric aperture
+   Titanium / Platinum + Electric Blue accent
+   NO violet
+   NO gradient logo
+   NO shield
+   NO lock
+   NO literal S
+   ------------------------------------------------------------
+   Paste at the VERY BOTTOM of dashboard.css
+   ============================================================ */
+
+
+/* ============================================================
+   01 — APERTURE CONTAINER
+   ============================================================ */
+
+.brand-mark {
+  position: relative !important;
+
+  width: 42px !important;
+  height: 42px !important;
+
+  min-width: 42px !important;
+  min-height: 42px !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  overflow: visible !important;
+
+  border-radius: 11px !important;
+
+  /*
+     Pure obsidian architectural surface.
+  */
+  background: #090B0F !important;
+
+  /*
+     Very thin titanium edge.
+  */
+  border: 1px solid #30353D !important;
+
+  /*
+     Subtle depth only.
+  */
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.28),
+    inset 0 1px rgba(255, 255, 255, 0.075),
+    inset 0 -1px rgba(0, 0, 0, 0.45) !important;
+
+  /*
+     Remove original S.
+  */
+  color: transparent !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+
+  isolation: isolate;
+
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+
+/* ============================================================
+   02 — FOUR-SIDED APERTURE
+   ------------------------------------------------------------
+   The four platinum edges form the aperture.
+   ============================================================ */
+
+.brand-mark::before {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 20px;
+  height: 20px;
+
+  transform:
+    translate(-50%, -50%)
+    rotate(45deg);
+
+  box-sizing: border-box;
+
+  /*
+     Clean titanium aperture frame.
+  */
+  border: 2px solid #C7CBD2;
+
+  background: #090B0F;
+
+  /*
+     Creates architectural separation from the container.
+  */
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.025),
+    0 3px 10px rgba(0, 0, 0, 0.30);
+
+  z-index: 2;
+
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+
+/* ============================================================
+   03 — APERTURE OPENING
+   ------------------------------------------------------------
+   The center remains open.
+   Tiny electric-blue point = discovery / knowledge.
+   ============================================================ */
+
+.brand-mark::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  width: 6px;
+  height: 6px;
+
+  transform:
+    translate(-50%, -50%)
+    rotate(45deg);
+
+  background: #8FB8FF;
+
+  border: 1px solid rgba(230, 238, 255, 0.55);
+
+  box-shadow:
+    0 0 7px rgba(91, 145, 255, 0.38),
+    0 0 15px rgba(91, 145, 255, 0.14);
+
+  z-index: 4;
+
+  transition:
+    transform 220ms ease,
+    background 220ms ease,
+    box-shadow 220ms ease;
+}
+
+
+/* ============================================================
+   04 — CREATE THE APERTURE "OPEN" FEEL
+   ------------------------------------------------------------
+   Four subtle breaks make the diamond feel like an opening
+   rather than a normal geometric square.
+   ============================================================ */
+
+.brand-mark {
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0 46%,
+      #090B0F 46% 54%,
+      transparent 54%
+    ),
+    linear-gradient(
+      0deg,
+      transparent 0 46%,
+      #090B0F 46% 54%,
+      transparent 54%
+    ),
+    #090B0F !important;
+}
+
+
+/* ============================================================
+   05 — TOP / BOTTOM MICRO HIGHLIGHT
+   ============================================================ */
+
+.brand-mark::before {
+  /*
+     Keep the actual aperture completely neutral.
+  */
+
+  filter:
+    drop-shadow(0 0 2px rgba(220, 225, 232, 0.10));
+}
+
+
+/* ============================================================
+   06 — BRAND HOVER
+   ============================================================ */
+
+.brand:hover .brand-mark {
+  transform: translateY(-1px) scale(1.02);
+
+  border-color: #555C67 !important;
+
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.34),
+    0 0 18px rgba(143, 184, 255, 0.07),
+    inset 0 1px rgba(255, 255, 255, 0.10),
+    inset 0 -1px rgba(0, 0, 0, 0.45) !important;
+}
+
+
+/* ============================================================
+   07 — APERTURE HOVER
+   ============================================================ */
+
+.brand:hover .brand-mark::before {
+  border-color: #E3E6EB;
+
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.035),
+    0 0 8px rgba(214, 220, 230, 0.10);
+}
+
+.brand:hover .brand-mark::after {
+  background: #B9D2FF;
+
+  box-shadow:
+    0 0 8px rgba(91, 145, 255, 0.52),
+    0 0 18px rgba(91, 145, 255, 0.20);
+
+  transform:
+    translate(-50%, -50%)
+    rotate(45deg)
+    scale(1.08);
+}
+
+
+/* ============================================================
+   08 — SECORA WORDMARK
+   ============================================================ */
+
+.brand > span:last-child {
+  color: #F0F1F3 !important;
+
+  font-size: 20px !important;
+
+  font-weight: 850 !important;
+
+  letter-spacing: 0.045em !important;
+
+  line-height: 1 !important;
+
+  text-rendering: geometricPrecision;
+
+  -webkit-font-smoothing: antialiased;
+
+  text-shadow:
+    0 1px 10px rgba(255, 255, 255, 0.035);
+
+  transition:
+    color 220ms ease,
+    letter-spacing 220ms ease;
+}
+
+
+/* Wordmark hover */
+
+.brand:hover > span:last-child {
+  color: #FFFFFF !important;
+
+  letter-spacing: 0.055em !important;
+}
+
+
+/* ============================================================
+   09 — BRAND SPACING
+   ============================================================ */
+
+.brand {
+  display: inline-flex !important;
+
+  align-items: center !important;
+
+  gap: 12px !important;
+
+  text-decoration: none !important;
+}
+
+
+/* ============================================================
+   10 — LARGE DISPLAY
+   ============================================================ */
+
+@media (min-width: 1440px) {
+
+  .brand-mark {
+    width: 44px !important;
+    height: 44px !important;
+
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  .brand > span:last-child {
+    font-size: 21px !important;
+  }
+}
+
+
+/* ============================================================
+   11 — SMALL DISPLAY
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+  .brand-mark {
+    width: 40px !important;
+    height: 40px !important;
+
+    min-width: 40px !important;
+    min-height: 40px !important;
+  }
+
+  .brand > span:last-child {
+    font-size: 19px !important;
+  }
+}
+
+
+/* ============================================================
+   12 — REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .brand,
+  .brand-mark,
+  .brand-mark::before,
+  .brand-mark::after,
+  .brand > span:last-child {
+    transition: none !important;
+  }
+}
+
+
+/* ============================================================
+   END — SECORA APERTURE MARK
+   ============================================================ */
