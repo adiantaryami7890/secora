@@ -3605,3 +3605,563 @@ input[type="text"]:focus {
 /* ============================================================
    END BLACKLINE THEME
    ============================================================ */
+/* ============================================================
+   SECORA CORE
+   MIDNIGHT NAVY × ELECTRIC BLUE × PLATINUM
+   FINAL PREMIUM OVERRIDE
+   Paste at the VERY BOTTOM of dashboard.css
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   CORE COURSE CARDS — BASE
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-card {
+
+    position: relative !important;
+
+    background:
+        radial-gradient(
+            520px 300px at 92% 0%,
+            rgba(77, 141, 255, 0.13),
+            transparent 62%
+        ),
+        radial-gradient(
+            420px 260px at 0% 100%,
+            rgba(62, 111, 175, 0.045),
+            transparent 65%
+        ),
+        linear-gradient(
+            145deg,
+            #16273A 0%,
+            #102033 46%,
+            #0B131F 100%
+        ) !important;
+
+    border: 1px solid rgba(77, 141, 255, 0.36) !important;
+
+    box-shadow:
+        0 18px 50px rgba(0, 0, 0, 0.42),
+        0 0 22px rgba(77, 141, 255, 0.07),
+        inset 0 1px 0 rgba(255, 255, 255, 0.055),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.65) !important;
+
+    overflow: hidden !important;
+
+    isolation: isolate;
+
+    transition:
+        transform 280ms ease,
+        border-color 280ms ease,
+        box-shadow 280ms ease,
+        background 280ms ease !important;
+}
+
+
+/* ------------------------------------------------------------
+   PREMIUM BLUE METALLIC BORDER
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-card::before {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    inset: 0 !important;
+
+    padding: 1px !important;
+
+    border-radius: inherit !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(115, 167, 255, 0.88) 0%,
+            rgba(77, 141, 255, 0.46) 18%,
+            rgba(52, 76, 105, 0.16) 42%,
+            rgba(77, 141, 255, 0.34) 72%,
+            rgba(115, 167, 255, 0.72) 100%
+        ) !important;
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0) !important;
+
+    -webkit-mask-composite: xor !important;
+
+    mask-composite: exclude !important;
+
+    pointer-events: none !important;
+
+    z-index: 10 !important;
+
+    opacity: 1 !important;
+}
+
+
+/* ------------------------------------------------------------
+   SOFT OUTER BLUE AURA
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-card::after {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    inset: -3px !important;
+
+    border-radius: inherit !important;
+
+    background:
+        radial-gradient(
+            circle at 10% 5%,
+            rgba(115, 167, 255, 0.11),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 90% 5%,
+            rgba(77, 141, 255, 0.16),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(62, 111, 175, 0.07),
+            transparent 38%
+        ) !important;
+
+    filter: blur(13px) !important;
+
+    opacity: 0.82 !important;
+
+    pointer-events: none !important;
+
+    z-index: -1 !important;
+}
+
+
+/* ------------------------------------------------------------
+   CORE TRACK LABEL
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-track-label {
+
+    color: #73A7FF !important;
+
+    letter-spacing: 0.18em !important;
+
+    text-shadow:
+        0 0 16px rgba(77, 141, 255, 0.18) !important;
+}
+
+
+/* ------------------------------------------------------------
+   INTERMEDIATE BADGE
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-level {
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(77, 141, 255, 0.15),
+            rgba(77, 141, 255, 0.045)
+        ) !important;
+
+    border:
+        1px solid rgba(77, 141, 255, 0.50) !important;
+
+    color: #8AB7FF !important;
+
+    box-shadow:
+        0 0 14px rgba(77, 141, 255, 0.09),
+        inset 0 1px 0 rgba(255, 255, 255, 0.045) !important;
+
+    letter-spacing: 0.12em !important;
+}
+
+
+/* ------------------------------------------------------------
+   PERCENTAGE
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-percentage {
+
+    color: #DCE8F7 !important;
+
+    text-shadow:
+        0 0 16px rgba(115, 167, 255, 0.10) !important;
+}
+
+
+/* ------------------------------------------------------------
+   COURSE TITLES — PLATINUM
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-card h3 {
+
+    color: #E8EDF5 !important;
+
+    text-shadow:
+        0 3px 18px rgba(0, 0, 0, 0.42) !important;
+
+    letter-spacing: -0.025em !important;
+}
+
+
+/* ------------------------------------------------------------
+   COURSE DESCRIPTION
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-card > p {
+
+    color: #93A1B2 !important;
+}
+
+
+/* ------------------------------------------------------------
+   COURSE META
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-card-meta {
+
+    color: #737F8D !important;
+}
+
+
+/* ------------------------------------------------------------
+   PROGRESS TRACK
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-progress {
+
+    background:
+        linear-gradient(
+            90deg,
+            #17212D,
+            #202D3D
+        ) !important;
+
+    border:
+        1px solid rgba(77, 141, 255, 0.11) !important;
+
+    box-shadow:
+        inset 0 1px 3px rgba(0, 0, 0, 0.55) !important;
+}
+
+
+/* ------------------------------------------------------------
+   PROGRESS BAR — ELECTRIC BLUE
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-progress-bar {
+
+    background:
+        linear-gradient(
+            90deg,
+            #315F9F 0%,
+            #4D8DFF 48%,
+            #73A7FF 100%
+        ) !important;
+
+    box-shadow:
+        0 0 12px rgba(77, 141, 255, 0.34),
+        0 0 28px rgba(77, 141, 255, 0.12) !important;
+}
+
+
+/* ------------------------------------------------------------
+   FOOTER DIVIDER
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-card-footer {
+
+    border-top-color:
+        rgba(77, 141, 255, 0.13) !important;
+}
+
+
+/* ------------------------------------------------------------
+   SELF-PACED
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-card-time {
+
+    color: #697786 !important;
+
+    font-style: italic;
+}
+
+
+/* ------------------------------------------------------------
+   LOCKED
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-explore {
+
+    color: #D5DFEB !important;
+
+    text-shadow:
+        0 0 14px rgba(115, 167, 255, 0.08) !important;
+}
+
+
+/* ------------------------------------------------------------
+   TOP EDGE LIGHT
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-card-top {
+
+    position: relative !important;
+}
+
+
+/* ------------------------------------------------------------
+   TOP-RIGHT BLUE LIGHT
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-card-top::after {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    top: 0 !important;
+
+    right: 0 !important;
+
+    width: 130px !important;
+
+    height: 1px !important;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(115, 167, 255, 0.55)
+        ) !important;
+
+    box-shadow:
+        0 0 12px rgba(77, 141, 255, 0.22) !important;
+
+    pointer-events: none !important;
+}
+
+
+/* ------------------------------------------------------------
+   BOTTOM-LEFT BLUE LIGHT
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-card-bottom::before {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    bottom: 0 !important;
+
+    left: 0 !important;
+
+    width: 110px !important;
+
+    height: 1px !important;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(77, 141, 255, 0.40),
+            transparent
+        ) !important;
+
+    box-shadow:
+        0 0 14px rgba(77, 141, 255, 0.14) !important;
+
+    pointer-events: none !important;
+}
+
+
+/* ------------------------------------------------------------
+   HOVER — PREMIUM BLUE GLOW
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-card:hover {
+
+    transform:
+        translateY(-5px) !important;
+
+    border-color:
+        rgba(115, 167, 255, 0.76) !important;
+
+    background:
+        radial-gradient(
+            560px 320px at 92% 0%,
+            rgba(77, 141, 255, 0.18),
+            transparent 62%
+        ),
+        radial-gradient(
+            450px 280px at 0% 100%,
+            rgba(62, 111, 175, 0.055),
+            transparent 65%
+        ),
+        linear-gradient(
+            145deg,
+            #1A2D43 0%,
+            #122337 46%,
+            #090F17 100%
+        ) !important;
+
+    box-shadow:
+        0 25px 65px rgba(0, 0, 0, 0.55),
+        0 0 28px rgba(77, 141, 255, 0.16),
+        0 0 75px rgba(77, 141, 255, 0.075),
+        inset 0 1px 0 rgba(255, 255, 255, 0.075),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.7) !important;
+}
+
+
+/* ------------------------------------------------------------
+   HOVER METALLIC BORDER
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-card:hover::before {
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(154, 194, 255, 1) 0%,
+            rgba(115, 167, 255, 0.78) 18%,
+            rgba(72, 100, 137, 0.24) 45%,
+            rgba(77, 141, 255, 0.68) 76%,
+            rgba(154, 194, 255, 0.94) 100%
+        ) !important;
+
+    box-shadow:
+        0 0 20px rgba(77, 141, 255, 0.18) !important;
+}
+
+
+/* ------------------------------------------------------------
+   HOVER OUTER AURA
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-card:hover::after {
+
+    opacity: 1 !important;
+
+    filter: blur(15px) !important;
+}
+
+
+/* ------------------------------------------------------------
+   CORE TRACK HEADER
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"]
+.course-track-header h2 {
+
+    color: #E8EDF5 !important;
+
+    text-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.42) !important;
+}
+
+
+/* ------------------------------------------------------------
+   CORE TRACK EYEBROW
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"]
+.course-track-header .eyebrow {
+
+    color: #73A7FF !important;
+
+    text-shadow:
+        0 0 18px rgba(77, 141, 255, 0.18) !important;
+}
+
+
+/* ------------------------------------------------------------
+   CORE TRACK INDEX
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"]
+.course-track-index {
+
+    border-color:
+        rgba(77, 141, 255, 0.38) !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            #17273A,
+            #0D151F
+        ) !important;
+
+    color: #73A7FF !important;
+
+    box-shadow:
+        0 0 22px rgba(77, 141, 255, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.045) !important;
+}
+
+
+/* ------------------------------------------------------------
+   CORE TRACK COUNT
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"]
+.course-track-count {
+
+    color: #A1AFBF !important;
+}
+
+
+/* ------------------------------------------------------------
+   TEXT SELECTION
+   ------------------------------------------------------------ */
+
+.course-track[data-track="intermediate"] .course-card ::selection {
+
+    background:
+        rgba(77, 141, 255, 0.30) !important;
+
+    color: #FFFFFF !important;
+}
+
+
+/* ------------------------------------------------------------
+   MOBILE
+   ------------------------------------------------------------ */
+
+@media (max-width: 760px) {
+
+    .course-track[data-track="intermediate"] .course-card {
+
+        box-shadow:
+            0 16px 42px rgba(0, 0, 0, 0.44),
+            0 0 20px rgba(77, 141, 255, 0.07),
+            inset 0 1px 0 rgba(255, 255, 255, 0.045) !important;
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   REDUCED MOTION
+   ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .course-track[data-track="intermediate"] .course-card {
+
+        transition: none !important;
+    }
+
+}
+
+
+/* ============================================================
+   END — SECORA CORE PREMIUM THEME
+   ============================================================ */
