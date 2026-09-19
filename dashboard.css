@@ -5886,3 +5886,711 @@ input[type="text"]:focus {
 /* ============================================================
    END — SECORA SIDEBAR ULTRA PREMIUM
    ============================================================ */
+/* ============================================================
+   SECORA — SIDEBAR V2
+   INDIGO × AURORA VIOLET × PLATINUM
+   COMPLETE OVERRIDE
+   Paste this entire block at the VERY BOTTOM of dashboard.css
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   1. SIDEBAR — DEEP INDIGO ARCHITECTURE
+   ------------------------------------------------------------ */
+
+.sidebar {
+  background:
+    radial-gradient(
+      circle at 18% 8%,
+      rgba(117, 103, 200, 0.16) 0%,
+      rgba(117, 103, 200, 0.06) 22%,
+      transparent 46%
+    ),
+    radial-gradient(
+      circle at 90% 42%,
+      rgba(79, 67, 145, 0.10) 0%,
+      transparent 42%
+    ),
+    linear-gradient(
+      180deg,
+      #07070C 0%,
+      #0A0912 34%,
+      #0D0B18 67%,
+      #06070B 100%
+    );
+
+  border-right: 1px solid rgba(165, 155, 232, 0.14);
+
+  box-shadow:
+    18px 0 50px rgba(0, 0, 0, 0.22),
+    inset -1px 0 rgba(255, 255, 255, 0.018);
+
+  isolation: isolate;
+}
+
+
+/* Premium edge illumination */
+
+.sidebar::after {
+  content: "";
+  position: absolute;
+  top: 7%;
+  right: -1px;
+  width: 1px;
+  height: 86%;
+
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(117, 103, 200, 0.08) 15%,
+    rgba(165, 155, 232, 0.32) 48%,
+    rgba(117, 103, 200, 0.08) 82%,
+    transparent 100%
+  );
+
+  pointer-events: none;
+}
+
+
+/* ------------------------------------------------------------
+   2. BRAND
+   ------------------------------------------------------------ */
+
+.brand {
+  color: #F0EEF7 !important;
+
+  font-size: 20px !important;
+  font-weight: 850 !important;
+  letter-spacing: -0.045em !important;
+
+  text-decoration: none;
+
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+
+  transition:
+    color 220ms ease,
+    transform 220ms ease;
+}
+
+.brand:hover {
+  color: #FFFFFF !important;
+  transform: translateX(1px);
+}
+
+
+/* Brand mark */
+
+.brand-mark {
+  width: 39px !important;
+  height: 39px !important;
+
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px !important;
+
+  color: #F4F1FF !important;
+
+  font-size: 16px !important;
+  font-weight: 850 !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      #7567C8 0%,
+      #4D4588 42%,
+      #292544 100%
+    ) !important;
+
+  border: 1px solid rgba(214, 207, 255, 0.25) !important;
+
+  box-shadow:
+    0 8px 22px rgba(117, 103, 200, 0.18),
+    inset 0 1px rgba(255, 255, 255, 0.18),
+    inset 0 -1px rgba(0, 0, 0, 0.28);
+
+  text-shadow:
+    0 1px 8px rgba(255, 255, 255, 0.15);
+
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+
+.brand:hover .brand-mark {
+  transform: translateY(-1px);
+
+  border-color: rgba(214, 207, 255, 0.38) !important;
+
+  box-shadow:
+    0 10px 28px rgba(117, 103, 200, 0.26),
+    inset 0 1px rgba(255, 255, 255, 0.22);
+}
+
+
+/* ------------------------------------------------------------
+   3. NAVIGATION AREA
+   ------------------------------------------------------------ */
+
+.navigation {
+  position: relative;
+}
+
+
+/* Section labels */
+
+.nav-label {
+  color: #77728C !important;
+
+  font-size: 10.5px !important;
+  font-weight: 750 !important;
+
+  letter-spacing: 0.20em !important;
+  text-transform: uppercase;
+
+  padding-left: 4px;
+
+  text-rendering: geometricPrecision;
+
+  opacity: 0.95;
+}
+
+.nav-label.second {
+  margin-top: 30px !important;
+}
+
+
+/* ------------------------------------------------------------
+   4. NAV ITEMS — LARGER + PREMIUM
+   ------------------------------------------------------------ */
+
+.nav-item {
+  position: relative;
+
+  min-height: 50px !important;
+
+  padding: 0 15px !important;
+
+  border-radius: 12px !important;
+
+  color: #9692A8 !important;
+
+  font-size: 14.5px !important;
+  font-weight: 650 !important;
+
+  letter-spacing: -0.012em;
+
+  text-decoration: none;
+
+  background: transparent;
+
+  border: 1px solid transparent;
+
+  transition:
+    color 180ms ease,
+    background 220ms ease,
+    border-color 220ms ease,
+    transform 180ms ease,
+    box-shadow 220ms ease;
+}
+
+
+/* Icon */
+
+.nav-item > span:first-child {
+  color: #78748A !important;
+
+  font-size: 17px !important;
+  font-weight: 500 !important;
+
+  width: 23px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+
+/* Text */
+
+.nav-item > span:last-child {
+  color: inherit !important;
+
+  font-size: inherit !important;
+  font-weight: inherit !important;
+}
+
+
+/* ------------------------------------------------------------
+   5. NAV HOVER
+   ------------------------------------------------------------ */
+
+.nav-item:hover {
+  color: #E5E1F2 !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(117, 103, 200, 0.105) 0%,
+      rgba(117, 103, 200, 0.045) 52%,
+      rgba(117, 103, 200, 0.012) 100%
+    );
+
+  border-color: rgba(165, 155, 232, 0.075);
+
+  transform: translateX(2px);
+
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.018);
+}
+
+.nav-item:hover > span:first-child {
+  color: #A59BE8 !important;
+
+  transform: translateX(1px);
+}
+
+
+/* ------------------------------------------------------------
+   6. ACTIVE DASHBOARD — AURORA VIOLET
+   ------------------------------------------------------------ */
+
+.nav-item.active {
+  position: relative;
+
+  color: #F3F0FC !important;
+
+  background:
+    linear-gradient(
+      105deg,
+      rgba(117, 103, 200, 0.30) 0%,
+      rgba(74, 63, 139, 0.25) 44%,
+      rgba(34, 29, 58, 0.42) 100%
+    ) !important;
+
+  border: 1px solid rgba(165, 155, 232, 0.18) !important;
+
+  box-shadow:
+    0 8px 26px rgba(62, 52, 119, 0.16),
+    inset 0 1px rgba(255, 255, 255, 0.055),
+    inset 0 -1px rgba(0, 0, 0, 0.18);
+}
+
+
+/* Active left architectural line */
+
+.nav-item.active::before {
+  content: "";
+
+  position: absolute;
+
+  left: -1px;
+  top: 9px;
+  bottom: 9px;
+
+  width: 2px;
+
+  border-radius: 4px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #A59BE8 0%,
+      #7567C8 48%,
+      #BEB8E9 100%
+    );
+
+  box-shadow:
+    0 0 10px rgba(117, 103, 200, 0.42);
+}
+
+
+/* Active top highlight */
+
+.nav-item.active::after {
+  content: "";
+
+  position: absolute;
+
+  left: 14%;
+  right: 14%;
+  top: -1px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(208, 201, 247, 0.20),
+      transparent
+    );
+
+  pointer-events: none;
+}
+
+
+.nav-item.active > span:first-child {
+  color: #AFA7EF !important;
+
+  text-shadow:
+    0 0 14px rgba(117, 103, 200, 0.30);
+}
+
+.nav-item.active:hover {
+  transform: translateX(1px);
+
+  background:
+    linear-gradient(
+      105deg,
+      rgba(126, 111, 214, 0.34) 0%,
+      rgba(78, 66, 145, 0.28) 45%,
+      rgba(38, 32, 63, 0.46) 100%
+    ) !important;
+
+  border-color: rgba(165, 155, 232, 0.23) !important;
+}
+
+
+/* ------------------------------------------------------------
+   7. PERSONAL SECTION SEPARATOR
+   ------------------------------------------------------------ */
+
+.nav-label.second::before {
+  content: "";
+
+  display: block;
+
+  width: 100%;
+  height: 1px;
+
+  margin-bottom: 23px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(165, 155, 232, 0.13),
+      rgba(165, 155, 232, 0.035),
+      transparent
+    );
+}
+
+
+/* ------------------------------------------------------------
+   8. SIDEBAR ACCOUNT — PREMIUM INDIGO GLASS
+   ------------------------------------------------------------ */
+
+.sidebar-account {
+  position: relative;
+
+  padding: 13px 12px !important;
+
+  border-radius: 14px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(39, 34, 68, 0.58) 0%,
+      rgba(18, 17, 29, 0.72) 62%,
+      rgba(10, 10, 17, 0.82) 100%
+    ) !important;
+
+  border: 1px solid rgba(165, 155, 232, 0.10) !important;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.18),
+    inset 0 1px rgba(255, 255, 255, 0.035);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.sidebar-account:hover {
+  border-color: rgba(165, 155, 232, 0.18) !important;
+
+  box-shadow:
+    0 12px 34px rgba(0, 0, 0, 0.22),
+    0 0 24px rgba(117, 103, 200, 0.07),
+    inset 0 1px rgba(255, 255, 255, 0.045);
+
+  transform: translateY(-1px);
+}
+
+
+/* ------------------------------------------------------------
+   9. AVATAR
+   ------------------------------------------------------------ */
+
+.sidebar-avatar {
+  width: 38px !important;
+  height: 38px !important;
+
+  border-radius: 11px !important;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #F5F2FF !important;
+
+  font-size: 12px !important;
+  font-weight: 800 !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      #8276D1 0%,
+      #514878 50%,
+      #2B273F 100%
+    ) !important;
+
+  border: 1px solid rgba(213, 207, 250, 0.20) !important;
+
+  box-shadow:
+    0 6px 18px rgba(117, 103, 200, 0.18),
+    inset 0 1px rgba(255, 255, 255, 0.13);
+
+  text-shadow:
+    0 1px 8px rgba(255, 255, 255, 0.12);
+}
+
+
+/* ------------------------------------------------------------
+   10. ACCOUNT TYPOGRAPHY
+   ------------------------------------------------------------ */
+
+.sidebar-account-info strong {
+  color: #F0EEF7 !important;
+
+  font-size: 12.5px !important;
+  font-weight: 750 !important;
+
+  letter-spacing: -0.012em;
+
+  text-rendering: geometricPrecision;
+}
+
+.sidebar-account-info span {
+  color: #858197 !important;
+
+  font-size: 10px !important;
+  font-weight: 550 !important;
+
+  letter-spacing: 0.005em;
+}
+
+
+/* ------------------------------------------------------------
+   11. SETTINGS
+   ------------------------------------------------------------ */
+
+.sidebar-bottom > .nav-item {
+  margin-top: 10px;
+
+  min-height: 46px !important;
+
+  color: #8F8BA0 !important;
+}
+
+.sidebar-bottom > .nav-item:hover {
+  color: #E5E1F2 !important;
+}
+
+
+/* ------------------------------------------------------------
+   12. LOGOUT
+   ------------------------------------------------------------ */
+
+.logout {
+  min-height: 46px !important;
+
+  border-radius: 12px !important;
+
+  color: #858193 !important;
+
+  font-size: 14px !important;
+  font-weight: 650 !important;
+
+  background: transparent !important;
+
+  border: 1px solid transparent !important;
+
+  transition:
+    color 180ms ease,
+    background 220ms ease,
+    border-color 220ms ease,
+    transform 180ms ease;
+}
+
+.logout span:first-child {
+  color: #747083 !important;
+
+  font-size: 17px !important;
+
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.logout:hover {
+  color: #E4E0EF !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(117, 103, 200, 0.075),
+      rgba(117, 103, 200, 0.018)
+    ) !important;
+
+  border-color: rgba(165, 155, 232, 0.07) !important;
+
+  transform: translateX(2px);
+}
+
+.logout:hover span:first-child {
+  color: #A59BE8 !important;
+
+  transform: translateX(1px);
+}
+
+
+/* ------------------------------------------------------------
+   13. BOTTOM AREA
+   ------------------------------------------------------------ */
+
+.sidebar-bottom {
+  position: relative;
+}
+
+.sidebar-bottom::before {
+  content: "";
+
+  position: absolute;
+
+  top: -13px;
+  left: 2px;
+  right: 2px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(165, 155, 232, 0.10) 25%,
+      rgba(165, 155, 232, 0.16) 50%,
+      rgba(165, 155, 232, 0.06) 75%,
+      transparent 100%
+    );
+}
+
+
+/* ------------------------------------------------------------
+   14. PREMIUM SCROLLBAR
+   ------------------------------------------------------------ */
+
+.sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(117, 103, 200, 0.42),
+      rgba(117, 103, 200, 0.12)
+    );
+
+  border-radius: 20px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(165, 155, 232, 0.60),
+      rgba(117, 103, 200, 0.24)
+    );
+}
+
+
+/* ------------------------------------------------------------
+   15. FOCUS ACCESSIBILITY
+   ------------------------------------------------------------ */
+
+.sidebar a:focus-visible,
+.sidebar button:focus-visible {
+  outline: 2px solid rgba(165, 155, 232, 0.65);
+  outline-offset: 2px;
+
+  box-shadow:
+    0 0 0 4px rgba(117, 103, 200, 0.10);
+}
+
+
+/* ------------------------------------------------------------
+   16. ULTRA-SMOOTH MOTION
+   ------------------------------------------------------------ */
+
+.sidebar,
+.sidebar *,
+.sidebar *::before,
+.sidebar *::after {
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+/* ------------------------------------------------------------
+   17. REDUCED MOTION
+   ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar *,
+  .sidebar *::before,
+  .sidebar *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+
+/* ------------------------------------------------------------
+   18. SMALL SCREEN TYPOGRAPHY
+   ------------------------------------------------------------ */
+
+@media (max-width: 900px) {
+  .brand {
+    font-size: 18px !important;
+  }
+
+  .nav-item {
+    font-size: 14px !important;
+  }
+
+  .nav-item > span:first-child {
+    font-size: 16px !important;
+  }
+}
+
+
+/* ============================================================
+   END — SECORA SIDEBAR V2
+   INDIGO × AURORA VIOLET × PLATINUM
+   ============================================================ */
