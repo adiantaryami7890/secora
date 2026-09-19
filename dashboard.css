@@ -6594,3 +6594,206 @@ input[type="text"]:focus {
    END — SECORA SIDEBAR V2
    INDIGO × AURORA VIOLET × PLATINUM
    ============================================================ */
+
+/* ============================================================
+   SECORA — SIDEBAR HEIGHT + SCROLL FIX
+   Keeps ALL sidebar controls visible at 100% zoom
+   Paste at the VERY BOTTOM of dashboard.css
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   1. MAKE SIDEBAR FULL VIEWPORT HEIGHT
+   ------------------------------------------------------------ */
+
+.sidebar {
+  height: 100vh !important;
+  height: 100dvh !important;
+
+  max-height: 100vh !important;
+  max-height: 100dvh !important;
+
+  box-sizing: border-box !important;
+
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+
+  /* Keep scrollbar space reserved */
+  scrollbar-gutter: stable;
+
+  /* Preserve the Indigo / Aurora Violet design */
+  background:
+    radial-gradient(
+      circle at 18% 8%,
+      rgba(117, 103, 200, 0.16) 0%,
+      rgba(117, 103, 200, 0.06) 22%,
+      transparent 46%
+    ),
+    radial-gradient(
+      circle at 90% 42%,
+      rgba(79, 67, 145, 0.10) 0%,
+      transparent 42%
+    ),
+    linear-gradient(
+      180deg,
+      #07070C 0%,
+      #0A0912 34%,
+      #0D0B18 67%,
+      #06070B 100%
+    ) !important;
+}
+
+
+/* ------------------------------------------------------------
+   2. PREVENT BOTTOM SECTION FROM BEING COMPRESSED
+   ------------------------------------------------------------ */
+
+.sidebar-bottom {
+  flex-shrink: 0 !important;
+
+  padding-bottom: 24px !important;
+
+  margin-bottom: 0 !important;
+}
+
+
+/* ------------------------------------------------------------
+   3. KEEP ACCOUNT CARD + SETTINGS + LOGOUT TOGETHER
+   ------------------------------------------------------------ */
+
+.sidebar-bottom .sidebar-account {
+  flex-shrink: 0 !important;
+}
+
+.sidebar-bottom .nav-item,
+.sidebar-bottom .logout {
+  flex-shrink: 0 !important;
+}
+
+
+/* ------------------------------------------------------------
+   4. PREMIUM CHROME / EDGE SCROLLBAR
+   ------------------------------------------------------------ */
+
+.sidebar::-webkit-scrollbar {
+  width: 7px !important;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: rgba(5, 5, 10, 0.55) !important;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  border-radius: 999px !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #7567C8 0%,
+      #5B50A1 48%,
+      #3C356F 100%
+    ) !important;
+
+  border: 1px solid rgba(165, 155, 232, 0.12);
+
+  box-shadow:
+    0 0 10px rgba(117, 103, 200, 0.20);
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(
+      180deg,
+      #A59BE8 0%,
+      #7567C8 50%,
+      #51478F 100%
+    ) !important;
+
+  box-shadow:
+    0 0 14px rgba(117, 103, 200, 0.38);
+}
+
+
+/* ------------------------------------------------------------
+   5. FIREFOX
+   ------------------------------------------------------------ */
+
+.sidebar {
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    #5B50A1
+    rgba(5, 5, 10, 0.55);
+}
+
+
+/* ------------------------------------------------------------
+   6. EXTRA BOTTOM BREATHING ROOM
+   ------------------------------------------------------------ */
+
+.sidebar-bottom::after {
+  content: "";
+
+  display: block;
+
+  height: 8px;
+  width: 100%;
+}
+
+
+/* ------------------------------------------------------------
+   7. VERY SHORT DESKTOP SCREENS
+   ------------------------------------------------------------ */
+
+@media (max-height: 760px) and (min-width: 901px) {
+
+  .sidebar {
+    padding-bottom: 10px !important;
+  }
+
+  .sidebar-bottom {
+    padding-bottom: 18px !important;
+  }
+
+  .nav-item {
+    min-height: 46px !important;
+  }
+
+  .sidebar-account {
+    padding: 10px 11px !important;
+  }
+
+  .nav-label.second {
+    margin-top: 20px !important;
+  }
+}
+
+
+/* ------------------------------------------------------------
+   8. EXTRA SHORT SCREENS
+   ------------------------------------------------------------ */
+
+@media (max-height: 650px) and (min-width: 901px) {
+
+  .nav-item {
+    min-height: 42px !important;
+  }
+
+  .sidebar-bottom {
+    padding-bottom: 14px !important;
+  }
+
+  .sidebar-account {
+    padding: 8px 10px !important;
+  }
+
+  .sidebar-avatar {
+    width: 34px !important;
+    height: 34px !important;
+  }
+}
+
+
+/* ============================================================
+   END — SIDEBAR SCROLL FIX
+   ============================================================ */
