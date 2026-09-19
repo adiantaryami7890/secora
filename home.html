@@ -1,1466 +1,745 @@
  <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SECORA — structured cybersecurity learning platform.">
+  <title>Dashboard — SECORA</title>
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <link rel="stylesheet" href="dashboard.css">
 
-  <meta
-    name="description"
-    content="Secora — A structured cybersecurity learning platform."
-  >
-
-  <title>Dashboard — Secora</title>
-
-
-  <!-- =====================================================
-       DASHBOARD STYLES
-       ===================================================== -->
-
-  <link
-    rel="stylesheet"
-    href="dashboard.css"
-  >
-
-
-  <!-- =====================================================
-       SUPABASE
-       ===================================================== -->
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-  ></script>
-
-  <script
-    src="supabase.js"
-  ></script>
-
-  <script
-    src="dashboard.js"
-    defer
-  ></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="dashboard.js" defer></script>
 </head>
-
 
 <body>
 
+<div class="app">
 
-  <!-- =====================================================
-       APPLICATION
-       ===================================================== -->
+  <!-- =========================
+       SIDEBAR
+  ========================== -->
+  <aside class="sidebar">
 
-  <div class="app">
+    <a href="home.html" class="brand" aria-label="SECORA Dashboard">
+      <span class="brand-mark">S</span>
+      <span class="brand-word">SECORA</span>
+    </a>
 
+    <nav class="navigation" aria-label="Main navigation">
 
-    <!-- ===================================================
-         SIDEBAR
-         =================================================== -->
+      <p class="nav-label">LEARN</p>
 
-    <aside class="sidebar">
-
-
-      <!-- BRAND -->
-
-      <a
-        href="home.html"
-        class="brand"
-        aria-label="Secora Dashboard"
-      >
-
-        <div class="brand-mark">
-          S
-        </div>
-
-        <span>
-          SECORA
-        </span>
-
+      <a href="home.html" class="nav-item active">
+        <span>⌂</span>
+        <span>Dashboard</span>
       </a>
 
+      <a href="#courses" class="nav-item">
+        <span>▣</span>
+        <span>Courses</span>
+      </a>
 
-      <!-- NAVIGATION -->
+      <a href="#learning-path" class="nav-item">
+        <span>↗</span>
+        <span>Learning Paths</span>
+      </a>
 
-      <nav
-        class="navigation"
-        aria-label="Main navigation"
-      >
+      <a href="#courses" class="nav-item">
+        <span>◈</span>
+        <span>Topics</span>
+      </a>
 
+      <p class="nav-label second">PERSONAL</p>
 
-        <!-- LEARN -->
+      <a href="#progress" class="nav-item">
+        <span>☆</span>
+        <span>Bookmarks</span>
+      </a>
 
-        <p class="nav-label">
-          LEARN
-        </p>
+      <a href="#progress" class="nav-item">
+        <span>◷</span>
+        <span>Progress</span>
+      </a>
 
+    </nav>
 
-        <a
-          href="home.html"
-          class="nav-item active"
-          aria-current="page"
-        >
+    <div class="sidebar-bottom">
 
-          <span aria-hidden="true">
-            ⌂
-          </span>
+      <div class="sidebar-account">
 
-          <span>
-            Dashboard
-          </span>
-
-        </a>
-
-
-        <a
-          href="#courses"
-          class="nav-item"
-        >
-
-          <span aria-hidden="true">
-            ▣
-          </span>
-
-          <span>
-            Courses
-          </span>
-
-        </a>
-
-
-        <a
-          href="#learning-path"
-          class="nav-item"
-        >
-
-          <span aria-hidden="true">
-            ↗
-          </span>
-
-          <span>
-            Learning Paths
-          </span>
-
-        </a>
-
-
-        <a
-          href="#courses"
-          class="nav-item"
-        >
-
-          <span aria-hidden="true">
-            ◈
-          </span>
-
-          <span>
-            Topics
-          </span>
-
-        </a>
-
-
-        <!-- PERSONAL -->
-
-        <p class="nav-label second">
-          PERSONAL
-        </p>
-
-
-        <a
-          href="#progress"
-          class="nav-item"
-        >
-
-          <span aria-hidden="true">
-            ☆
-          </span>
-
-          <span>
-            Bookmarks
-          </span>
-
-        </a>
-
-
-        <a
-          href="#progress"
-          class="nav-item"
-        >
-
-          <span aria-hidden="true">
-            ◷
-          </span>
-
-          <span>
-            Progress
-          </span>
-
-        </a>
-
-
-      </nav>
-
-
-      <!-- =================================================
-           SIDEBAR BOTTOM
-           ================================================= -->
-
-      <div class="sidebar-bottom">
-
-
-        <!-- ACCOUNT -->
-
-        <div
-          class="sidebar-account"
-          aria-label="Signed in user"
-        >
-
-          <div class="sidebar-avatar">
-
-            <img
-              id="userAvatar"
-              src=""
-              alt=""
-            >
-
-          </div>
-
-
-          <div class="sidebar-account-info">
-
-            <strong id="userName">
-              Loading...
-            </strong>
-
-            <span id="userEmail">
-              Loading...
-            </span>
-
-          </div>
-
+        <div class="sidebar-avatar">
+          <img id="userAvatar" src="" alt="">
         </div>
 
-
-        <!-- SETTINGS -->
-
-        <a
-          href="#"
-          class="nav-item"
-          id="settingsLink"
-        >
-
-          <span aria-hidden="true">
-            ⚙
-          </span>
-
-          <span>
-            Settings
-          </span>
-
-        </a>
-
-
-        <!-- LOGOUT -->
-
-        <button
-          type="button"
-          id="logoutBtn"
-          class="logout"
-        >
-
-          <span aria-hidden="true">
-            ↪
-          </span>
-
-          <span>
-            Log out
-          </span>
-
-        </button>
-
+        <div class="sidebar-account-info">
+          <strong id="userName">Loading...</strong>
+          <span id="userEmail">Loading...</span>
+        </div>
 
       </div>
 
+      <a href="#" class="nav-item" id="settingsLink">
+        <span>⚙</span>
+        <span>Settings</span>
+      </a>
 
-    </aside>
+      <button type="button" id="logoutBtn" class="logout">
+        <span>↪</span>
+        <span>Log out</span>
+      </button>
 
+    </div>
 
-
-    <!-- ===================================================
-         MAIN CONTENT
-         =================================================== -->
-
-    <main class="main">
-
-
-      <!-- =================================================
-           TOP BAR
-           ================================================= -->
-
-      <header class="topbar">
+  </aside>
 
 
-        <!-- MOBILE BRAND -->
+  <!-- =========================
+       MAIN CONTENT
+  ========================== -->
+  <main class="main">
 
-        <div class="mobile-brand">
-          SECORA
+    <!-- TOP BAR -->
+    <header class="topbar">
+
+      <div class="mobile-brand">
+        SECORA
+      </div>
+
+      <div class="search">
+
+        <span>⌕</span>
+
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Search courses, topics..."
+          autocomplete="off"
+          aria-label="Search courses and topics"
+        >
+
+        <kbd>Ctrl K</kbd>
+
+      </div>
+
+      <div class="top-actions">
+
+        <button
+          type="button"
+          class="icon-button"
+          title="Notifications"
+          aria-label="Notifications"
+        >
+          ♧
+        </button>
+
+        <div class="profile-mini">
+
+          <div class="avatar">
+            <img id="topUserAvatar" src="" alt="">
+          </div>
+
+          <div class="profile-mini-text">
+            <strong id="topUserName">Loading...</strong>
+            <span>Student</span>
+          </div>
+
         </div>
 
+      </div>
 
-        <!-- SEARCH -->
+    </header>
 
-        <div class="search">
 
-          <span
-            aria-hidden="true"
-          >
-            ⌕
+    <!-- PAGE CONTENT -->
+    <section class="content">
+
+      <!-- =========================
+           WELCOME
+      ========================== -->
+      <section class="welcome">
+
+        <div class="welcome-copy">
+
+          <p class="eyebrow">
+            YOUR LEARNING SPACE
+          </p>
+
+          <h1 id="userGreeting">
+            Welcome, Learner.
+          </h1>
+
+          <p class="welcome-description">
+            Build the knowledge required to understand, defend, and secure modern systems.
+          </p>
+
+        </div>
+
+        <div class="date-card">
+          <span id="currentDate">
+            Loading date...
           </span>
-
-          <input
-            type="search"
-            id="searchInput"
-            placeholder="Search courses, topics..."
-            autocomplete="off"
-            aria-label="Search courses and topics"
-          >
-
-          <kbd>
-            Ctrl K
-          </kbd>
-
         </div>
-
-
-        <!-- TOP ACTIONS -->
-
-        <div class="top-actions">
-
-
-          <!-- NOTIFICATIONS -->
-
-          <button
-            type="button"
-            class="icon-button"
-            title="Notifications"
-            aria-label="Notifications"
-          >
-
-            ♧
-
-          </button>
-
-
-          <!-- PROFILE -->
-
-          <div
-            class="profile-mini"
-            id="profileButton"
-          >
-
-            <div class="avatar">
-
-              <img
-                id="topUserAvatar"
-                src=""
-                alt=""
-              >
-
-            </div>
-
-
-            <div class="profile-mini-text">
-
-              <strong id="topUserName">
-                Loading...
-              </strong>
-
-              <span>
-                Student
-              </span>
-
-            </div>
-
-          </div>
-
-
-        </div>
-
-
-      </header>
-
-
-
-      <!-- =================================================
-           PAGE CONTENT
-           ================================================= -->
-
-      <section class="content">
-
-
-        <!-- =================================================
-             WELCOME HEADER
-             ================================================= -->
-
-        <section class="welcome">
-
-
-          <div class="welcome-copy">
-
-
-            <p class="eyebrow">
-              YOUR LEARNING SPACE
-            </p>
-
-
-            <h1 id="userGreeting">
-              Welcome, Learner.
-            </h1>
-
-
-            <p class="welcome-description">
-              Build the knowledge required to understand,
-              defend, and secure modern systems.
-            </p>
-
-
-          </div>
-
-
-          <!-- DATE -->
-
-          <div class="date-card">
-
-            <span id="currentDate">
-              Loading date...
-            </span>
-
-          </div>
-
-
-        </section>
-
-
-
-        <!-- =================================================
-             LEARNING OVERVIEW
-             ================================================= -->
-
-        <section
-          class="stats-grid"
-          id="progress"
-          aria-label="Learning overview"
-        >
-
-
-          <!-- COURSES -->
-
-          <article class="stat-card">
-
-            <span class="stat-label">
-              COURSES
-            </span>
-
-            <strong id="coursesStarted">
-              0
-            </strong>
-
-            <p>
-              Started learning
-            </p>
-
-          </article>
-
-
-          <!-- LESSONS -->
-
-          <article class="stat-card">
-
-            <span class="stat-label">
-              LESSONS
-            </span>
-
-            <strong id="completedLessons">
-              0
-            </strong>
-
-            <p>
-              Completed lessons
-            </p>
-
-          </article>
-
-
-          <!-- PROGRESS -->
-
-          <article class="stat-card">
-
-            <span class="stat-label">
-              PROGRESS
-            </span>
-
-            <strong id="overallProgress">
-              0%
-            </strong>
-
-            <p>
-              Overall completion
-            </p>
-
-          </article>
-
-
-          <!-- ACCOUNT STATUS -->
-
-          <article class="stat-card">
-
-            <span class="stat-label">
-              STATUS
-            </span>
-
-            <strong>
-              ACTIVE
-            </strong>
-
-            <p>
-              Learning account
-            </p>
-
-          </article>
-
-
-        </section>
-
-
-
-        <!-- =================================================
-             COURSES SECTION
-             ================================================= -->
-
-        <section
-          class="section"
-          id="courses"
-        >
-
-
-          <!-- SECTION HEADER -->
-
-          <div class="section-header">
-
-
-            <div>
-
-              <p class="eyebrow">
-                EXPLORE
-              </p>
-
-              <h2>
-                Start with the fundamentals
-              </h2>
-
-            </div>
-
-
-            <span class="view-all">
-              Structured learning
-            </span>
-
-
-          </div>
-
-
-
-          <!-- =================================================
-               DYNAMIC COURSE GRID
-
-               dashboard.js populates this area from
-               Supabase.
-
-               DO NOT ADD STATIC COURSE CARDS HERE.
-               ================================================= -->
-
-          <div
-            class="course-grid"
-            aria-live="polite"
-            aria-label="Available courses"
-          >
-
-            <div class="course-loading">
-
-              Loading courses...
-
-            </div>
-
-          </div>
-
-
-        </section>
-
-
-
-        <!-- =================================================
-             LEARNING PATH
-             ================================================= -->
-
-        <section
-          class="path-banner"
-          id="learning-path"
-        >
-
-
-          <div>
-
-
-            <p class="eyebrow">
-              LEARNING PATH
-            </p>
-
-
-            <h2>
-              Become a cybersecurity professional.
-            </h2>
-
-
-            <p>
-              Follow a structured path from fundamentals
-              to advanced security concepts.
-            </p>
-
-
-          </div>
-
-
-          <a
-            href="#courses"
-            class="secondary-button"
-          >
-            Explore courses →
-          </a>
-
-
-        </section>
-
 
       </section>
 
 
-    </main>
+      <!-- =========================
+           LEARNING STATS
+      ========================== -->
+      <section
+        class="stats-grid"
+        id="progress"
+        aria-label="Learning overview"
+      >
 
+        <article class="stat-card">
 
-  </div>
+          <span class="stat-label">
+            COURSES
+          </span>
 
+          <strong id="coursesStarted">
+            0
+          </strong>
 
-  <!-- =====================================================
-       SMALL COMPATIBILITY / VISUAL ENHANCEMENTS
-       ===================================================== -->
+          <p>
+            Started learning
+          </p>
 
-  <style>
+        </article>
 
-    /*
-      These small rules keep the new HTML structure
-      visually compatible with the existing dashboard.css.
-    */
 
-    .sidebar-account {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+        <article class="stat-card">
 
-      padding: 10px 10px 12px;
+          <span class="stat-label">
+            LESSONS
+          </span>
 
-      margin-bottom: 8px;
+          <strong id="completedLessons">
+            0
+          </strong>
 
-      border-top: 1px solid rgba(255,255,255,.07);
-    }
+          <p>
+            Completed lessons
+          </p>
 
+        </article>
 
-    .sidebar-avatar {
-      width: 30px;
-      height: 30px;
 
-      flex: 0 0 30px;
+        <article class="stat-card">
 
-      overflow: hidden;
+          <span class="stat-label">
+            PROGRESS
+          </span>
 
-      border-radius: 50%;
+          <strong id="overallProgress">
+            0%
+          </strong>
 
-      background:
-        linear-gradient(
-          135deg,
-          #ffffff,
-          #dfe4ec
-        );
+          <p>
+            Overall completion
+          </p>
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+        </article>
 
 
-    .sidebar-avatar img {
-      width: 100%;
-      height: 100%;
+        <article class="stat-card">
 
-      object-fit: cover;
+          <span class="stat-label">
+            STATUS
+          </span>
 
-      display: none;
-    }
+          <strong>
+            ACTIVE
+          </strong>
 
+          <p>
+            Learning account
+          </p>
 
-    .sidebar-account-info {
-      min-width: 0;
+        </article>
 
-      display: flex;
-      flex-direction: column;
+      </section>
 
-      gap: 1px;
-    }
 
+      <!-- =========================
+           COURSES
+      ========================== -->
+      <section class="section" id="courses">
 
-    .sidebar-account-info strong {
-      overflow: hidden;
+        <div class="section-header">
 
-      color: #f4f5f7;
+          <div>
 
-      font-size: 9px;
-      font-weight: 600;
-
-      line-height: 1.3;
-
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-
-    .sidebar-account-info span {
-      overflow: hidden;
-
-      color: #737982;
-
-      font-size: 8px;
-
-      line-height: 1.3;
-
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-
-    .profile-mini {
-      display: flex;
-      align-items: center;
-
-      gap: 9px;
-
-      min-width: 0;
-    }
-
-
-    .profile-mini .avatar {
-      width: 32px;
-      height: 32px;
-
-      overflow: hidden;
-
-      flex: 0 0 32px;
-
-      border-radius: 50%;
-
-      background: #e9edf3;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-
-    .profile-mini .avatar img {
-      width: 100%;
-      height: 100%;
-
-      object-fit: cover;
-
-      display: none;
-    }
-
-
-    .profile-mini-text {
-      display: flex;
-      flex-direction: column;
-
-      min-width: 0;
-    }
-
-
-    .profile-mini-text strong {
-      max-width: 140px;
-
-      overflow: hidden;
-
-      color: var(--ink);
-
-      font-size: 10px;
-      font-weight: 700;
-
-      line-height: 1.3;
-
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-
-    .profile-mini-text span {
-      color: var(--muted);
-
-      font-size: 8px;
-
-      line-height: 1.3;
-    }
-
-
-    .welcome-copy {
-      min-width: 0;
-    }
-
-
-    .welcome h1 {
-      margin: 0;
-
-      color: var(--ink);
-
-      font-family: var(--font-display);
-
-      font-size:
-        clamp(30px, 3.2vw, 48px);
-
-      font-weight: 800;
-
-      line-height: 1.03;
-
-      letter-spacing: -.045em;
-    }
-
-
-    .welcome-description {
-      max-width: 650px;
-
-      margin: 11px 0 0;
-
-      color: var(--muted);
-
-      font-size: 12px;
-
-      line-height: 1.65;
-    }
-
-
-    .date-card {
-      flex-shrink: 0;
-
-      padding: 9px 12px;
-
-      border:
-        1px solid var(--line);
-
-      border-radius: 9px;
-
-      background: rgba(255,255,255,.65);
-
-      box-shadow: var(--shadow-sm);
-    }
-
-
-    .date-card span {
-      color: var(--muted);
-
-      font-size: 9px;
-      font-weight: 600;
-
-      white-space: nowrap;
-    }
-
-
-    .secondary-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
-      min-height: 38px;
-
-      padding: 0 16px;
-
-      border:
-        1px solid var(--line);
-
-      border-radius: 8px;
-
-      background: #ffffff;
-
-      color: var(--ink);
-
-      font-size: 10px;
-      font-weight: 700;
-
-      text-decoration: none;
-
-      transition:
-        transform .18s ease,
-        border-color .18s ease,
-        box-shadow .18s ease;
-    }
-
-
-    .secondary-button:hover {
-      transform: translateY(-2px);
-
-      border-color: #d2d8e1;
-
-      box-shadow: var(--shadow-md);
-    }
-
-
-    /*
-      The old large Continue Learning card has been
-      deliberately removed from the HTML.
-
-      This is an additional safety rule in case an old
-      browser cache or injected markup still contains it.
-    */
-
-    .continue-card {
-      display: none !important;
-    }
-
-
-    @media (max-width: 700px) {
-
-      .profile-mini-text {
-        display: none;
-      }
-
-      .date-card {
-        width: 100%;
-      }
-
-      .date-card span {
-        white-space: normal;
-      }
-
-      .path-banner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-    }
-
-
-    @media (max-width: 430px) {
-
-      .top-actions {
-        gap: 5px;
-      }
-
-      .profile-mini .avatar {
-        width: 29px;
-        height: 29px;
-
-        flex-basis: 29px;
-      }
-
-      .welcome h1 {
-        font-size: 30px;
-      }
-
-    }
-
-  </style>
-
-
-</body>
-
-</html>
-<!-- =========================================================
-     SECORA ACCESS CENTER
-     V0.5.4C
-     
-     Paste this entire block at the bottom of home.html,
-     immediately before the closing </body> tag.
-     ========================================================= -->
-
-<section class="secora-access-center" id="secoraAccessCenter">
-
-    <!-- =====================================================
-         ACCESS CENTER HEADER
-         ===================================================== -->
-
-    <div class="access-center-heading">
-
-        <div class="access-heading-left">
-
-            <span class="access-eyebrow">
-                SECORA ACCESS
-            </span>
+            <p class="eyebrow">
+              EXPLORE
+            </p>
 
             <h2>
-                Unlock Your Learning Path
+              Structured cybersecurity learning
             </h2>
 
-            <p>
-                Redeem a private access code or purchase lifetime
-                access when available.
-            </p>
+          </div>
+
+          <span class="view-all">
+            Three learning tracks
+          </span>
 
         </div>
 
 
         <div
-            class="access-heading-mark"
-            aria-hidden="true"
+          class="course-grid"
+          aria-live="polite"
+          aria-label="Available courses"
         >
-            <span></span>
-            <span></span>
-            <span></span>
+
+          <div class="course-loading">
+            Loading courses...
+          </div>
+
         </div>
 
-    </div>
+      </section>
 
 
-    <!-- =====================================================
-         ACCESS PRODUCTS
-         ===================================================== -->
+      <!-- =========================
+           LEARNING PATH
+      ========================== -->
+      <section
+        class="path-banner"
+        id="learning-path"
+      >
 
-    <div class="access-products">
+        <div>
+
+          <p class="eyebrow">
+            LEARNING PATH
+          </p>
+
+          <h2>
+            Become a cybersecurity professional.
+          </h2>
+
+          <p>
+            Follow a structured path from fundamentals to advanced security concepts.
+          </p>
+
+        </div>
+
+        <a
+          href="#courses"
+          class="secondary-button"
+        >
+          Explore courses
+          <span>→</span>
+        </a>
+
+      </section>
 
 
-        <!-- =================================================
-             SECORA CORE
-             ================================================= -->
+      <!-- =========================
+           SECORA ACCESS CENTER
+      ========================== -->
+      <section
+        class="secora-access-center"
+        id="secoraAccessCenter"
+      >
 
-        <article
+        <!-- ACCESS HEADER -->
+        <div class="access-center-heading">
+
+          <div>
+
+            <span class="access-eyebrow">
+              SECORA ACCESS
+            </span>
+
+            <h2>
+              Unlock the next layer.
+            </h2>
+
+            <p>
+              Redeem a private access code or prepare for secure checkout.
+              Access is tied to your SECORA account.
+            </p>
+
+          </div>
+
+          <div
+            class="access-heading-mark"
+            aria-hidden="true"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+        </div>
+
+
+        <!-- ACCESS PRODUCTS -->
+        <div class="access-products">
+
+
+          <!-- =========================
+               SECORA CORE
+          ========================== -->
+          <article
             class="access-product-card access-product-core"
             data-access-product="core"
-        >
-
-            <!-- Product Header -->
+          >
 
             <div class="access-product-top">
 
-                <div class="access-product-number">
-                    02
-                </div>
+              <div class="access-product-number">
+                02
+              </div>
 
+              <div class="access-product-title">
 
-                <div class="access-product-title">
+                <span class="access-product-label">
+                  SECORA CORE
+                </span>
 
-                    <span class="access-product-label">
-                        SECORA CORE
-                    </span>
+                <h3>
+                  Intermediate Security
+                </h3>
 
-                    <h3>
-                        Intermediate Security
-                    </h3>
+              </div>
 
-                </div>
+              <div class="access-product-status">
 
+                <span class="access-status-dot"></span>
 
-                <div class="access-product-status">
+                <span class="access-status-text">
+                  LIFETIME
+                </span>
 
-                    <span class="access-status-dot"></span>
-
-                    LIFETIME ACCESS
-
-                </div>
-
-            </div>
-
-
-            <!-- Product Description -->
-
-            <div class="access-product-description">
-
-                <p>
-                    Move beyond fundamentals into professional
-                    cybersecurity thinking, attack methodology,
-                    security operations and defensive architecture.
-                </p>
+              </div>
 
             </div>
 
 
-            <div class="access-product-divider"></div>
+            <p class="access-product-description">
+              Professional security thinking, attack methodology,
+              security operations and defensive architecture.
+            </p>
 
 
-            <!-- CORE Redeem -->
-
+            <!-- REDEEM -->
             <div class="access-method">
 
-                <div class="access-method-heading">
+              <div class="access-method-heading">
 
-                    <span class="access-method-icon">
-                        ↳
-                    </span>
+                <span class="access-method-icon">
+                  ↳
+                </span>
 
+                <div>
 
-                    <div>
+                  <strong>
+                    Have a CORE code?
+                  </strong>
 
-                        <strong>
-                            Have a CORE code?
-                        </strong>
-
-                        <span>
-                            Your code unlocks SECORA CORE permanently.
-                        </span>
-
-                    </div>
+                  <span>
+                    Redeem once for lifetime account access.
+                  </span>
 
                 </div>
 
-
-                <div class="access-redeem-row">
-
-                    <label
-                        class="access-input-wrap"
-                        for="coreRedeemCode"
-                    >
-
-                        <span class="access-input-prefix">
-                            CORE
-                        </span>
+              </div>
 
 
-                        <input
-                            id="coreRedeemCode"
-                            class="access-redeem-input"
-                            type="text"
-                            inputmode="text"
-                            autocomplete="off"
-                            autocapitalize="characters"
-                            spellcheck="false"
-                            maxlength="100"
-                            placeholder="SECORA-CORE-XXXX-XXXX"
-                            aria-label="SECORA CORE redeem code"
-                        >
+              <div class="access-redeem-row">
 
-                    </label>
+                <label
+                  class="access-input-wrap"
+                  for="coreRedeemCode"
+                >
 
+                  <span class="access-input-prefix">
+                    CORE
+                  </span>
 
-                    <button
-                        type="button"
-                        class="access-redeem-button"
-                        data-redeem-product="core"
-                        id="coreRedeemButton"
-                    >
+                  <input
+                    id="coreRedeemCode"
+                    class="access-redeem-input"
+                    type="text"
+                    autocomplete="off"
+                    autocapitalize="characters"
+                    spellcheck="false"
+                    maxlength="100"
+                    placeholder="SECORA-CORE-XXXX-XXXX"
+                    aria-label="SECORA CORE redeem code"
+                  >
 
-                        <span class="redeem-button-text">
-                            Redeem
-                        </span>
-
-
-                        <span
-                            class="redeem-button-loader"
-                            aria-hidden="true"
-                        ></span>
-
-
-                        <span class="redeem-button-arrow">
-                            →
-                        </span>
-
-                    </button>
-
-                </div>
-
-
-                <div
-                    class="access-feedback"
-                    id="coreRedeemFeedback"
-                    role="status"
-                    aria-live="polite"
-                ></div>
-
-            </div>
-
-
-            <div class="access-product-divider"></div>
-
-
-            <!-- CORE Purchase -->
-
-            <div class="access-purchase">
-
-                <div class="purchase-copy">
-
-                    <span class="purchase-label">
-                        WANT TO PURCHASE?
-                    </span>
-
-
-                    <strong>
-                        Get SECORA CORE
-                    </strong>
-
-
-                    <span>
-                        Secure checkout will be available here.
-                    </span>
-
-                </div>
+                </label>
 
 
                 <button
-                    type="button"
-                    class="access-purchase-button"
-                    data-purchase-product="core"
-                    disabled
-                    aria-disabled="true"
+                  type="button"
+                  class="access-redeem-button"
+                  data-redeem-product="core"
+                  id="coreRedeemButton"
                 >
 
-                    <span>
-                        Purchase CORE
-                    </span>
+                  <span>
+                    Redeem
+                  </span>
 
-
-                    <small>
-                        COMING SOON
-                    </small>
+                  <i aria-hidden="true">
+                    →
+                  </i>
 
                 </button>
 
+              </div>
+
+
+              <div
+                class="access-feedback"
+                id="coreRedeemFeedback"
+                role="status"
+                aria-live="polite"
+              ></div>
+
             </div>
 
-        </article>
+
+            <!-- PURCHASE -->
+            <div class="access-purchase">
+
+              <div class="purchase-copy">
+
+                <span>
+                  CORE ACCESS
+                </span>
+
+                <strong>
+                  Purchase lifetime access
+                </strong>
+
+                <small>
+                  Secure Cashfree checkout will be connected here.
+                </small>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="access-purchase-button"
+                data-purchase-product="core"
+              >
+
+                <span>
+                  Purchase CORE
+                </span>
+
+                <small>
+                  COMING SOON
+                </small>
+
+              </button>
+
+            </div>
+
+          </article>
 
 
 
-        <!-- =================================================
-             SECORA BLACKLINE
-             ================================================= -->
-
-        <article
+          <!-- =========================
+               SECORA BLACKLINE
+          ========================== -->
+          <article
             class="access-product-card access-product-blackline"
             data-access-product="blackline"
-        >
-
-            <!-- Product Header -->
+          >
 
             <div class="access-product-top">
 
-                <div class="access-product-number">
-                    03
-                </div>
+              <div class="access-product-number">
+                03
+              </div>
 
+              <div class="access-product-title">
 
-                <div class="access-product-title">
+                <span class="access-product-label">
+                  SECORA BLACKLINE
+                </span>
 
-                    <span class="access-product-label">
-                        SECORA BLACKLINE
-                    </span>
+                <h3>
+                  Advanced Security
+                </h3>
 
-                    <h3>
-                        Advanced Security
-                    </h3>
+              </div>
 
-                </div>
+              <div class="access-product-status">
 
+                <span class="access-status-dot"></span>
 
-                <div class="access-product-status">
+                <span class="access-status-text">
+                  LIFETIME
+                </span>
 
-                    <span class="access-status-dot"></span>
-
-                    LIFETIME ACCESS
-
-                </div>
-
-            </div>
-
-
-            <!-- Product Description -->
-
-            <div class="access-product-description">
-
-                <p>
-                    Enter the advanced security layer covering
-                    adversary tradecraft, threat hunting, DFIR,
-                    exploit development and enterprise defense.
-                </p>
+              </div>
 
             </div>
 
 
-            <div class="access-product-divider"></div>
+            <p class="access-product-description">
+              Advanced offensive security, threat intelligence,
+              DFIR, detection engineering and adversary operations.
+            </p>
 
 
-            <!-- BLACKLINE Redeem -->
-
+            <!-- REDEEM -->
             <div class="access-method">
 
-                <div class="access-method-heading">
+              <div class="access-method-heading">
 
-                    <span class="access-method-icon">
-                        ↳
-                    </span>
+                <span class="access-method-icon">
+                  ↳
+                </span>
 
+                <div>
 
-                    <div>
+                  <strong>
+                    Have a BLACKLINE code?
+                  </strong>
 
-                        <strong>
-                            Have a BLACKLINE code?
-                        </strong>
-
-                        <span>
-                            Your code unlocks SECORA BLACKLINE permanently.
-                        </span>
-
-                    </div>
+                  <span>
+                    Redeem once for lifetime account access.
+                  </span>
 
                 </div>
 
-
-                <div class="access-redeem-row">
-
-                    <label
-                        class="access-input-wrap"
-                        for="blacklineRedeemCode"
-                    >
-
-                        <span class="access-input-prefix">
-                            BL
-                        </span>
+              </div>
 
 
-                        <input
-                            id="blacklineRedeemCode"
-                            class="access-redeem-input"
-                            type="text"
-                            inputmode="text"
-                            autocomplete="off"
-                            autocapitalize="characters"
-                            spellcheck="false"
-                            maxlength="100"
-                            placeholder="SECORA-BL-XXXX-XXXX"
-                            aria-label="SECORA BLACKLINE redeem code"
-                        >
+              <div class="access-redeem-row">
 
-                    </label>
+                <label
+                  class="access-input-wrap"
+                  for="blacklineRedeemCode"
+                >
 
+                  <span class="access-input-prefix">
+                    BL
+                  </span>
 
-                    <button
-                        type="button"
-                        class="access-redeem-button"
-                        data-redeem-product="blackline"
-                        id="blacklineRedeemButton"
-                    >
+                  <input
+                    id="blacklineRedeemCode"
+                    class="access-redeem-input"
+                    type="text"
+                    autocomplete="off"
+                    autocapitalize="characters"
+                    spellcheck="false"
+                    maxlength="100"
+                    placeholder="SECORA-BL-XXXX-XXXX"
+                    aria-label="SECORA BLACKLINE redeem code"
+                  >
 
-                        <span class="redeem-button-text">
-                            Redeem
-                        </span>
-
-
-                        <span
-                            class="redeem-button-loader"
-                            aria-hidden="true"
-                        ></span>
-
-
-                        <span class="redeem-button-arrow">
-                            →
-                        </span>
-
-                    </button>
-
-                </div>
-
-
-                <div
-                    class="access-feedback"
-                    id="blacklineRedeemFeedback"
-                    role="status"
-                    aria-live="polite"
-                ></div>
-
-            </div>
-
-
-            <div class="access-product-divider"></div>
-
-
-            <!-- BLACKLINE Purchase -->
-
-            <div class="access-purchase">
-
-                <div class="purchase-copy">
-
-                    <span class="purchase-label">
-                        WANT TO PURCHASE?
-                    </span>
-
-
-                    <strong>
-                        Get SECORA BLACKLINE
-                    </strong>
-
-
-                    <span>
-                        Secure checkout will be available here.
-                    </span>
-
-                </div>
+                </label>
 
 
                 <button
-                    type="button"
-                    class="access-purchase-button"
-                    data-purchase-product="blackline"
-                    disabled
-                    aria-disabled="true"
+                  type="button"
+                  class="access-redeem-button"
+                  data-redeem-product="blackline"
+                  id="blacklineRedeemButton"
                 >
 
-                    <span>
-                        Purchase BLACKLINE
-                    </span>
+                  <span>
+                    Redeem
+                  </span>
 
-
-                    <small>
-                        COMING SOON
-                    </small>
+                  <i aria-hidden="true">
+                    →
+                  </i>
 
                 </button>
 
+              </div>
+
+
+              <div
+                class="access-feedback"
+                id="blacklineRedeemFeedback"
+                role="status"
+                aria-live="polite"
+              ></div>
+
             </div>
 
-        </article>
 
-    </div>
+            <!-- PURCHASE -->
+            <div class="access-purchase">
+
+              <div class="purchase-copy">
+
+                <span>
+                  BLACKLINE ACCESS
+                </span>
+
+                <strong>
+                  Purchase premium access
+                </strong>
+
+                <small>
+                  Secure Cashfree checkout will be connected here.
+                </small>
+
+              </div>
 
 
-    <!-- =====================================================
-         SECURITY NOTE
-         ===================================================== -->
+              <button
+                type="button"
+                class="access-purchase-button"
+                data-purchase-product="blackline"
+              >
 
-    <div class="access-security-note">
+                <span>
+                  Purchase BLACKLINE
+                </span>
 
-        <span class="security-note-mark">
+                <small>
+                  COMING SOON
+                </small>
+
+              </button>
+
+            </div>
+
+          </article>
+
+        </div>
+
+
+        <!-- SECURITY NOTE -->
+        <div class="access-security-note">
+
+          <span>
             ◆
-        </span>
+          </span>
 
+          <p>
+            Access codes are product-specific and single-use by default.
+            Verification is performed through the SECORA account and database.
+          </p>
 
-        <span>
-            Access is verified securely through your SECORA account.
-            Redeem codes are product-specific and single-use by default.
-        </span>
+        </div>
 
-    </div>
+      </section>
 
-</section>
+    </section>
+
+  </main>
+
+</div>
+
+</body>
+</html>
