@@ -3108,3 +3108,752 @@ input[type="text"]:focus {
 /* ============================================================
    END — PURCHASE AREA
    ============================================================ */
+/* ============================================================
+   SECORA BLACKLINE — PREMIUM OBSIDIAN / AMETHYST THEME
+   Paste this entire block at the VERY BOTTOM of dashboard.css
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   BLACKLINE CARD — BASE
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline {
+
+  position: relative;
+
+  background:
+    radial-gradient(
+      circle at 88% 8%,
+      rgba(126, 86, 184, 0.16),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 15% 92%,
+      rgba(92, 63, 137, 0.07),
+      transparent 34%
+    ),
+    linear-gradient(
+      135deg,
+      #08090d 0%,
+      #101019 46%,
+      #171323 100%
+    );
+
+  border: 1px solid transparent;
+
+  background-clip: padding-box;
+
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+
+  overflow: hidden;
+
+  transition:
+    border-color 280ms ease,
+    box-shadow 280ms ease,
+    transform 280ms ease,
+    background 280ms ease;
+}
+
+
+/* ------------------------------------------------------------
+   PREMIUM GRADIENT BORDER
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline::before {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  padding: 1px;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      135deg,
+      #30283d 0%,
+      #604582 38%,
+      #211d2c 72%,
+      #3b304c 100%
+    );
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask-composite: xor;
+
+  mask-composite: exclude;
+
+  pointer-events: none;
+
+  opacity: 0.95;
+}
+
+
+/* ------------------------------------------------------------
+   SUBTLE TOP LIGHT
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline::after {
+
+  content: "";
+
+  position: absolute;
+
+  top: -120px;
+  right: -100px;
+
+  width: 300px;
+  height: 300px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(155, 122, 200, 0.13) 0%,
+      rgba(155, 122, 200, 0.05) 32%,
+      transparent 70%
+    );
+
+  pointer-events: none;
+
+  filter: blur(10px);
+
+  opacity: 0.8;
+}
+
+
+/* ------------------------------------------------------------
+   HOVER — VERY SUBTLE
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.48),
+    0 0 45px rgba(110, 74, 168, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+
+
+/* ------------------------------------------------------------
+   BLACKLINE LABEL
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-product-label {
+
+  color: #9b7ac8;
+
+  letter-spacing: 0.16em;
+
+  text-transform: uppercase;
+
+  text-shadow:
+    0 0 18px rgba(155, 122, 200, 0.18);
+}
+
+
+/* ------------------------------------------------------------
+   PRODUCT NUMBER
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-product-number {
+
+  background:
+    linear-gradient(
+      145deg,
+      #17131f,
+      #0e0f15
+    );
+
+  border: 1px solid #30283d;
+
+  color: #b5a9c9;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+
+/* ------------------------------------------------------------
+   BLACKLINE TITLE
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-product-title {
+
+  color: #e7e4ef;
+
+  text-shadow:
+    0 2px 18px rgba(0, 0, 0, 0.32);
+}
+
+
+/* ------------------------------------------------------------
+   LIFETIME STATUS
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-product-status {
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(36, 27, 53, 0.75),
+      rgba(16, 16, 25, 0.8)
+    );
+
+  border: 1px solid #30283d;
+
+  color: #a99bbd;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+
+/* STATUS DOT */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-status-dot {
+
+  background: #9b7ac8;
+
+  box-shadow:
+    0 0 10px rgba(155, 122, 200, 0.55),
+    0 0 22px rgba(155, 122, 200, 0.18);
+}
+
+
+/* ------------------------------------------------------------
+   DESCRIPTION
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-product-description {
+
+  color: #9a96a8;
+
+  border-bottom-color: rgba(80, 69, 98, 0.32);
+}
+
+
+/* ------------------------------------------------------------
+   METHOD HEADING
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-method-heading {
+
+  color: #b8b2c1;
+}
+
+
+/* ------------------------------------------------------------
+   METHOD ICON
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-method-icon {
+
+  background:
+    linear-gradient(
+      145deg,
+      #17131f,
+      #0d0e14
+    );
+
+  border-color: #30283d;
+
+  color: #a990c4;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+
+/* ------------------------------------------------------------
+   INPUT WRAPPER
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-input-wrap {
+
+  background:
+    linear-gradient(
+      135deg,
+      #090a0f 0%,
+      #101019 100%
+    );
+
+  border-color: #30283d;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 12px 28px rgba(0, 0, 0, 0.22);
+
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+
+/* INPUT FOCUS */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-input-wrap:focus-within {
+
+  border-color: #604582;
+
+  box-shadow:
+    0 0 0 3px rgba(110, 74, 168, 0.08),
+    0 14px 32px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+
+/* ------------------------------------------------------------
+   INPUT PREFIX
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-input-prefix {
+
+  background:
+    linear-gradient(
+      180deg,
+      #17131f,
+      #101019
+    );
+
+  border-right-color: #30283d;
+
+  color: #817592;
+}
+
+
+/* ------------------------------------------------------------
+   REDEEM INPUT
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-redeem-input {
+
+  color: #e7e4ef;
+
+  caret-color: #9b7ac8;
+}
+
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-redeem-input::placeholder {
+
+  color: #514b5d;
+}
+
+
+/* ------------------------------------------------------------
+   REDEEM BUTTON — PLATINUM
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-redeem-button {
+
+  background:
+    linear-gradient(
+      135deg,
+      #e7e4ef 0%,
+      #d4cfdd 52%,
+      #c6bfce 100%
+    );
+
+  color: #090a0e;
+
+  border: 1px solid rgba(255, 255, 255, 0.32);
+
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease,
+    background 200ms ease;
+}
+
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-redeem-button:hover {
+
+  background:
+    linear-gradient(
+      135deg,
+      #f0edf5 0%,
+      #ddd9e5 50%,
+      #d0cbd8 100%
+    );
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.30),
+    0 0 24px rgba(155, 122, 200, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+
+/* ------------------------------------------------------------
+   REDEEM ARROW
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-redeem-button svg {
+
+  color: #17121e;
+}
+
+
+/* ------------------------------------------------------------
+   FEEDBACK
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-feedback {
+
+  color: #9b7ac8;
+}
+
+
+/* ------------------------------------------------------------
+   PURCHASE AREA
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-purchase {
+
+  border-top-color: rgba(80, 69, 98, 0.34);
+}
+
+
+/* ------------------------------------------------------------
+   PURCHASE LABEL
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.purchase-copy {
+
+  color: #9a96a8;
+}
+
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.purchase-copy strong {
+
+  color: #e1dce9;
+}
+
+
+/* ------------------------------------------------------------
+   PURCHASE BUTTON — AMETHYST
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-purchase-button {
+
+  position: relative;
+
+  background:
+    linear-gradient(
+      135deg,
+      #241b35 0%,
+      #3a2854 48%,
+      #241b35 100%
+    );
+
+  border: 1px solid #604582;
+
+  color: #e7e4ef;
+
+  box-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.045);
+
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    background 220ms ease;
+}
+
+
+/* PURCHASE BUTTON TOP LIGHT */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-purchase-button::before {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 1px;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      110deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.055) 45%,
+      transparent 75%
+    );
+
+  pointer-events: none;
+}
+
+
+/* PURCHASE BUTTON HOVER */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-purchase-button:hover {
+
+  transform: translateY(-2px);
+
+  border-color: #8062a4;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2d2142 0%,
+      #493365 50%,
+      #2d2142 100%
+    );
+
+  box-shadow:
+    0 20px 42px rgba(0, 0, 0, 0.34),
+    0 0 34px rgba(126, 86, 184, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+
+/* ------------------------------------------------------------
+   COMING SOON TEXT
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-purchase-button .coming-soon {
+
+  color: #9b7ac8;
+
+  letter-spacing: 0.14em;
+}
+
+
+/* ------------------------------------------------------------
+   PURCHASE ARROW
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-purchase-button .arrow {
+
+  color: #c9bfd7;
+
+  transition:
+    transform 200ms ease;
+}
+
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-purchase-button:hover .arrow {
+
+  transform: translateX(4px);
+
+  color: #e7e4ef;
+}
+
+
+/* ------------------------------------------------------------
+   SECURITY NOTE
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-security-note {
+
+  color: #746d7d;
+}
+
+
+/* ------------------------------------------------------------
+   BLACKLINE MICRO-GLOW
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-product-top {
+
+  position: relative;
+}
+
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-product-top::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  bottom: -1px;
+
+  width: 90px;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #604582,
+      rgba(96, 69, 130, 0)
+    );
+
+  opacity: 0.75;
+}
+
+
+/* ------------------------------------------------------------
+   BLACKLINE ACCESS EYEBROW
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline
+.access-product-top
+.access-product-label::before {
+
+  content: "";
+
+  display: inline-block;
+
+  width: 5px;
+  height: 5px;
+
+  margin-right: 7px;
+
+  border-radius: 50%;
+
+  background: #9b7ac8;
+
+  box-shadow:
+    0 0 9px rgba(155, 122, 200, 0.55);
+
+  vertical-align: middle;
+}
+
+
+/* ------------------------------------------------------------
+   PREMIUM SELECTION
+   ------------------------------------------------------------ */
+
+.secora-access-center
+.access-product-card.access-product-blackline ::selection {
+
+  background: rgba(126, 86, 184, 0.30);
+
+  color: #ffffff;
+}
+
+
+/* ------------------------------------------------------------
+   RESPONSIVE — MOBILE
+   ------------------------------------------------------------ */
+
+@media (max-width: 700px) {
+
+  .secora-access-center
+  .access-product-card.access-product-blackline {
+
+    background:
+      radial-gradient(
+        circle at 90% 5%,
+        rgba(126, 86, 184, 0.13),
+        transparent 35%
+      ),
+      linear-gradient(
+        145deg,
+        #08090d 0%,
+        #101019 55%,
+        #171323 100%
+      );
+  }
+
+  .secora-access-center
+  .access-product-card.access-product-blackline
+  .access-purchase-button {
+
+    box-shadow:
+      0 12px 28px rgba(0, 0, 0, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+}
+
+
+/* ------------------------------------------------------------
+   ACCESSIBILITY — REDUCED MOTION
+   ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .secora-access-center
+  .access-product-card.access-product-blackline,
+  .secora-access-center
+  .access-product-card.access-product-blackline
+  .access-redeem-button,
+  .secora-access-center
+  .access-product-card.access-product-blackline
+  .access-purchase-button {
+
+    transition: none;
+  }
+}
