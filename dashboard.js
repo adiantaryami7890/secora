@@ -3263,5 +3263,84 @@
     },
     0
   );
+/* ============================================================
+   SECORA — OWNER ACCESS OVERRIDE
+   ------------------------------------------------------------
+   Owner:
+   securehubtech@gmail.com
 
+   This patch does NOT replace the existing access system.
+   It simply guarantees that the SECORA owner account receives
+   CORE + BLACKLINE access even when the owner has no entitlement
+   or redeem-code record.
+   ============================================================ */
+
+const secoraOriginalLoadAccessState =
+  loadAccessState;
+
+loadAccessState = async function () {
+
+  /* ----------------------------------------------------------
+     Run the existing access / entitlement system first.
+     ---------------------------------------------------------- */
+
+  await secoraOriginalLoadAccessState();
+
+
+  /* ----------------------------------------------------------
+     Detect the SECORA owner.
+     ---------------------------------------------------------- */
+
+  const ownerEmail =
+    "securehubtech@gmail.com";
+
+  const currentEmail =
+    String(
+      state.user?.email || ""
+    )
+      .trim()
+      .toLowerCase();
+
+
+  const isOwnerAccount =
+    currentEmail ===
+    ownerEmail;
+
+
+  /* ----------------------------------------------------------
+     Owner override.
+     ---------------------------------------------------------- */
+
+  if (isOwnerAccount) {
+
+    state.isOwner =
+      true;
+
+    state.accessByTrack.fundamentals =
+      true;
+
+    state.accessByTrack.intermediate =
+      true;
+
+    state.accessByTrack.advanced =
+      true;
+
+
+    console.log(
+      "SECORA: OWNER ACCOUNT DETECTED"
+    );
+
+    console.log(
+      "SECORA: ORIGIN = UNLOCKED"
+    );
+
+    console.log(
+      "SECORA: CORE = UNLOCKED"
+    );
+
+    console.log(
+      "SECORA: BLACKLINE = UNLOCKED"
+    );
+  }
+};
 })();
