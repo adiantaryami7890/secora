@@ -1,79 +1,87 @@
  /* ============================================================
-   SECORA DASHBOARD
+   SECORA — DASHBOARD
+   Complete production-safe dashboard controller
+   ============================================================
+
+   IMPORTANT ARCHITECTURE
+
+   supabase.js
+        ↓
+   window.secoraSupabase
+        ↓
    dashboard.js
-   RESTORED + HARDENED VERSION
+        ↓
+   Auth / Courses / Modules / Lessons / Progress
+        ↓
+   ORIGIN / CORE / BLACKLINE
 
-   Compatible with:
-   - SECORA home.html
-   - SECORA dashboard.css
-   - Supabase Auth
-   - SECORA ORIGIN
-   - SECORA CORE
-   - SECORA BLACKLINE
-   - Redeem Code System
-   - User Entitlements
+   SECURITY RULE:
+   The Supabase API key belongs ONLY in supabase.js.
+   This file intentionally contains NO API key.
 
-   IMPORTANT:
-   Courses are rendered independently from optional data.
-   A failure in progress/modules/products/entitlements
-   must NEVER prevent the course cards from appearing.
    ============================================================ */
 
 (() => {
   "use strict";
 
-
   /* ============================================================
-     SUPABASE
-     ============================================================ */
-
-  const SUPABASE =
-    window.secoraSupabase ||
-    window.supabaseClient ||
-    null;
-
-
-  /* ============================================================
-     TRACK CONFIGURATION
+     GLOBAL CONFIGURATION
      ============================================================ */
 
   const TRACKS = {
-
     fundamentals: {
       key: "fundamentals",
       title: "SECORA ORIGIN",
-      subtitle: "Cybersecurity Fundamentals",
+      kicker: "FOUNDATION",
       description:
-        "Build the essential foundations required to understand modern cybersecurity.",
-      access: "free"
+        "Build the essential cybersecurity foundations required to understand the digital battlefield.",
+      product: null
     },
 
     intermediate: {
       key: "intermediate",
       title: "SECORA CORE",
-      subtitle: "Professional Security",
+      kicker: "PROFESSIONAL",
       description:
         "Move beyond fundamentals into professional security concepts, operations and methodology.",
-      access: "core"
+      product: "core"
     },
 
     advanced: {
       key: "advanced",
       title: "SECORA BLACKLINE",
-      subtitle: "Advanced Security",
+      kicker: "ADVANCED",
       description:
         "Advanced offensive, defensive, intelligence and security engineering knowledge.",
-      access: "blackline"
+      product: "blackline"
     }
-
   };
 
 
-  const TRACK_ORDER = [
-    "fundamentals",
-    "intermediate",
-    "advanced"
-  ];
+  /* ============================================================
+     SUPABASE CLIENT
+     ============================================================ */
+
+  let SUPABASE = null;
+
+
+  function getSupabaseClient() {
+    if (
+      window.secoraSupabase &&
+      typeof window.secoraSupabase.auth === "object"
+    ) {
+      return window.secoraSupabase;
+    }
+
+    if (
+      window.supabaseClient &&
+      typeof window.supabaseClient.auth === "object"
+    ) {
+      return window.supabaseClient;
+    }
+
+    return null;
+  }
 
 
   /* ============================================================
@@ -81,37 +89,25 @@
      ============================================================ */
 
   const state = {
-
     user: null,
 
     courses: [],
-
     modules: [],
-
     lessons: [],
-
     progress: [],
 
     entitlements: [],
-
     products: [],
 
     accessByTrack: {
-
       fundamentals: true,
-
       intermediate: false,
-
       advanced: false
-
     },
 
     isOwner: false,
 
-    initialized: false,
-
-    loading: false
-
+    initialized: false
   };
 
 
@@ -123,11 +119,7 @@
     selector,
     parent = document
   ) => {
-
-    return parent.querySelector(
-      selector
-    );
-
+    return parent.querySelector(selector);
   };
 
 
@@ -135,238 +127,147 @@
     selector,
     parent = document
   ) => {
-
     return Array.from(
-      parent.querySelectorAll(
-        selector
-      )
+      parent.querySelectorAll(selector)
     );
-
   };
 
 
   function escapeHTML(value) {
-
-    return String(
-      value ?? ""
-    )
-      .replace(
-        /&/g,
-        "&amp;"
-      )
-      .replace(
-        /</g,
-        "&lt;"
-      )
-      .replace(
-        />/g,
-        "&gt;"
-      )
-      .replace(
-        /"/g,
-        "&quot;"
-      )
-      .replace(
-        /'/g,
-        "&#039;"
-      );
-
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 
 
   function setText(
-    selector,
+    id,
     value
   ) {
-
     const element =
-      $(selector);
+      document.getElementById(id);
 
     if (element) {
-
       element.textContent =
         value;
-
     }
-
   }
 
 
   /* ============================================================
-     START APPLICATION
+     INITIALIZATION
      ============================================================ */
 
   document.addEventListener(
     "DOMContentLoaded",
-    init
+    init,
+    { once: true }
   );
 
 
   async function init() {
 
-    if (
-      state.loading ||
-      state.initialized
-    ) {
-
-      return;
-
-    }
-
-
-    state.loading =
-      true;
-
-
-    /*
-     * Bind UI immediately.
-     */
-    bindGlobalEvents();
-
-    setupSearch();
-
-    setupRedeemButtons();
-
-    setupPurchaseButtons();
-
-    setupAccessTrackButtons();
-
-
-    /*
-     * Supabase must exist.
-     */
-    if (!SUPABASE) {
-
-      console.error(
-        "SECORA: Supabase client was not found."
-      );
-
-      showDashboardError(
-        "SECORA database client is unavailable. Check supabase.js."
-      );
-
-      state.loading =
-        false;
-
-      return;
-
-    }
-
-
     try {
 
-      /*
-       * Authentication is essential.
-       */
+      /* --------------------------------------------------------
+         SUPABASE
+         -------------------------------------------------------- */
+
+      SUPABASE =
+        getSupabaseClient();
+
+
+      if (!SUPABASE) {
+
+        console.error(
+          "SECORA: Supabase client was not found."
+        );
+
+        showDashboardError(
+          "SECORA database client is unavailable. Check that supabase.js loads before dashboard.js."
+        );
+
+        return;
+      }
+
+
+      /* --------------------------------------------------------
+         AUTHENTICATION
+         -------------------------------------------------------- */
+
       const authenticated =
         await ensureAuthenticated();
 
 
       if (!authenticated) {
-
-        state.loading =
-          false;
-
         return;
-
       }
 
 
-      /*
-       * Render user immediately.
-       */
+      /* --------------------------------------------------------
+         GLOBAL UI
+         -------------------------------------------------------- */
+
+      bindGlobalEvents();
+
       renderUser();
 
       renderDate();
 
 
-      /*
-       * ORIGIN should always exist.
-       */
-      state.accessByTrack.fundamentals =
-        true;
+      /* --------------------------------------------------------
+         LOAD DATA
+         -------------------------------------------------------- */
+
+      await loadPlatformData();
 
 
-      /*
-       * Load the most important thing FIRST:
-       * COURSES.
-       *
-       * Once courses arrive, render the dashboard.
-       */
-      const coursesLoaded =
-        await loadCourses();
+      /* --------------------------------------------------------
+         RENDER
+         -------------------------------------------------------- */
 
-
-      if (!coursesLoaded) {
-
-        state.loading =
-          false;
-
-        return;
-
-      }
-
-
-      /*
-       * Render courses immediately.
-       *
-       * This is the critical fix.
-       *
-       * Optional database queries below can fail without
-       * preventing ORIGIN / CORE / BLACKLINE from appearing.
-       */
       renderStats();
 
       renderCourses();
 
       renderAccessCenter();
 
+      setupSearch();
 
-      /*
-       * Now load secondary data independently.
-       */
-      await loadOptionalPlatformData();
+      setupRedeemButtons();
 
-
-      /*
-       * Refresh the UI using whatever optional data
-       * successfully loaded.
-       */
-      renderStats();
-
-      renderCourses();
-
-      renderAccessCenter();
+      setupPurchaseButtons();
 
       setupAccessTrackButtons();
 
 
+      /* --------------------------------------------------------
+         FINAL STATE
+         -------------------------------------------------------- */
+
       state.initialized =
         true;
+
+
+      console.log(
+        "SECORA: Dashboard initialized successfully."
+      );
 
     } catch (error) {
 
       console.error(
-        "SECORA dashboard fatal error:",
+        "SECORA dashboard initialization error:",
         error
       );
 
-
-      /*
-       * Only show a full dashboard error when the
-       * essential initialization itself failed.
-       */
       showDashboardError(
-        "SECORA could not load the dashboard. Check the browser console for the exact database error."
+        "Something went wrong while loading your SECORA dashboard."
       );
 
-    } finally {
-
-      state.loading =
-        false;
-
     }
-
   }
 
 
@@ -395,7 +296,6 @@
         redirectToLogin();
 
         return false;
-
       }
 
 
@@ -408,7 +308,6 @@
         redirectToLogin();
 
         return false;
-
       }
 
 
@@ -428,31 +327,316 @@
       redirectToLogin();
 
       return false;
-
     }
-
   }
 
 
   function redirectToLogin() {
 
-    window.location.href =
-      "index.html";
-
+    window.location.replace(
+      "index.html"
+    );
   }
 
 
   /* ============================================================
-     LOAD COURSES
+     GLOBAL EVENTS
      ============================================================ */
 
-  async function loadCourses() {
+  function bindGlobalEvents() {
+
+    const logoutButton =
+      document.getElementById(
+        "logoutBtn"
+      );
+
+
+    if (logoutButton) {
+
+      logoutButton.addEventListener(
+        "click",
+        handleLogout
+      );
+    }
+
 
     /*
-     * First attempt:
-     * full current courses schema.
+     * Sidebar course navigation
      */
-    let result =
+
+    $$(
+      'a[href="#courses"]'
+    ).forEach(
+      link => {
+
+        link.addEventListener(
+          "click",
+          () => {
+
+            const target =
+              document.getElementById(
+                "courses"
+              );
+
+            if (target) {
+
+              window.setTimeout(
+                () => {
+
+                  target.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                  });
+
+                },
+                0
+              );
+            }
+
+          }
+        );
+
+      }
+    );
+  }
+
+
+  /* ============================================================
+     LOGOUT
+     ============================================================ */
+
+  async function handleLogout(event) {
+
+    if (event) {
+      event.preventDefault();
+    }
+
+
+    const button =
+      document.getElementById(
+        "logoutBtn"
+      );
+
+
+    if (button) {
+
+      button.disabled =
+        true;
+
+      button.textContent =
+        "Logging out...";
+    }
+
+
+    try {
+
+      const {
+        error
+      } =
+        await SUPABASE.auth.signOut();
+
+
+      if (error) {
+
+        throw error;
+      }
+
+
+      window.location.replace(
+        "index.html"
+      );
+
+    } catch (error) {
+
+      console.error(
+        "SECORA logout error:",
+        error
+      );
+
+
+      if (button) {
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "Logout";
+      }
+
+      alert(
+        "Unable to log out right now. Please try again."
+      );
+    }
+  }
+
+
+  /* ============================================================
+     USER INTERFACE
+     ============================================================ */
+
+  function renderUser() {
+
+    const user =
+      state.user;
+
+
+    if (!user) {
+      return;
+    }
+
+
+    const metadata =
+      user.user_metadata ||
+      {};
+
+
+    const displayName =
+      metadata.full_name ||
+      metadata.name ||
+      metadata.user_name ||
+      user.email?.split("@")[0] ||
+      "Learner";
+
+
+    const email =
+      user.email ||
+      "";
+
+
+    /* ----------------------------------------------------------
+       MAIN GREETING
+       ---------------------------------------------------------- */
+
+    setText(
+      "userGreeting",
+      `Welcome back, ${displayName}.`
+    );
+
+
+    /* ----------------------------------------------------------
+       SIDEBAR NAME
+       ---------------------------------------------------------- */
+
+    setText(
+      "userName",
+      displayName
+    );
+
+
+    /* ----------------------------------------------------------
+       TOPBAR NAME
+       ---------------------------------------------------------- */
+
+    setText(
+      "topUserName",
+      displayName
+    );
+
+
+    /* ----------------------------------------------------------
+       EMAIL
+       ---------------------------------------------------------- */
+
+    setText(
+      "userEmail",
+      email
+    );
+
+
+    /* ----------------------------------------------------------
+       AVATAR
+       ---------------------------------------------------------- */
+
+    const avatarUrl =
+      metadata.avatar_url ||
+      metadata.picture ||
+      "";
+
+
+    const avatarElements =
+      $$(
+        "#userAvatar, #topUserAvatar"
+      );
+
+
+    avatarElements.forEach(
+      avatar => {
+
+        if (
+          avatar.tagName ===
+          "IMG"
+        ) {
+
+          if (avatarUrl) {
+
+            avatar.src =
+              avatarUrl;
+
+            avatar.alt =
+              displayName;
+
+            avatar.style.display =
+              "";
+
+          } else {
+
+            avatar.removeAttribute(
+              "src"
+            );
+
+            avatar.alt =
+              "";
+
+          }
+
+        }
+
+      }
+    );
+  }
+
+
+  /* ============================================================
+     DATE
+     ============================================================ */
+
+  function renderDate() {
+
+    setText(
+      "currentDate",
+      new Date().toLocaleDateString(
+        "en-IN",
+        {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        }
+      )
+    );
+  }
+
+
+  /* ============================================================
+     LOAD PLATFORM DATA
+     ============================================================ */
+
+  async function loadPlatformData() {
+
+    /*
+     * We intentionally do NOT let optional queries destroy
+     * the entire dashboard.
+     *
+     * Courses are the primary requirement.
+     * Modules, lessons and progress are loaded afterwards.
+     */
+
+
+    /* ----------------------------------------------------------
+       COURSES
+       ---------------------------------------------------------- */
+
+    let coursesResult =
       await SUPABASE
         .from("courses")
         .select(`
@@ -461,9 +645,8 @@
           slug,
           description,
           level,
-          thumbnail_url,
-          published,
           track,
+          published,
           created_at
         `)
         .eq(
@@ -479,18 +662,24 @@
 
 
     /*
-     * If the track column causes a schema error,
-     * automatically fall back to the older schema.
+     * Compatibility fallback:
+     *
+     * If the current database does not expose track,
+     * load the original course fields and infer the track
+     * from the course slug.
      */
-    if (result.error) {
+
+    if (
+      coursesResult.error
+    ) {
 
       console.warn(
-        "SECORA: Primary courses query failed. Trying compatibility query.",
-        result.error
+        "SECORA: Course query with track failed. Retrying without track.",
+        coursesResult.error
       );
 
 
-      result =
+      coursesResult =
         await SUPABASE
           .from("courses")
           .select(`
@@ -499,7 +688,6 @@
             slug,
             description,
             level,
-            thumbnail_url,
             published,
             created_at
           `)
@@ -516,127 +704,487 @@
 
 
       if (
-        !result.error &&
-        Array.isArray(result.data)
+        coursesResult.error
       ) {
 
-        state.courses =
-          result.data.map(
-            course => ({
-
-              ...course,
-
-              /*
-               * Old schema fallback:
-               *
-               * Existing ORIGIN courses are assigned
-               * to fundamentals.
-               */
-              track:
-                inferTrackFromCourse(
-                  course
-                )
-
-            })
-          );
-
-        console.warn(
-          "SECORA: Courses loaded using compatibility mode."
-        );
-
-        return true;
-
+        throw coursesResult.error;
       }
-
-    }
-
-
-    if (result.error) {
-
-      console.error(
-        "SECORA COURSES QUERY FAILED:",
-        result.error
-      );
-
-
-      showDashboardError(
-        `Courses could not be loaded: ${
-          result.error.message ||
-          "Unknown database error"
-        }`
-      );
-
-
-      return false;
-
     }
 
 
     state.courses =
-      (result.data || [])
+      (coursesResult.data || [])
         .map(
           course => ({
-
             ...course,
 
             track:
               normalizeTrack(
-                course.track
+                course.track ||
+                inferTrackFromSlug(
+                  course.slug
+                )
               )
-
           })
         );
 
 
-    console.log(
-      "SECORA: Courses loaded:",
-      state.courses.length
-    );
+    /*
+     * Render course structure immediately.
+     *
+     * This prevents the old "Loading courses..."
+     * dead state when an optional query fails.
+     */
+
+    renderCourses();
 
 
-    return true;
+    /* ----------------------------------------------------------
+       COURSE IDS
+       ---------------------------------------------------------- */
 
+    const courseIds =
+      state.courses.map(
+        course =>
+          course.id
+      );
+
+
+    /* ----------------------------------------------------------
+       MODULES
+       ---------------------------------------------------------- */
+
+    if (courseIds.length) {
+
+      const {
+        data,
+        error
+      } =
+        await SUPABASE
+          .from("modules")
+          .select(`
+            id,
+            course_id,
+            title,
+            description,
+            position,
+            created_at
+          `)
+          .in(
+            "course_id",
+            courseIds
+          )
+          .order(
+            "position",
+            {
+              ascending: true
+            }
+          );
+
+
+      if (error) {
+
+        console.warn(
+          "SECORA: Modules could not be loaded.",
+          error
+        );
+
+        state.modules =
+          [];
+
+      } else {
+
+        state.modules =
+          data || [];
+      }
+
+    } else {
+
+      state.modules =
+        [];
+    }
+
+
+    /* ----------------------------------------------------------
+       LESSONS
+       ---------------------------------------------------------- */
+
+    const moduleIds =
+      state.modules.map(
+        module =>
+          module.id
+      );
+
+
+    if (moduleIds.length) {
+
+      const {
+        data,
+        error
+      } =
+        await SUPABASE
+          .from("lessons")
+          .select(`
+            id,
+            module_id,
+            title,
+            slug,
+            position,
+            duration_minutes,
+            published,
+            created_at
+          `)
+          .in(
+            "module_id",
+            moduleIds
+          )
+          .eq(
+            "published",
+            true
+          )
+          .order(
+            "position",
+            {
+              ascending: true
+            }
+          );
+
+
+      if (error) {
+
+        console.warn(
+          "SECORA: Lessons could not be loaded.",
+          error
+        );
+
+        state.lessons =
+          [];
+
+      } else {
+
+        state.lessons =
+          data || [];
+      }
+
+    } else {
+
+      state.lessons =
+        [];
+    }
+
+
+    /* ----------------------------------------------------------
+       USER PROGRESS
+       ---------------------------------------------------------- */
+
+    const lessonIds =
+      state.lessons.map(
+        lesson =>
+          lesson.id
+      );
+
+
+    if (
+      lessonIds.length &&
+      state.user?.id
+    ) {
+
+      const {
+        data,
+        error
+      } =
+        await SUPABASE
+          .from("lesson_progress")
+          .select(`
+            lesson_id,
+            completed,
+            completed_at,
+            last_opened_at
+          `)
+          .eq(
+            "user_id",
+            state.user.id
+          )
+          .in(
+            "lesson_id",
+            lessonIds
+          );
+
+
+      if (error) {
+
+        console.warn(
+          "SECORA: Progress could not be loaded.",
+          error
+        );
+
+        state.progress =
+          [];
+
+      } else {
+
+        state.progress =
+          data || [];
+      }
+
+    } else {
+
+      state.progress =
+        [];
+    }
+
+
+    /* ----------------------------------------------------------
+       ACCESS / ENTITLEMENTS
+       ---------------------------------------------------------- */
+
+    await loadAccessState();
+
+
+    /* ----------------------------------------------------------
+       FINAL RENDER
+       ---------------------------------------------------------- */
+
+    renderStats();
+
+    renderCourses();
+
+    renderAccessCenter();
   }
 
 
   /* ============================================================
-     OPTIONAL PLATFORM DATA
+     ACCESS STATE
      ============================================================ */
 
-  async function loadOptionalPlatformData() {
-
-    /*
-     * Run independently.
-     *
-     * One failure does not stop the others.
-     */
-    await Promise.allSettled([
-
-      loadModules(),
-
-      loadLessons(),
-
-      loadProgress(),
-
-      loadProducts(),
-
-      loadEntitlements(),
-
-      loadOwnerStatus()
-
-    ]);
-
+  async function loadAccessState() {
 
     /*
      * ORIGIN is always free.
      */
+
     state.accessByTrack.fundamentals =
       true;
 
 
     /*
-     * Determine commercial access.
+     * Load the user's entitlements.
+     *
+     * Failure here must NOT break the dashboard.
      */
+
+    if (!state.user?.id) {
+      return;
+    }
+
+
+    const {
+      data,
+      error
+    } =
+      await SUPABASE
+        .from("user_entitlements")
+        .select(`
+          id,
+          product_id,
+          status,
+          granted_at,
+          expires_at,
+          source
+        `)
+        .eq(
+          "user_id",
+          state.user.id
+        );
+
+
+    if (error) {
+
+      console.warn(
+        "SECORA: Entitlements could not be loaded.",
+        error
+      );
+
+      return;
+    }
+
+
+    state.entitlements =
+      data || [];
+
+
+    if (!state.entitlements.length) {
+      return;
+    }
+
+
+    /*
+     * Load products separately.
+     */
+
+    const productIds =
+      state.entitlements
+        .map(
+          entitlement =>
+            entitlement.product_id
+        )
+        .filter(Boolean);
+
+
+    if (!productIds.length) {
+      return;
+    }
+
+
+    const {
+      data: products,
+      error: productsError
+    } =
+      await SUPABASE
+        .from("products")
+        .select(`
+          id,
+          code,
+          name,
+          title
+        `)
+        .in(
+          "id",
+          productIds
+        );
+
+
+    if (productsError) {
+
+      console.warn(
+        "SECORA: Products could not be loaded.",
+        productsError
+      );
+
+      return;
+    }
+
+
+    state.products =
+      products || [];
+
+
+    /*
+     * Map active entitlements to tracks.
+     */
+
+    state.entitlements.forEach(
+      entitlement => {
+
+        if (
+          String(
+            entitlement.status ||
+            ""
+          ).toLowerCase() !==
+          "active"
+        ) {
+
+          return;
+        }
+
+
+        /*
+         * Lifetime entitlement:
+         * expires_at = NULL
+         */
+
+        if (
+          entitlement.expires_at &&
+          new Date(
+            entitlement.expires_at
+          ) < new Date()
+        ) {
+
+          return;
+        }
+
+
+        const product =
+          state.products.find(
+            item =>
+              item.id ===
+              entitlement.product_id
+          );
+
+
+        if (!product) {
+          return;
+        }
+
+
+        const code =
+          String(
+            product.code ||
+            ""
+          ).toLowerCase();
+
+
+        if (code === "core") {
+
+          state.accessByTrack.intermediate =
+            true;
+        }
+
+
+        if (code === "blackline") {
+
+          state.accessByTrack.advanced =
+            true;
+        }
+
+      }
+    );
+
+
+    /*
+     * Owner detection.
+     *
+     * We use the existing server-side owner function
+     * instead of assuming a profiles.role column exists.
+     *
+     * Failure simply means normal user access.
+     */
+
+    try {
+
+      const {
+        data: ownerResult,
+        error: ownerError
+      } =
+        await SUPABASE
+          .rpc(
+            "is_secora_owner"
+          );
+
+
+      if (!ownerError) {
+
+        state.isOwner =
+          ownerResult === true ||
+          ownerResult === "true";
+
+      }
+
+    } catch (error) {
+
+      console.warn(
+        "SECORA: Owner check unavailable.",
+        error
+      );
+
+    }
+
+
+    /*
+     * Owner receives administrative access to protected
+     * learning tracks.
+     */
+
     if (state.isOwner) {
 
       state.accessByTrack.intermediate =
@@ -644,359 +1192,23 @@
 
       state.accessByTrack.advanced =
         true;
-
-    } else {
-
-      state.accessByTrack.intermediate =
-        hasProductAccess(
-          "core"
-        );
-
-      state.accessByTrack.advanced =
-        hasProductAccess(
-          "blackline"
-        );
-
     }
-
-  }
-
-
-  /* ============================================================
-     MODULES
-     ============================================================ */
-
-  async function loadModules() {
-
-    const result =
-      await SUPABASE
-        .from("modules")
-        .select(`
-          id,
-          course_id,
-          title,
-          description,
-          position,
-          created_at
-        `)
-        .order(
-          "position",
-          {
-            ascending: true
-          }
-        );
-
-
-    if (result.error) {
-
-      console.warn(
-        "SECORA modules query failed:",
-        result.error
-      );
-
-      state.modules =
-        [];
-
-      return false;
-
-    }
-
-
-    state.modules =
-      result.data || [];
-
-
-    return true;
-
-  }
-
-
-  /* ============================================================
-     LESSONS
-     ============================================================ */
-
-  async function loadLessons() {
-
-    const result =
-      await SUPABASE
-        .from("lessons")
-        .select(`
-          id,
-          module_id,
-          title,
-          slug,
-          content,
-          position,
-          duration_minutes,
-          published,
-          created_at
-        `)
-        .eq(
-          "published",
-          true
-        )
-        .order(
-          "position",
-          {
-            ascending: true
-          }
-        );
-
-
-    if (result.error) {
-
-      console.warn(
-        "SECORA lessons query failed:",
-        result.error
-      );
-
-      state.lessons =
-        [];
-
-      return false;
-
-    }
-
-
-    state.lessons =
-      result.data || [];
-
-
-    return true;
-
-  }
-
-
-  /* ============================================================
-     PROGRESS
-     ============================================================ */
-
-  async function loadProgress() {
-
-    if (!state.user?.id) {
-
-      return false;
-
-    }
-
-
-    const result =
-      await SUPABASE
-        .from("lesson_progress")
-        .select(`
-          id,
-          user_id,
-          lesson_id,
-          completed,
-          completed_at,
-          last_opened_at
-        `)
-        .eq(
-          "user_id",
-          state.user.id
-        );
-
-
-    if (result.error) {
-
-      console.warn(
-        "SECORA progress query failed:",
-        result.error
-      );
-
-      state.progress =
-        [];
-
-      return false;
-
-    }
-
-
-    state.progress =
-      result.data || [];
-
-
-    return true;
-
-  }
-
-
-  /* ============================================================
-     PRODUCTS
-     ============================================================ */
-
-  async function loadProducts() {
-
-    const result =
-      await SUPABASE
-        .from("products")
-        .select(`
-          id,
-          code,
-          name,
-          description
-        `);
-
-
-    if (result.error) {
-
-      console.warn(
-        "SECORA products query failed:",
-        result.error
-      );
-
-      state.products =
-        [];
-
-      return false;
-
-    }
-
-
-    state.products =
-      result.data || [];
-
-
-    return true;
-
-  }
-
-
-  /* ============================================================
-     ENTITLEMENTS
-     ============================================================ */
-
-  async function loadEntitlements() {
-
-    if (!state.user?.id) {
-
-      return false;
-
-    }
-
-
-    const result =
-      await SUPABASE
-        .from("user_entitlements")
-        .select(`
-          id,
-          user_id,
-          product_id,
-          status,
-          source,
-          payment_reference,
-          granted_at,
-          expires_at,
-          metadata
-        `)
-        .eq(
-          "user_id",
-          state.user.id
-        );
-
-
-    if (result.error) {
-
-      console.warn(
-        "SECORA entitlement query failed:",
-        result.error
-      );
-
-      state.entitlements =
-        [];
-
-      return false;
-
-    }
-
-
-    state.entitlements =
-      result.data || [];
-
-
-    return true;
-
-  }
-
-
-  /* ============================================================
-     OWNER STATUS
-     ============================================================ */
-
-  async function loadOwnerStatus() {
-
-    try {
-
-      const result =
-        await SUPABASE.rpc(
-          "is_secora_owner"
-        );
-
-
-      if (result.error) {
-
-        console.warn(
-          "SECORA owner check failed:",
-          result.error
-        );
-
-        state.isOwner =
-          false;
-
-        return false;
-
-      }
-
-
-      state.isOwner =
-        Boolean(
-          result.data
-        );
-
-
-      return true;
-
-    } catch (error) {
-
-      console.warn(
-        "SECORA owner check exception:",
-        error
-      );
-
-      state.isOwner =
-        false;
-
-      return false;
-
-    }
-
   }
 
 
   /* ============================================================
      TRACK NORMALIZATION
-     ============================================================ */
+     * ============================================================ */
 
-  function normalizeTrack(
-    track
-  ) {
+  function normalizeTrack(track) {
 
     const value =
       String(
-        track || ""
+        track ||
+        ""
       )
         .trim()
         .toLowerCase();
-
-
-    if (
-      value === "advanced" ||
-      value === "blackline"
-    ) {
-
-      return "advanced";
-
-    }
 
 
     if (
@@ -1005,12 +1217,19 @@
     ) {
 
       return "intermediate";
+    }
 
+
+    if (
+      value === "advanced" ||
+      value === "blackline"
+    ) {
+
+      return "advanced";
     }
 
 
     return "fundamentals";
-
   }
 
 
@@ -1018,498 +1237,212 @@
      TRACK FALLBACK
      ============================================================ */
 
-  function inferTrackFromCourse(
-    course
-  ) {
+  function inferTrackFromSlug(slug) {
 
-    const text =
-      `${course?.slug || ""} ${
-        course?.title || ""
-      }`
-        .toLowerCase();
-
-
-    /*
-     * Known ORIGIN courses.
-     */
-    const originNames = [
-
-      "cybersecurity-fundamentals",
-
-      "networking-fundamentals",
-
-      "linux-fundamentals",
-
-      "windows-fundamentals"
-
-    ];
-
-
-    if (
-      originNames.some(
-        name =>
-          text.includes(name)
-      )
-    ) {
-
-      return "fundamentals";
-
-    }
-
-
-    /*
-     * Known CORE course patterns.
-     */
-    const corePatterns = [
-
-      "cybersecurity-intermediate",
-
-      "ethical-hacking-fundamentals",
-
-      "web-application-security",
-
-      "security-operations-soc",
-
-      "vulnerability-assessment-management",
-
-      "cryptography-secure-communication",
-
-      "reconnaissance-information-gathering",
-
-      "network-security",
-
-      "identity-access-management",
-
-      "application-api-security"
-
-    ];
-
-
-    if (
-      corePatterns.some(
-        name =>
-          text.includes(name)
-      )
-    ) {
-
-      return "intermediate";
-
-    }
-
-
-    /*
-     * Advanced / BLACKLINE patterns.
-     */
-    const advancedPatterns = [
-
-      "adversary",
-
-      "advanced-reconnaissance",
-
-      "advanced-penetration",
-
-      "active-directory",
-
-      "privileged-access",
-
-      "advanced-web",
-
-      "vulnerability-research",
-
-      "malware-analysis",
-
-      "advanced-security",
-
-      "cloud-attack",
-
-      "cyber-threat",
-
-      "detection-engineering",
-
-      "digital-forensics",
-
-      "incident-response",
-
-      "network-detection",
-
-      "purple-team",
-
-      "zero-trust",
-
-      "threat-hunting",
-
-      "threat-intelligence",
-
-      "threat-modeling"
-
-    ];
-
-
-    if (
-      advancedPatterns.some(
-        name =>
-          text.includes(name)
-      )
-    ) {
-
-      return "advanced";
-
-    }
-
-
-    /*
-     * Safe default.
-     */
-    return "fundamentals";
-
-  }
-
-
-  /* ============================================================
-     PRODUCT ACCESS
-     ============================================================ */
-
-  function hasProductAccess(
-    productCode
-  ) {
-
-    const normalizedCode =
+    const value =
       String(
-        productCode || ""
+        slug ||
+        ""
       )
         .trim()
         .toLowerCase();
 
 
-    /*
-     * First try the products table.
-     */
-    const product =
-      state.products.find(
-        item =>
-          String(
-            item.code || ""
-          )
-            .trim()
-            .toLowerCase() ===
-          normalizedCode
-      );
+    const coreCourses = [
+      "cybersecurity-intermediate",
+      "ethical-hacking-fundamentals",
+      "web-application-security",
+      "security-operations-soc",
+      "vulnerability-assessment-management",
+      "cryptography-secure-communication",
+      "reconnaissance-information-gathering",
+      "network-security",
+      "identity-access-management",
+      "application-api-security"
+    ];
 
 
-    /*
-     * If product table could not be read,
-     * use entitlement metadata.
-     */
-    if (!product) {
-
-      return state.entitlements.some(
-        entitlement => {
-
-          if (
-            entitlement.status !==
-            "active"
-          ) {
-
-            return false;
-
-          }
-
-
-          if (
-            entitlement.expires_at
-          ) {
-
-            const expiry =
-              new Date(
-                entitlement.expires_at
-              ).getTime();
+    const blacklineKeywords = [
+      "adversary-tradecraft",
+      "advanced-reconnaissance",
+      "advanced-penetration",
+      "active-directory",
+      "identity-attack",
+      "advanced-web",
+      "vulnerability-research",
+      "malware-analysis",
+      "advanced-security-operations",
+      "cloud-attack",
+      "cyber-threat-intelligence",
+      "detection-engineering",
+      "digital-forensics",
+      "incident-response",
+      "network-detection",
+      "purple-team",
+      "security-architecture",
+      "threat-hunting",
+      "threat-intelligence",
+      "threat-modeling"
+    ];
 
 
-            if (
-              Number.isFinite(
-                expiry
-              ) &&
-              expiry <= Date.now()
-            ) {
+    if (
+      blacklineKeywords.some(
+        keyword =>
+          value.includes(keyword)
+      )
+    ) {
 
-              return false;
-
-            }
-
-          }
-
-
-          const metadata =
-            entitlement.metadata ||
-            {};
-
-
-          return String(
-            metadata.product_code ||
-            ""
-          )
-            .trim()
-            .toLowerCase() ===
-          normalizedCode;
-
-        }
-      );
-
+      return "advanced";
     }
 
 
-    /*
-     * Product was found.
-     */
-    return state.entitlements.some(
-      entitlement => {
+    if (
+      coreCourses.includes(
+        value
+      )
+    ) {
 
-        if (
-          entitlement.product_id !==
-          product.id
-        ) {
-
-          return false;
-
-        }
+      return "intermediate";
+    }
 
 
-        if (
-          entitlement.status !==
-          "active"
-        ) {
+    if (
+      value.includes(
+        "core"
+      )
+    ) {
 
-          return false;
-
-        }
-
-
-        if (
-          entitlement.expires_at
-        ) {
-
-          const expiry =
-            new Date(
-              entitlement.expires_at
-            ).getTime();
+      return "intermediate";
+    }
 
 
-          if (
-            Number.isFinite(
-              expiry
-            ) &&
-            expiry <= Date.now()
-          ) {
+    if (
+      value.includes(
+        "blackline"
+      )
+    ) {
 
-            return false;
-
-          }
-
-        }
+      return "advanced";
+    }
 
 
-        return true;
+    return "fundamentals";
+  }
 
+
+  /* ============================================================
+     BUILD COURSE DATA
+     ============================================================ */
+
+  function buildCourseData() {
+
+    return state.courses.map(
+      course => {
+
+        const courseModules =
+          state.modules.filter(
+            module =>
+              module.course_id ===
+              course.id
+          );
+
+
+        const moduleIds =
+          courseModules.map(
+            module =>
+              module.id
+          );
+
+
+        const courseLessons =
+          state.lessons.filter(
+            lesson =>
+              moduleIds.includes(
+                lesson.module_id
+              )
+          );
+
+
+        const lessonIds =
+          courseLessons.map(
+            lesson =>
+              lesson.id
+          );
+
+
+        const courseProgress =
+          state.progress.filter(
+            item =>
+              lessonIds.includes(
+                item.lesson_id
+              )
+          );
+
+
+        const completed =
+          courseProgress.filter(
+            item =>
+              item.completed === true
+          ).length;
+
+
+        const total =
+          courseLessons.length;
+
+
+        const percentage =
+          total === 0
+            ? 0
+            : Math.round(
+                (
+                  completed /
+                  total
+                ) * 100
+              );
+
+
+        return {
+          ...course,
+
+          track:
+            normalizeTrack(
+              course.track ||
+              inferTrackFromSlug(
+                course.slug
+              )
+            ),
+
+          modules:
+            courseModules,
+
+          lessons:
+            courseLessons,
+
+          completed,
+
+          total,
+
+          percentage
+        };
       }
     );
-
   }
 
 
   /* ============================================================
-     USER UI
-     ============================================================ */
-
-  function renderUser() {
-
-    if (!state.user) {
-
-      return;
-
-    }
-
-
-    const metadata =
-      state.user.user_metadata ||
-      {};
-
-
-    const email =
-      state.user.email ||
-      "";
-
-
-    const displayName =
-      metadata.full_name ||
-      metadata.name ||
-      metadata.display_name ||
-      email.split("@")[0] ||
-      "Learner";
-
-
-    const avatarURL =
-      metadata.avatar_url ||
-      metadata.picture ||
-      "";
-
-
-    const firstName =
-      getFirstName(
-        displayName
-      );
-
-
-    setText(
-      "#userName",
-      displayName
-    );
-
-
-    setText(
-      "#topUserName",
-      displayName
-    );
-
-
-    setText(
-      "#userEmail",
-      email
-    );
-
-
-    setText(
-      "#userGreeting",
-      `Welcome back, ${firstName}.`
-    );
-
-
-    setAvatar(
-      "#userAvatar",
-      avatarURL,
-      displayName
-    );
-
-
-    setAvatar(
-      "#topUserAvatar",
-      avatarURL,
-      displayName
-    );
-
-  }
-
-
-  function getFirstName(
-    name
-  ) {
-
-    const clean =
-      String(
-        name || ""
-      ).trim();
-
-
-    if (!clean) {
-
-      return "Learner";
-
-    }
-
-
-    return clean.split(
-      /\s+/
-    )[0];
-
-  }
-
-
-  function setAvatar(
-    selector,
-    url,
-    name
-  ) {
-
-    const element =
-      $(selector);
-
-
-    if (!element) {
-
-      return;
-
-    }
-
-
-    if (url) {
-
-      element.src =
-        url;
-
-      element.alt =
-        `${name} avatar`;
-
-      element.style.display =
-        "block";
-
-    } else {
-
-      element.removeAttribute(
-        "src"
-      );
-
-      element.alt =
-        "";
-
-      element.style.display =
-        "none";
-
-    }
-
-  }
-
-
-  /* ============================================================
-     DATE
-     ============================================================ */
-
-  function renderDate() {
-
-    const element =
-      $("#currentDate");
-
-
-    if (!element) {
-
-      return;
-
-    }
-
-
-    const now =
-      new Date();
-
-
-    element.textContent =
-      new Intl.DateTimeFormat(
-        undefined,
-        {
-          weekday: "long",
-          day: "numeric",
-          month: "long",
-          year: "numeric"
-        }
-      ).format(
-        now
-      );
-
-  }
-
-
-  /* ============================================================
-     STATS
+     DASHBOARD STATISTICS
      ============================================================ */
 
   function renderStats() {
+
+    const courseData =
+      buildCourseData();
+
+
+    const totalLessons =
+      state.lessons.length;
+
 
     const completedLessons =
       state.progress.filter(
@@ -1518,96 +1451,73 @@
       ).length;
 
 
-    const totalLessons =
-      state.lessons.length;
+    const startedCourses =
+      courseData.filter(
+        course =>
+          course.lessons.some(
+            lesson =>
+              state.progress.some(
+                progress =>
+                  progress.lesson_id ===
+                  lesson.id
+              )
+          )
+      ).length;
 
 
-    const startedCourseIds =
-      new Set();
-
-
-    state.progress.forEach(
-      progressItem => {
-
-        const lesson =
-          state.lessons.find(
-            item =>
-              item.id ===
-              progressItem.lesson_id
+    const overallProgress =
+      totalLessons === 0
+        ? 0
+        : Math.round(
+            (
+              completedLessons /
+              totalLessons
+            ) * 100
           );
-
-
-        if (!lesson) {
-
-          return;
-
-        }
-
-
-        const module =
-          state.modules.find(
-            item =>
-              item.id ===
-              lesson.module_id
-          );
-
-
-        if (!module) {
-
-          return;
-
-        }
-
-
-        startedCourseIds.add(
-          module.course_id
-        );
-
-      }
-    );
-
-
-    const coursesStarted =
-      startedCourseIds.size;
-
-
-    let overallProgress =
-      0;
-
-
-    if (
-      totalLessons > 0
-    ) {
-
-      overallProgress =
-        Math.round(
-          (
-            completedLessons /
-            totalLessons
-          ) *
-          100
-        );
-
-    }
 
 
     setText(
-      "#coursesStarted",
-      coursesStarted
+      "coursesStarted",
+      startedCourses
     );
 
 
     setText(
-      "#completedLessons",
+      "completedLessons",
       completedLessons
     );
 
 
     setText(
-      "#overallProgress",
+      "overallProgress",
       `${overallProgress}%`
     );
 
+
+    /*
+     * Compatibility with older stat markup.
+     */
+
+    const statValues =
+      $$(".stat-card strong");
+
+
+    if (statValues[0]) {
+      statValues[0].textContent =
+        startedCourses;
+    }
+
+
+    if (statValues[1]) {
+      statValues[1].textContent =
+        completedLessons;
+    }
+
+
+    if (statValues[2]) {
+      statValues[2].textContent =
+        `${overallProgress}%`;
+    }
   }
 
 
@@ -1622,28 +1532,35 @@
 
 
     if (!container) {
-
-      console.error(
-        "SECORA: .course-grid not found in home.html."
-      );
-
       return;
-
     }
 
 
-    /*
-     * Always rebuild from current state.
-     */
+    const courseData =
+      buildCourseData();
+
+
+    container.classList.add(
+      "course-track-layout"
+    );
+
+
     container.innerHTML =
       "";
 
 
-    TRACK_ORDER.forEach(
+    const trackOrder = [
+      "fundamentals",
+      "intermediate",
+      "advanced"
+    ];
+
+
+    trackOrder.forEach(
       trackKey => {
 
         const courses =
-          state.courses.filter(
+          courseData.filter(
             course =>
               normalizeTrack(
                 course.track
@@ -1662,18 +1579,11 @@
         container.appendChild(
           section
         );
-
       }
     );
 
 
-    /*
-     * This should almost never happen, but provide
-     * a useful empty state instead of a blank page.
-     */
-    if (
-      state.courses.length === 0
-    ) {
+    if (!courseData.length) {
 
       const empty =
         document.createElement(
@@ -1687,11 +1597,11 @@
 
       empty.innerHTML = `
         <strong>
-          No published courses found.
+          No published courses available.
         </strong>
 
         <span>
-          Check the SECORA courses table and published status.
+          SECORA curriculum will appear here once published.
         </span>
       `;
 
@@ -1699,14 +1609,12 @@
       container.appendChild(
         empty
       );
-
     }
-
   }
 
 
   /* ============================================================
-     TRACK SECTION
+     CREATE TRACK SECTION
      ============================================================ */
 
   function createTrackSection(
@@ -1714,24 +1622,10 @@
     courses
   ) {
 
-    const track =
+    const config =
       TRACKS[
         trackKey
       ];
-
-
-    const wrapper =
-      document.createElement(
-        "section"
-      );
-
-
-    wrapper.className =
-      `course-track course-track-${trackKey}`;
-
-
-    wrapper.dataset.track =
-      trackKey;
 
 
     const accessible =
@@ -1741,6 +1635,24 @@
         ]
       );
 
+
+    const section =
+      document.createElement(
+        "section"
+      );
+
+
+    section.className =
+      `course-track course-track-${trackKey}`;
+
+
+    section.dataset.track =
+      trackKey;
+
+
+    /* ----------------------------------------------------------
+       TRACK HEADING
+       ---------------------------------------------------------- */
 
     const heading =
       document.createElement(
@@ -1753,68 +1665,45 @@
 
 
     heading.innerHTML = `
-
       <div class="track-heading-copy">
 
         <span class="track-kicker">
-          ${
-            trackKey ===
-            "fundamentals"
-              ? "FOUNDATION"
-              : trackKey ===
-                "intermediate"
-                ? "PROFESSIONAL"
-                : "ADVANCED"
-          }
+          ${escapeHTML(
+            config.kicker
+          )}
         </span>
-
 
         <h2>
           ${escapeHTML(
-            track.title
+            config.title
           )}
         </h2>
 
-
         <p>
           ${escapeHTML(
-            track.description
+            config.description
           )}
         </p>
 
       </div>
 
-
       <div class="track-heading-meta">
 
         <span class="track-course-count">
-
           ${courses.length}
-
-          ${
-            courses.length === 1
-              ? "course"
-              : "courses"
-          }
-
+          ${courses.length === 1
+            ? "course"
+            : "courses"}
         </span>
-
 
         ${
           accessible
-
             ? `
-
-              <span
-                class="track-access-badge unlocked"
-              >
+              <span class="track-access-badge unlocked">
                 ACCESS GRANTED
               </span>
-
             `
-
             : `
-
               <button
                 type="button"
                 class="track-access-button"
@@ -1822,27 +1711,24 @@
                   trackKey
                 )}"
               >
-
                 Unlock
-
-                <span>
-                  →
-                </span>
-
+                <span>→</span>
               </button>
-
             `
         }
 
       </div>
-
     `;
 
 
-    wrapper.appendChild(
+    section.appendChild(
       heading
     );
 
+
+    /* ----------------------------------------------------------
+       COURSE GRID
+       ---------------------------------------------------------- */
 
     const grid =
       document.createElement(
@@ -1854,36 +1740,26 @@
       "track-course-grid";
 
 
-    if (
-      courses.length === 0
-    ) {
+    if (!courses.length) {
 
       grid.innerHTML = `
+        <article class="empty-track-card">
 
-        <article
-          class="empty-track-card"
-        >
-
-          <span
-            class="empty-track-label"
-          >
+          <span class="empty-track-label">
             COMING SOON
           </span>
 
-
           <strong>
             More ${escapeHTML(
-              track.title
+              config.title
             )}
           </strong>
-
 
           <p>
             This learning track is being prepared for SECORA.
           </p>
 
         </article>
-
       `;
 
     } else {
@@ -1900,22 +1776,20 @@
 
         }
       );
-
     }
 
 
-    wrapper.appendChild(
+    section.appendChild(
       grid
     );
 
 
-    return wrapper;
-
+    return section;
   }
 
 
   /* ============================================================
-     COURSE CARD
+     CREATE COURSE CARD
      ============================================================ */
 
   function createCourseCard(
@@ -1933,245 +1807,133 @@
       "course-card";
 
 
-    const courseLessons =
-      getCourseLessons(
-        course.id
-      );
+    card.dataset.course =
+      course.slug || "";
 
 
-    const courseProgress =
-      calculateCourseProgress(
-        course.id
-      );
-
-
-    const isLocked =
-      !trackAccessible;
+    card.dataset.track =
+      course.track || "fundamentals";
 
 
     const level =
-      course.level ||
-      (
-        normalizeTrack(
-          course.track
-        ) ===
-        "advanced"
-          ? "Advanced"
-          : normalizeTrack(
-              course.track
-            ) ===
-            "intermediate"
-            ? "Intermediate"
-            : "Beginner"
+      String(
+        course.level ||
+        "beginner"
+      ).toUpperCase();
+
+
+    const trackLabel =
+      course.track ===
+      "fundamentals"
+        ? "ORIGIN"
+        : course.track ===
+          "intermediate"
+          ? "CORE"
+          : "BLACKLINE";
+
+
+    const duration =
+      getCourseDuration(
+        course
       );
-
-
-    const courseNumber =
-      normalizeTrack(
-        course.track
-      ) === "advanced"
-        ? "03"
-        : normalizeTrack(
-            course.track
-          ) === "intermediate"
-          ? "02"
-          : "01";
 
 
     card.innerHTML = `
 
-      <div
-        class="course-card-visual"
-      >
+      <div class="course-card-top">
 
-        ${
-          course.thumbnail_url
+        <span class="course-level">
+          ${escapeHTML(
+            level
+          )}
+        </span>
 
-            ? `
-
-              <img
-                src="${escapeHTML(
-                  course.thumbnail_url
-                )}"
-                alt=""
-                loading="lazy"
-              >
-
-            `
-
-            : `
-
-              <div
-                class="course-visual-placeholder"
-              >
-
-                <span>
-                  ${courseNumber}
-                </span>
-
-              </div>
-
-            `
-        }
-
-
-        <div
-          class="course-card-overlay"
-        ></div>
-
-
-        ${
-          isLocked
-
-            ? `
-
-              <span
-                class="course-lock-badge"
-              >
-                LOCKED
-              </span>
-
-            `
-
-            : `
-
-              <span
-                class="course-open-badge"
-              >
-                AVAILABLE
-              </span>
-
-            `
-        }
+        <span class="course-percentage">
+          ${course.percentage}%
+        </span>
 
       </div>
 
 
-      <div
-        class="course-card-body"
-      >
+      <span class="course-track-label">
+        ${escapeHTML(
+          trackLabel
+        )}
+      </span>
+
+
+      <h3>
+        ${escapeHTML(
+          course.title
+        )}
+      </h3>
+
+
+      <p>
+        ${escapeHTML(
+          course.description ||
+          "Structured cybersecurity learning designed for progressive skill development."
+        )}
+      </p>
+
+
+      <div class="course-card-meta">
+
+        <span>
+          ${course.total}
+          ${course.total === 1
+            ? "LESSON"
+            : "LESSONS"}
+        </span>
+
+        <span>
+          ${course.completed}
+          COMPLETED
+        </span>
+
+      </div>
+
+
+      <div class="course-progress">
 
         <div
-          class="course-card-meta"
-        >
+          class="course-progress-bar"
+          style="width:${course.percentage}%"
+        ></div>
 
-          <span>
-            ${escapeHTML(
-              level
-            )}
-          </span>
+      </div>
 
 
-          <span>
-            ${courseLessons.length}
-            ${
-              courseLessons.length === 1
-                ? "lesson"
-                : "lessons"
-            }
-          </span>
+      <div class="course-card-footer">
 
-        </div>
-
-
-        <h3>
+        <span class="course-card-time">
           ${escapeHTML(
-            course.title
+            duration
           )}
-        </h3>
-
-
-        <p>
-          ${escapeHTML(
-            course.description ||
-            "Structured cybersecurity learning."
-          )}
-        </p>
-
-
-        <div
-          class="course-progress"
-        >
-
-          <div
-            class="course-progress-top"
-          >
-
-            <span>
-              ${
-                courseLessons.length
-                  ? `${courseProgress}% complete`
-                  : "Curriculum available"
-              }
-            </span>
-
-
-            <strong>
-              ${courseProgress}%
-            </strong>
-
-          </div>
-
-
-          <div
-            class="course-progress-bar"
-          >
-
-            <span
-              style="width:${courseProgress}%"
-            ></span>
-
-          </div>
-
-        </div>
-
+        </span>
 
         ${
-          isLocked
-
+          trackAccessible
             ? `
-
-              <button
-                type="button"
-                class="course-action locked-course-action"
-                data-course-lock="${escapeHTML(
-                  normalizeTrack(
-                    course.track
-                  )
-                )}"
-              >
-
-                <span>
-                  Unlock track
-                </span>
-
-                <i>
-                  →
-                </i>
-
-              </button>
-
-            `
-
-            : `
-
               <a
-                class="course-action"
                 href="course.html?slug=${encodeURIComponent(
                   course.slug
                 )}"
+                class="course-explore"
               >
-
-                <span>
-                  Open course
-                </span>
-
-                <i>
-                  →
-                </i>
-
+                Explore →
               </a>
-
+            `
+            : `
+              <button
+                type="button"
+                class="course-explore course-locked"
+                data-course-lock="${escapeHTML(
+                  course.track
+                )}"
+              >
+                Locked →
+              </button>
             `
         }
 
@@ -2181,129 +1943,69 @@
 
 
     return card;
-
   }
 
 
   /* ============================================================
-     COURSE MODULE / LESSON HELPERS
+     COURSE DURATION
      ============================================================ */
 
-  function getCourseModules(
-    courseId
+  function getCourseDuration(
+    course
   ) {
 
-    return state.modules
-      .filter(
-        module =>
-          module.course_id ===
-          courseId
-      )
-      .sort(
-        (
-          a,
-          b
-        ) =>
-          Number(
-            a.position || 0
-          ) -
-          Number(
-            b.position || 0
-          )
-      );
-
-  }
-
-
-  function getCourseLessons(
-    courseId
-  ) {
-
-    const modules =
-      getCourseModules(
-        courseId
-      );
-
-
-    const moduleIds =
-      new Set(
-        modules.map(
-          module =>
-            module.id
-        )
-      );
-
-
-    return state.lessons
-      .filter(
-        lesson =>
-          moduleIds.has(
-            lesson.module_id
-          )
-      )
-      .sort(
-        (
-          a,
-          b
-        ) =>
-          Number(
-            a.position || 0
-          ) -
-          Number(
-            b.position || 0
-          )
-      );
-
-  }
-
-
-  function calculateCourseProgress(
-    courseId
-  ) {
-
-    const lessons =
-      getCourseLessons(
-        courseId
-      );
+    const totalMinutes =
+      (course.lessons || [])
+        .reduce(
+          (
+            total,
+            lesson
+          ) =>
+            total +
+            Number(
+              lesson.duration_minutes ||
+              0
+            ),
+          0
+        );
 
 
     if (
-      lessons.length === 0
+      totalMinutes <= 0
     ) {
 
-      return 0;
-
+      return "~ self-paced";
     }
 
 
-    const lessonIds =
-      new Set(
-        lessons.map(
-          lesson =>
-            lesson.id
-        )
-      );
+    if (
+      totalMinutes < 60
+    ) {
+
+      return `~ ${Math.round(
+        totalMinutes
+      )} min`;
+    }
 
 
-    const completed =
-      state.progress.filter(
-        progressItem =>
-          lessonIds.has(
-            progressItem.lesson_id
-          ) &&
-          progressItem.completed ===
-          true
-      ).length;
+    const hours =
+      totalMinutes /
+      60;
 
 
-    return Math.round(
-      (
-        completed /
-        lessons.length
-      ) *
-      100
-    );
+    if (
+      Number.isInteger(
+        hours
+      )
+    ) {
 
+      return `~ ${hours} hours`;
+    }
+
+
+    return `~ ${hours.toFixed(
+      1
+    )} hours`;
   }
 
 
@@ -2313,289 +2015,179 @@
 
   function renderAccessCenter() {
 
-    updateAccessProductUI(
-      "core"
+    updateAccessCard(
+      "core",
+      state.accessByTrack.intermediate
     );
 
-    updateAccessProductUI(
-      "blackline"
-    );
 
+    updateAccessCard(
+      "blackline",
+      state.accessByTrack.advanced
+    );
   }
 
 
-  function updateAccessProductUI(
-    productCode
+  function updateAccessCard(
+    product,
+    unlocked
   ) {
-
-    const trackKey =
-      productCode === "core"
-        ? "intermediate"
-        : "advanced";
-
 
     const card =
       document.querySelector(
-        `[data-access-product="${productCode}"]`
+        `[data-access-product="${product}"]`
       );
 
 
     if (!card) {
-
       return;
-
     }
-
-
-    const unlocked =
-      Boolean(
-        state.accessByTrack[
-          trackKey
-        ]
-      );
-
-
-    card.classList.toggle(
-      "is-unlocked",
-      unlocked
-    );
-
-
-    const statusText =
-      $(".access-status-text", card);
-
-
-    const statusDot =
-      $(".access-status-dot", card);
 
 
     if (unlocked) {
 
-      if (statusText) {
-
-        statusText.textContent =
-          "UNLOCKED";
-
-      }
+      card.classList.add(
+        "is-unlocked"
+      );
 
 
-      if (statusDot) {
-
-        statusDot.classList.add(
-          "active"
+      const status =
+        card.querySelector(
+          ".secora-access-status"
         );
 
+
+      if (status) {
+
+        status.textContent =
+          "ACCESS UNLOCKED";
       }
 
 
-      markAccessCardUnlocked(
-        card
-      );
+      /*
+       * Disable redeem controls once access exists.
+       */
+
+      const input =
+        card.querySelector(
+          ".secora-redeem-input, .access-redeem-input"
+        );
+
+
+      if (input) {
+
+        input.disabled =
+          true;
+      }
+
+
+      const redeemButton =
+        card.querySelector(
+          `[data-redeem-product="${product}"]`
+        );
+
+
+      if (redeemButton) {
+
+        redeemButton.disabled =
+          true;
+
+        redeemButton.textContent =
+          "Unlocked";
+      }
+
 
     } else {
 
-      if (statusText) {
-
-        statusText.textContent =
-          "LIFETIME";
-
-      }
+      card.classList.remove(
+        "is-unlocked"
+      );
 
 
-      if (statusDot) {
-
-        statusDot.classList.remove(
-          "active"
+      const status =
+        card.querySelector(
+          ".secora-access-status"
         );
 
+
+      if (status) {
+
+        status.textContent =
+          "LIFETIME ACCESS";
       }
-
     }
-
-  }
-
-
-  function markAccessCardUnlocked(
-    card
-  ) {
-
-    if (!card) {
-
-      return;
-
-    }
-
-
-    const feedback =
-      $(".access-feedback", card);
-
-
-    if (feedback) {
-
-      feedback.textContent =
-        "Access is active on this account.";
-
-
-      feedback.className =
-        "access-feedback success";
-
-    }
-
-
-    const redeemButton =
-      $(".access-redeem-button", card);
-
-
-    if (redeemButton) {
-
-      redeemButton.disabled =
-        true;
-
-
-      redeemButton.innerHTML = `
-
-        <span>
-          Unlocked
-        </span>
-
-        <i>
-          ✓
-        </i>
-
-      `;
-
-    }
-
-
-    const input =
-      $(".access-redeem-input", card);
-
-
-    if (input) {
-
-      input.disabled =
-        true;
-
-      input.value =
-        "";
-
-      input.placeholder =
-        "ACCESS ACTIVE";
-
-    }
-
-
-    const purchaseButton =
-      $(".access-purchase-button", card);
-
-
-    if (purchaseButton) {
-
-      purchaseButton.disabled =
-        true;
-
-
-      purchaseButton.innerHTML = `
-
-        <span>
-          Access Active
-        </span>
-
-        <small>
-          UNLOCKED
-        </small>
-
-      `;
-
-    }
-
   }
 
 
   /* ============================================================
-     REDEEM SYSTEM
+     REDEEM BUTTONS
      ============================================================ */
 
   function setupRedeemButtons() {
 
-    $$(
-      "[data-redeem-product]"
-    )
-      .forEach(
-        button => {
-
-          button.addEventListener(
-            "click",
-            async () => {
-
-              await handleSecoraRedeem(
-                button.dataset.redeemProduct,
-                button
-              );
-
-            }
-          );
-
-        }
+    const buttons =
+      $$(
+        "[data-redeem-product]"
       );
 
 
-    [
-      "#coreRedeemCode",
-      "#blacklineRedeemCode"
+    buttons.forEach(
+      button => {
 
-    ].forEach(
-      selector => {
-
-        const input =
-          $(selector);
-
-
-        if (!input) {
-
+        if (
+          button.dataset.secoraBound ===
+          "true"
+        ) {
           return;
-
         }
 
 
-        input.addEventListener(
-          "keydown",
-          event => {
-
-            if (
-              event.key !==
-              "Enter"
-            ) {
-
-              return;
-
-            }
+        button.dataset.secoraBound =
+          "true";
 
 
-            event.preventDefault();
-
+        button.addEventListener(
+          "click",
+          async () => {
 
             const product =
-              selector ===
-              "#coreRedeemCode"
-                ? "core"
-                : "blackline";
+              button.dataset.redeemProduct;
 
 
-            const button =
-              document.querySelector(
-                `[data-redeem-product="${product}"]`
-              );
-
-
-            if (button) {
-
-              button.click();
-
-            }
+            await handleRedeem(
+              product,
+              button
+            );
 
           }
         );
+      }
+    );
+
+
+    /*
+     * ENTER key inside redeem fields.
+     */
+
+    const inputs =
+      $$(
+        ".secora-redeem-input, .access-redeem-input"
+      );
+
+
+    inputs.forEach(
+      input => {
+
+        if (
+          input.dataset.secoraBound ===
+          "true"
+        ) {
+          return;
+        }
+
+
+        input.dataset.secoraBound =
+          "true";
 
 
         input.addEventListener(
@@ -2613,301 +2205,299 @@
           }
         );
 
+
+        input.addEventListener(
+          "keydown",
+          async event => {
+
+            if (
+              event.key !==
+              "Enter"
+            ) {
+              return;
+            }
+
+
+            event.preventDefault();
+
+
+            let product =
+              null;
+
+
+            if (
+              input.id ===
+              "coreRedeemCode"
+            ) {
+
+              product =
+                "core";
+
+            } else if (
+              input.id ===
+              "blacklineRedeemCode"
+            ) {
+
+              product =
+                "blackline";
+            }
+
+
+            /*
+             * Fallback:
+             * Find product from parent access card.
+             */
+
+            if (!product) {
+
+              const card =
+                input.closest(
+                  "[data-access-product]"
+                );
+
+
+              product =
+                card?.dataset?.accessProduct ||
+                null;
+            }
+
+
+            if (!product) {
+              return;
+            }
+
+
+            const button =
+              document.querySelector(
+                `[data-redeem-product="${product}"]`
+              );
+
+
+            if (button) {
+
+              await handleRedeem(
+                product,
+                button
+              );
+            }
+
+          }
+        );
       }
     );
-
   }
 
 
-  async function handleSecoraRedeem(
+  /* ============================================================
+     REDEEM
+     ============================================================ */
+
+  async function handleRedeem(
     product,
     button
   ) {
 
-    const normalizedProduct =
-      String(
-        product || ""
-      )
-        .trim()
-        .toLowerCase();
+    if (!SUPABASE) {
+      return;
+    }
 
 
-    if (
-      normalizedProduct !==
-        "core" &&
-      normalizedProduct !==
-        "blackline"
-    ) {
+    if (!state.user) {
+
+      showAccessFeedback(
+        product,
+        "Please sign in before redeeming an access code.",
+        "error"
+      );
 
       return;
-
     }
 
 
     const input =
-      $(
-        normalizedProduct ===
-        "core"
-          ? "#coreRedeemCode"
-          : "#blacklineRedeemCode"
+      document.querySelector(
+        `#${product === "core"
+          ? "coreRedeemCode"
+          : "blacklineRedeemCode"}`
+      ) ||
+      document.querySelector(
+        `[data-access-product="${product}"] .secora-redeem-input`
+      ) ||
+      document.querySelector(
+        `[data-access-product="${product}"] .access-redeem-input`
       );
 
 
-    const feedback =
-      $(
-        normalizedProduct ===
-        "core"
-          ? "#coreRedeemFeedback"
-          : "#blacklineRedeemFeedback"
-      );
+    const code =
+      input?.value?.trim() ||
+      "";
 
 
-    if (
-      !input ||
-      !feedback
-    ) {
+    if (!code) {
 
-      return;
-
-    }
-
-
-    const rawCode =
-      input.value.trim();
-
-
-    if (!rawCode) {
-
-      setFeedback(
-        feedback,
-        "Enter your access code.",
+      showAccessFeedback(
+        product,
+        "Enter your access code first.",
         "error"
       );
 
-
-      input.focus();
+      input?.focus();
 
       return;
-
     }
 
 
+    /*
+     * UX validation only.
+     *
+     * Security is enforced by the database RPC.
+     */
+
     const expectedPrefix =
-      normalizedProduct ===
-      "core"
+      product === "core"
         ? "SECORA-CORE-"
         : "SECORA-BL-";
 
 
-    const normalizedCode =
-      rawCode
-        .toUpperCase()
-        .replace(
-          /\s+/g,
-          ""
-        );
-
-
     if (
-      !normalizedCode.startsWith(
-        expectedPrefix
-      )
+      !code
+        .toUpperCase()
+        .startsWith(
+          expectedPrefix
+        )
     ) {
 
-      setFeedback(
-        feedback,
-        `This does not look like a SECORA ${
-          normalizedProduct ===
-          "core"
-            ? "CORE"
-            : "BLACKLINE"
-        } code.`,
+      showAccessFeedback(
+        product,
+        `Enter a valid ${product === "core"
+          ? "SECORA CORE"
+          : "SECORA BLACKLINE"} access code.`,
         "error"
       );
 
-
-      input.focus();
+      input?.focus();
 
       return;
-
     }
 
 
-    const trackKey =
-      normalizedProduct ===
-      "core"
-        ? "intermediate"
-        : "advanced";
-
-
-    if (
-      state.accessByTrack[
-        trackKey
-      ]
-    ) {
-
-      setFeedback(
-        feedback,
-        "This account already has access.",
-        "success"
-      );
-
-      return;
-
-    }
-
-
-    const originalHTML =
-      button.innerHTML;
-
-
-    button.disabled =
-      true;
-
-
-    button.classList.add(
-      "is-loading"
+    setRedeemLoading(
+      button,
+      true
     );
 
 
-    button.innerHTML = `
-
-      <span>
-        Verifying
-      </span>
-
-      <i>
-        ◌
-      </i>
-
-    `;
-
-
-    setFeedback(
-      feedback,
-      "Securely verifying your code...",
-      "loading"
+    showAccessFeedback(
+      product,
+      "Verifying access code...",
+      "info"
     );
 
 
     try {
 
-      const result =
-        await SUPABASE.rpc(
-          "redeem_secora_code",
-          {
-            redeem_code_input:
-              normalizedCode
-          }
-        );
+      const {
+        data,
+        error
+      } =
+        await SUPABASE
+          .rpc(
+            "redeem_secora_code",
+            {
+              redeem_code_input:
+                code
+            }
+          );
 
 
-      if (
-        result.error
-      ) {
+      if (error) {
 
-        throw result.error;
-
+        throw error;
       }
-
-
-      const data =
-        Array.isArray(
-          result.data
-        )
-          ? result.data[0]
-          : result.data;
-
-
-      if (
-        !data ||
-        data.success !==
-          true
-      ) {
-
-        throw new Error(
-          data?.message ||
-          data?.error ||
-          "The access code could not be redeemed."
-        );
-
-      }
-
-
-      state.accessByTrack[
-        trackKey
-      ] = true;
 
 
       /*
-       * Add local entitlement state.
+       * RPC returns JSONB.
        */
+
+      const result =
+        Array.isArray(data)
+          ? data[0]
+          : data;
+
+
       if (
-        data.entitlement_id
+        result &&
+        result.success === false
       ) {
 
-        state.entitlements.push({
-
-          id:
-            data.entitlement_id,
-
-          user_id:
-            state.user.id,
-
-          product_id:
-            data.product_id ||
-            null,
-
-          status:
-            "active",
-
-          source:
-            "redeem_code",
-
-          payment_reference:
-            null,
-
-          granted_at:
-            new Date().toISOString(),
-
-          expires_at:
-            null,
-
-          metadata: {
-
-            product_code:
-              normalizedProduct
-
-          }
-
-        });
-
+        throw new Error(
+          result.message ||
+          "Unable to redeem this access code."
+        );
       }
 
 
-      setFeedback(
-        feedback,
-        `SECORA ${
-          normalizedProduct ===
-          "core"
-            ? "CORE"
-            : "BLACKLINE"
-        } access unlocked successfully.`,
+      /*
+       * Refresh session first.
+       */
+
+      await SUPABASE.auth.getSession();
+
+
+      /*
+       * Update local access state immediately.
+       */
+
+      if (
+        product === "core"
+      ) {
+
+        state.accessByTrack.intermediate =
+          true;
+
+      } else if (
+        product === "blackline"
+      ) {
+
+        state.accessByTrack.advanced =
+          true;
+      }
+
+
+      showAccessFeedback(
+        product,
+        "Access unlocked successfully.",
         "success"
       );
 
 
-      updateAccessProductUI(
-        normalizedProduct
+      if (input) {
+        input.value =
+          "";
+      }
+
+
+      updateAccessCard(
+        product,
+        true
       );
 
 
       /*
-       * Re-render cards so locked courses become
-       * available immediately.
+       * Re-render the course sections so locked cards
+       * become available immediately.
        */
+
       renderCourses();
 
+      renderAccessCenter();
+
+
+      /*
+       * Re-bind access buttons because renderCourses()
+       * replaces their DOM.
+       */
 
       setupAccessTrackButtons();
 
@@ -2920,16 +2510,260 @@
       );
 
 
-      setFeedback(
-        feedback,
+      showAccessFeedback(
+        product,
         translateRedeemError(
-          error?.message
+          error
         ),
         "error"
       );
 
-
     } finally {
+
+      /*
+       * Do not re-enable an already-unlocked product.
+       */
+
+      if (
+        !state.accessByTrack[
+          product === "core"
+            ? "intermediate"
+            : "advanced"
+        ]
+      ) {
+
+        setRedeemLoading(
+          button,
+          false
+        );
+
+      }
+    }
+  }
+
+
+  /* ============================================================
+     REDEEM ERROR TRANSLATION
+     ============================================================ */
+
+  function translateRedeemError(
+    error
+  ) {
+
+    const raw =
+      String(
+        error?.message ||
+        error?.details ||
+        error?.hint ||
+        "Unable to redeem this access code."
+      );
+
+
+    const message =
+      raw.toLowerCase();
+
+
+    if (
+      message.includes(
+        "not authenticated"
+      ) ||
+      message.includes(
+        "auth.uid"
+      ) ||
+      message.includes(
+        "authentication"
+      )
+    ) {
+
+      return "Please sign in before redeeming an access code.";
+    }
+
+
+    if (
+      message.includes(
+        "invalid access code"
+      ) ||
+      message.includes(
+        "code not found"
+      ) ||
+      message.includes(
+        "does not exist"
+      )
+    ) {
+
+      return "This access code is invalid.";
+    }
+
+
+    if (
+      message.includes(
+        "inactive"
+      ) ||
+      message.includes(
+        "not active"
+      )
+    ) {
+
+      return "This access code is no longer active.";
+    }
+
+
+    if (
+      message.includes(
+        "expired"
+      )
+    ) {
+
+      return "This access code has expired.";
+    }
+
+
+    if (
+      message.includes(
+        "redemption limit"
+      ) ||
+      message.includes(
+        "maximum"
+      ) ||
+      message.includes(
+        "fully redeemed"
+      )
+    ) {
+
+      return "This access code has already been redeemed.";
+    }
+
+
+    if (
+      message.includes(
+        "already redeemed"
+      )
+    ) {
+
+      return "You have already redeemed this access code.";
+    }
+
+
+    if (
+      message.includes(
+        "already have"
+      ) ||
+      message.includes(
+        "entitlement"
+      )
+    ) {
+
+      return "You already have access to this SECORA product.";
+    }
+
+
+    if (
+      message.includes(
+        "permission denied"
+      ) ||
+      message.includes(
+        "row-level security"
+      )
+    ) {
+
+      return "Access verification was blocked. Please sign in again and try once more.";
+    }
+
+
+    return raw;
+  }
+
+
+  /* ============================================================
+     ACCESS FEEDBACK
+     ============================================================ */
+
+  function showAccessFeedback(
+    product,
+    message,
+    type = "info"
+  ) {
+
+    const card =
+      document.querySelector(
+        `[data-access-product="${product}"]`
+      );
+
+
+    if (!card) {
+      return;
+    }
+
+
+    const feedback =
+      card.querySelector(
+        ".secora-redeem-feedback"
+      );
+
+
+    if (!feedback) {
+      return;
+    }
+
+
+    feedback.textContent =
+      message;
+
+
+    feedback.classList.remove(
+      "success",
+      "error",
+      "info"
+    );
+
+
+    feedback.classList.add(
+      type
+    );
+  }
+
+
+  /* ============================================================
+     REDEEM BUTTON LOADING
+     ============================================================ */
+
+  function setRedeemLoading(
+    button,
+    loading
+  ) {
+
+    if (!button) {
+      return;
+    }
+
+
+    if (loading) {
+
+      button.disabled =
+        true;
+
+      button.classList.add(
+        "is-loading"
+      );
+
+
+      if (
+        !button.dataset.originalText
+      ) {
+
+        button.dataset.originalText =
+          button.textContent.trim();
+      }
+
+
+      button.textContent =
+        "Checking...";
+
+
+    } else {
+
+      button.disabled =
+        false;
 
       button.classList.remove(
         "is-loading"
@@ -2937,197 +2771,16 @@
 
 
       if (
-        state.accessByTrack[
-          trackKey
-        ]
+        button.dataset.originalText
       ) {
 
-        button.disabled =
-          true;
+        button.textContent =
+          button.dataset.originalText;
 
 
-        button.innerHTML = `
-
-          <span>
-            Unlocked
-          </span>
-
-          <i>
-            ✓
-          </i>
-
-        `;
-
-      } else {
-
-        button.disabled =
-          false;
-
-
-        button.innerHTML =
-          originalHTML;
-
+        delete button.dataset.originalText;
       }
-
     }
-
-  }
-
-
-  function translateRedeemError(
-    message
-  ) {
-
-    const text =
-      String(
-        message ||
-        "Unable to redeem this code."
-      ).trim();
-
-
-    const lower =
-      text.toLowerCase();
-
-
-    if (
-      lower.includes(
-        "already redeemed"
-      )
-    ) {
-
-      return (
-        "This code has already been redeemed."
-      );
-
-    }
-
-
-    if (
-      lower.includes(
-        "invalid"
-      ) ||
-      lower.includes(
-        "not found"
-      )
-    ) {
-
-      return (
-        "This access code is invalid or does not exist."
-      );
-
-    }
-
-
-    if (
-      lower.includes(
-        "expired"
-      )
-    ) {
-
-      return (
-        "This access code has expired."
-      );
-
-    }
-
-
-    if (
-      lower.includes(
-        "inactive"
-      )
-    ) {
-
-      return (
-        "This access code is no longer active."
-      );
-
-    }
-
-
-    if (
-      lower.includes(
-        "maximum"
-      ) ||
-      lower.includes(
-        "redemption"
-      )
-    ) {
-
-      return (
-        "This access code has reached its redemption limit."
-      );
-
-    }
-
-
-    if (
-      lower.includes(
-        "already have"
-      ) ||
-      lower.includes(
-        "already has"
-      ) ||
-      lower.includes(
-        "entitlement"
-      )
-    ) {
-
-      return (
-        "This account already has access to this product."
-      );
-
-    }
-
-
-    if (
-      lower.includes(
-        "permission"
-      ) ||
-      lower.includes(
-        "execute"
-      ) ||
-      lower.includes(
-        "not authorized"
-      )
-    ) {
-
-      return (
-        "Your account is not currently authorized to redeem this code."
-      );
-
-    }
-
-
-    return (
-      text ||
-      "Unable to redeem this access code."
-    );
-
-  }
-
-
-  function setFeedback(
-    element,
-    message,
-    type
-  ) {
-
-    if (!element) {
-
-      return;
-
-    }
-
-
-    element.textContent =
-      message || "";
-
-
-    element.className =
-      `access-feedback ${
-        type || ""
-      }`;
-
   }
 
 
@@ -3137,156 +2790,61 @@
 
   function setupPurchaseButtons() {
 
-    $$(
-      "[data-purchase-product]"
-    )
-      .forEach(
-        button => {
-
-          button.addEventListener(
-            "click",
-            () => {
-
-              handlePurchaseClick(
-                button.dataset.purchaseProduct,
-                button
-              );
-
-            }
-          );
-
-        }
-      );
-
-  }
-
-
-  function handlePurchaseClick(
-    product,
-    button
-  ) {
-
-    const normalizedProduct =
-      String(
-        product || ""
-      )
-        .trim()
-        .toLowerCase();
-
-
-    const trackKey =
-      normalizedProduct ===
-      "core"
-        ? "intermediate"
-        : normalizedProduct ===
-          "blackline"
-          ? "advanced"
-          : null;
-
-
-    if (!trackKey) {
-
-      return;
-
-    }
-
-
-    if (
-      state.accessByTrack[
-        trackKey
-      ]
-    ) {
-
-      showInlinePurchaseMessage(
-        button,
-        "Access already active."
+    const buttons =
+      $$(
+        "[data-purchase-product]"
       );
 
 
-      return;
-
-    }
-
-
-    /*
-     * Cashfree backend is intentionally not
-     * fabricated in frontend code.
-     */
-    showInlinePurchaseMessage(
-      button,
-      "Secure checkout is being connected."
-    );
-
-  }
-
-
-  function showInlinePurchaseMessage(
-    button,
-    message
-  ) {
-
-    if (!button) {
-
-      return;
-
-    }
-
-
-    const originalHTML =
-      button.innerHTML;
-
-
-    button.disabled =
-      true;
-
-
-    button.innerHTML = `
-
-      <span>
-        ${escapeHTML(
-          message
-        )}
-      </span>
-
-    `;
-
-
-    window.setTimeout(
-      () => {
-
-        const product =
-          button.dataset
-            .purchaseProduct;
-
-
-        const trackKey =
-          product === "core"
-            ? "intermediate"
-            : "advanced";
-
+    buttons.forEach(
+      button => {
 
         if (
-          state.accessByTrack[
-            trackKey
-          ]
+          button.dataset.secoraBound ===
+          "true"
         ) {
-
           return;
-
         }
 
 
-        button.disabled =
-          false;
+        button.dataset.secoraBound =
+          "true";
 
 
-        button.innerHTML =
-          originalHTML;
+        button.addEventListener(
+          "click",
+          () => {
 
-      },
-      2600
+            const product =
+              button.dataset.purchaseProduct;
+
+
+            showPurchaseComingSoon(
+              product
+            );
+
+          }
+        );
+      }
     );
+  }
 
+
+  function showPurchaseComingSoon(
+    product
+  ) {
+
+    const productName =
+      product === "core"
+        ? "SECORA CORE"
+        : "SECORA BLACKLINE";
+
+
+    showAccessFeedback(
+      product,
+      `${productName} checkout is being prepared. Use an access code if you already have one.`,
+      "info"
+    );
   }
 
 
@@ -3298,68 +2856,85 @@
 
     $$(
       "[data-track-access]"
-    )
-      .forEach(
-        button => {
+    ).forEach(
+      button => {
 
-          button.addEventListener(
-            "click",
-            () => {
-
-              focusAccessProduct(
-                button.dataset
-                  .trackAccess
-              );
-
-            }
-          );
-
+        if (
+          button.dataset.secoraBound ===
+          "true"
+        ) {
+          return;
         }
-      );
+
+
+        button.dataset.secoraBound =
+          "true";
+
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            focusAccessProduct(
+              button.dataset.trackAccess
+            );
+
+          }
+        );
+      }
+    );
 
 
     $$(
       "[data-course-lock]"
-    )
-      .forEach(
-        button => {
+    ).forEach(
+      button => {
 
-          button.addEventListener(
-            "click",
-            () => {
-
-              focusAccessProduct(
-                button.dataset
-                  .courseLock
-              );
-
-            }
-          );
-
+        if (
+          button.dataset.secoraBound ===
+          "true"
+        ) {
+          return;
         }
-      );
 
+
+        button.dataset.secoraBound =
+          "true";
+
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            focusAccessProduct(
+              button.dataset.courseLock
+            );
+
+          }
+        );
+      }
+    );
   }
 
+
+  /* ============================================================
+     FOCUS ACCESS PRODUCT
+     ============================================================ */
 
   function focusAccessProduct(
     track
   ) {
 
     const product =
-      track ===
-      "intermediate"
+      track === "intermediate"
         ? "core"
-        : track ===
-          "advanced"
+        : track === "advanced"
           ? "blackline"
           : null;
 
 
     if (!product) {
-
       return;
-
     }
 
 
@@ -3370,20 +2945,13 @@
 
 
     if (!card) {
-
       return;
-
     }
 
 
     card.scrollIntoView({
-
-      behavior:
-        "smooth",
-
-      block:
-        "center"
-
+      behavior: "smooth",
+      block: "center"
     });
 
 
@@ -3391,9 +2959,8 @@
       () => {
 
         const input =
-          $(
-            ".access-redeem-input",
-            card
+          card.querySelector(
+            ".secora-redeem-input, .access-redeem-input"
           );
 
 
@@ -3403,13 +2970,11 @@
         ) {
 
           input.focus();
-
         }
 
       },
       450
     );
-
   }
 
 
@@ -3424,10 +2989,20 @@
 
 
     if (!input) {
-
       return;
-
     }
+
+
+    if (
+      input.dataset.secoraBound ===
+      "true"
+    ) {
+      return;
+    }
+
+
+    input.dataset.secoraBound =
+      "true";
 
 
     input.addEventListener(
@@ -3444,34 +3019,40 @@
     );
 
 
+    /*
+     * Ctrl + K / Cmd + K
+     */
+
     document.addEventListener(
       "keydown",
       event => {
 
+        const modifier =
+          event.ctrlKey ||
+          event.metaKey;
+
+
         if (
-          (
-            event.ctrlKey ||
-            event.metaKey
-          ) &&
+          modifier &&
           event.key.toLowerCase() ===
-            "k"
+          "k"
         ) {
 
           event.preventDefault();
 
-
           input.focus();
 
-
           input.select();
-
         }
 
       }
     );
-
   }
 
+
+  /* ============================================================
+     FILTER COURSES
+     ============================================================ */
 
   function filterCourses(
     query
@@ -3490,7 +3071,6 @@
             "";
 
           return;
-
         }
 
 
@@ -3500,9 +3080,7 @@
 
 
         card.style.display =
-          text.includes(
-            query
-          )
+          text.includes(query)
             ? ""
             : "none";
 
@@ -3510,291 +3088,42 @@
     );
 
 
+    /*
+     * Hide a track when all of its actual course cards
+     * are filtered out.
+     */
+
     $$(".course-track")
       .forEach(
         section => {
 
-          const visibleCards =
-            $$(".course-card", section)
-              .filter(
-                card =>
-                  card.style.display !==
-                  "none"
-              );
+          const actualCards =
+            $$(".course-card", section);
 
 
-          const emptyTrack =
-            $(
-              ".empty-track-card",
-              section
-            );
-
-
-          if (emptyTrack) {
+          if (!actualCards.length) {
 
             section.style.display =
-              query
-                ? "none"
-                : "";
+              "";
 
             return;
-
           }
+
+
+          const visibleCards =
+            actualCards.filter(
+              card =>
+                card.style.display !==
+                "none"
+            );
 
 
           section.style.display =
             visibleCards.length
               ? ""
               : "none";
-
         }
       );
-
-  }
-
-
-  /* ============================================================
-     GLOBAL EVENTS
-     ============================================================ */
-
-  function bindGlobalEvents() {
-
-    const logoutButton =
-      $("#logoutBtn");
-
-
-    if (logoutButton) {
-
-      logoutButton.addEventListener(
-        "click",
-        handleLogout
-      );
-
-    }
-
-
-    const settings =
-      $("#settingsLink");
-
-
-    if (settings) {
-
-      settings.addEventListener(
-        "click",
-        event => {
-
-          event.preventDefault();
-
-
-          showDashboardToast(
-            "Profile and account settings are coming soon."
-          );
-
-        }
-      );
-
-    }
-
-
-    const notificationButton =
-      $(".icon-button");
-
-
-    if (notificationButton) {
-
-      notificationButton.addEventListener(
-        "click",
-        () => {
-
-          showDashboardToast(
-            "No new notifications."
-          );
-
-        }
-      );
-
-    }
-
-
-    $$(".nav-item[href='#courses']")
-      .forEach(
-        link => {
-
-          link.addEventListener(
-            "click",
-            event => {
-
-              const target =
-                $("#courses");
-
-
-              if (!target) {
-
-                return;
-
-              }
-
-
-              event.preventDefault();
-
-
-              target.scrollIntoView({
-
-                behavior:
-                  "smooth",
-
-                block:
-                  "start"
-
-              });
-
-            }
-          );
-
-        }
-      );
-
-  }
-
-
-  /* ============================================================
-     LOGOUT
-     ============================================================ */
-
-  async function handleLogout(
-    event
-  ) {
-
-    if (event) {
-
-      event.preventDefault();
-
-    }
-
-
-    const button =
-      $("#logoutBtn");
-
-
-    if (button) {
-
-      button.disabled =
-        true;
-
-      button.style.opacity =
-        "0.6";
-
-    }
-
-
-    try {
-
-      const {
-        error
-      } =
-        await SUPABASE.auth.signOut();
-
-
-      if (error) {
-
-        throw error;
-
-      }
-
-
-      window.location.href =
-        "index.html";
-
-
-    } catch (error) {
-
-      console.error(
-        "SECORA logout error:",
-        error
-      );
-
-
-      if (button) {
-
-        button.disabled =
-          false;
-
-        button.style.opacity =
-          "";
-
-      }
-
-
-      showDashboardToast(
-        "Could not log out. Please try again."
-      );
-
-    }
-
-  }
-
-
-  /* ============================================================
-     TOAST
-     ============================================================ */
-
-  function showDashboardToast(
-    message
-  ) {
-
-    let toast =
-      $("#secoraDashboardToast");
-
-
-    if (!toast) {
-
-      toast =
-        document.createElement(
-          "div"
-        );
-
-
-      toast.id =
-        "secoraDashboardToast";
-
-
-      toast.className =
-        "secora-dashboard-toast";
-
-
-      document.body.appendChild(
-        toast
-      );
-
-    }
-
-
-    toast.textContent =
-      message;
-
-
-    toast.classList.add(
-      "show"
-    );
-
-
-    window.clearTimeout(
-      toast._hideTimer
-    );
-
-
-    toast._hideTimer =
-      window.setTimeout(
-        () => {
-
-          toast.classList.remove(
-            "show"
-          );
-
-        },
-        3000
-      );
-
   }
 
 
@@ -3806,78 +3135,54 @@
     message
   ) {
 
-    const container =
+    const grid =
       $(".course-grid");
 
 
-    if (!container) {
-
-      console.error(
-        "SECORA dashboard error:",
-        message
-      );
-
+    if (!grid) {
       return;
-
     }
 
 
-    container.innerHTML = `
+    grid.innerHTML = `
 
-      <div
-        class="course-empty dashboard-error"
-      >
+      <div class="course-empty">
 
-        <strong>
-          SECORA dashboard could not load.
-        </strong>
+        <h3>
+          Unable to load your dashboard
+        </h3>
 
-
-        <span>
+        <p>
           ${escapeHTML(
-            message
+            message ||
+            "Please refresh the page and try again."
           )}
-        </span>
-
+        </p>
 
         <button
           type="button"
-          class="secondary-button"
-          id="retryDashboardButton"
+          class="course-explore"
+          onclick="window.location.reload()"
         >
-          Retry
+          Refresh Dashboard →
         </button>
 
       </div>
 
     `;
-
-
-    const retry =
-      $("#retryDashboardButton");
-
-
-    if (retry) {
-
-      retry.addEventListener(
-        "click",
-        () => {
-
-          window.location.reload();
-
-        }
-      );
-
-    }
-
   }
 
 
   /* ============================================================
-     AUTH STATE LISTENER
+     SUPABASE AUTH STATE LISTENER
      ============================================================ */
 
-  if (SUPABASE) {
+  function setupAuthStateListener() {
+
+    if (!SUPABASE) {
+      return;
+    }
+
 
     SUPABASE.auth.onAuthStateChange(
       (
@@ -3890,31 +3195,73 @@
           "SIGNED_OUT"
         ) {
 
-          window.location.href =
-            "index.html";
+          window.location.replace(
+            "index.html"
+          );
 
           return;
-
         }
 
 
-        /*
-         * If the session disappears while the user
-         * is on the dashboard, return to login.
-         */
         if (
-          !session?.user
+          event ===
+          "SIGNED_IN" &&
+          session?.user
         ) {
 
-          window.location.href =
-            "index.html";
+          state.user =
+            session.user;
 
+          renderUser();
         }
 
       }
     );
-
   }
 
+
+  /*
+   * Start auth listener after the client is ready.
+   */
+
+  const originalInit =
+    init;
+
+
+  /*
+   * The listener is intentionally registered only once
+   * after DOM initialization.
+   */
+
+  window.setTimeout(
+    () => {
+
+      try {
+
+        const client =
+          getSupabaseClient();
+
+
+        if (client) {
+
+          SUPABASE =
+            client;
+
+
+          setupAuthStateListener();
+        }
+
+      } catch (error) {
+
+        console.warn(
+          "SECORA auth listener setup:",
+          error
+        );
+
+      }
+
+    },
+    0
+  );
 
 })();
