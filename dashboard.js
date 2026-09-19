@@ -2304,3 +2304,536 @@ function escapeHTML(
     );
 
 }
+/* =========================================================
+   SECORA ACCESS CENTER
+   CORE / BLACKLINE Redeem + Purchase UI
+   Paste at the VERY BOTTOM of dashboard.js
+   ========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+  setupRedeemButtons();
+});
+
+/* =========================================================
+   REDEEM BUTTON SETUP
+   ========================================================= */
+
+function setupRedeemButtons() {
+  const redeemButtons = document.querySelectorAll(
+    "[data-redeem-product]"
+  );
+
+  if (!redeemButtons.length) return;
+
+  redeemButtons.forEach((button) => {
+    button.addEventListener("click", async () => {
+      const product = button.dataset.redeemProduct;
+      await handleSecoraRedeem(product, button);
+    });
+  });
+
+  /* Allow ENTER inside redeem inputs */
+  const redeemInputs = document.querySelectorAll(
+    ".secora-redeem-input"
+  );
+
+  redeemInputs.forEach((input) => {
+    input.addEventListener("keydown", async (event) => {
+      if (event.key !== "Enter") return;
+
+      event.preventDefault();
+
+      const product = input.id === "coreRedeemCode"
+        ? "core"
+        : input.id === "blacklineRedeemCode"
+          ? "blackline"
+          : null;
+
+      if (!product) return;
+
+      const button = document.querySelector(
+        `[data-redeem-product="${product}"]`
+      );
+
+      if (button) {
+        await handleSecoraRedeem(product, button);
+      }
+    });
+
+    /* Automatically normalize code formatting */
+    input.addEventListener("input", () => {
+      input.value = input.value
+        .toUpperCase()
+        .replace(/\s+/g, "");
+    });
+  });
+
+  setupPurchaseButtons();
+}
+
+/* =========================================================
+   REDEEM HANDLER
+   ========================================================= */
+
+async function handleSecoraRedeem(product, button) {
+  const input =
+    product === "core"
+      ? document.getElementById("coreRedeemCode")
+      : document.getElementById("blacklineRedeemCode");
+
+  const feedback =
+    product === "core"
+      ? document.getElementById("coreRedeemFeedback")
+      : document.getElementById("blacklineRedeemFeedback");
+
+  if (!input || !feedback || !button) return;
+
+  const rawCode = input.value.trim();
+  const normalizedCode = rawCode.toLowerCase();
+
+  clearRedeemFeedback(feedback);
+
+  /* ---------------------------------------------------------
+     Frontend validation
+     --------------------------------------------------------- */
+
+  if (!rawCode) {
+    showRedeemFeedback(
+      feedback,
+      "Enter your access code.",
+      "error"
+    );
+
+    input.focus();
+    return;
+  }
+
+  if (product === "core") {
+    if (!rawCode.startsWith("SECORA-CORE-")) {
+      showRedeemFeedback(
+        feedback,
+        "This code does not match the SECORA CORE format.",
+        "error"
+      );
+
+      input.focus();
+      return;
+    }
+  }
+
+  if (product === "blackline") {
+    if (!rawCode.startsWith("SECORA-BL-")) {
+      showRedeemFeedback(
+        feedback,
+        "This code does not match the SECORA BLACKLINE format.",
+        "error"
+      );
+
+      input.focus();
+      return;
+    }
+  }
+
+  /* ---------------------------------------------------------
+     Loading state
+     --------------------------------------------------------- */
+
+  setRedeemLoading(button, true);
+
+  showRedeemFeedback(
+    feedback,
+    "Verifying access code…",
+    "info"
+  );
+
+  try {
+    if (
+      typeof secoraSupabase === "undefined" ||
+      !secoraSupabase
+    ) {
+      throw new Error(
+        "SECORA authentication service is unavailable."
+      );
+    }
+
+    /* -------------------------------------------------------
+       Secure server-side redemption RPC
+
+       The database function is the authority.
+       Frontend validation above is UX only.
+       ------------------------------------------------------- */
+
+    const { data, error } =
+      await secoraSupabase.rpc(
+        "redeem_secora_code",
+        {
+          redeem_code_input: normalizedCode
+        }
+      );
+
+    if (error) {
+      throw error;
+    }
+
+    /*
+      RPC returns JSONB.
+      Expected success structure includes:
+      {
+        success: true,
+        product_code: "core" / "blackline",
+        ...
+      }
+    */
+
+    const result =
+      Array.isArray(data)
+        ? data[0]
+        : data;
+
+    if (!result || result.success !== true) {
+      throw new Error(
+        result?.message ||
+        "The access code could not be redeemed."
+      );
+    }
+
+    /* -------------------------------------------------------
+       Verify returned product matches selected card
+       ------------------------------------------------------- */
+
+    const returnedProduct =
+      String(
+        result.product_code ||
+        result.product ||
+        ""
+      ).toLowerCase();
+
+    if (
+      returnedProduct &&
+      returnedProduct !== product
+    ) {
+      throw new Error(
+        "This code belongs to a different SECORA product."
+      );
+    }
+
+    /* -------------------------------------------------------
+       Success
+       ------------------------------------------------------- */
+
+    showRedeemFeedback(
+      feedback,
+      product === "core"
+        ? "SECORA CORE unlocked successfully."
+        : "SECORA BLACKLINE unlocked successfully.",
+      "success"
+    );
+
+    input.value = "";
+
+    markAccessCardUnlocked(product);
+
+    /*
+      Give the database/UI a moment to finish before refreshing.
+      The refresh ensures course visibility reflects the new
+      entitlement immediately.
+    */
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 1200);
+
+  } catch (error) {
+    console.error(
+      "SECORA redemption error:",
+      error
+    );
+
+    const message =
+      translateRedeemError(error);
+
+    showRedeemFeedback(
+      feedback,
+      message,
+      "error"
+    );
+
+  } finally {
+    setRedeemLoading(button, false);
+  }
+}
+
+/* =========================================================
+   ERROR TRANSLATION
+   ========================================================= */
+
+function translateRedeemError(error) {
+  const rawMessage =
+    String(
+      error?.message ||
+      error?.details ||
+      error?.hint ||
+      "Unable to redeem this code."
+    );
+
+  const message =
+    rawMessage.toLowerCase();
+
+  if (
+    message.includes("not authenticated") ||
+    message.includes("auth.uid") ||
+    message.includes("authentication")
+  ) {
+    return "Please sign in before redeeming an access code.";
+  }
+
+  if (
+    message.includes("invalid access code") ||
+    message.includes("code not found") ||
+    message.includes("does not exist")
+  ) {
+    return "This access code is invalid.";
+  }
+
+  if (
+    message.includes("inactive") ||
+    message.includes("not active")
+  ) {
+    return "This access code is no longer active.";
+  }
+
+  if (
+    message.includes("expired")
+  ) {
+    return "This access code has expired.";
+  }
+
+  if (
+    message.includes("redemption limit") ||
+    message.includes("maximum") ||
+    message.includes("fully redeemed") ||
+    message.includes("already been redeemed")
+  ) {
+    return "This access code has already been redeemed.";
+  }
+
+  if (
+    message.includes("already redeemed")
+  ) {
+    return "You have already redeemed this access code.";
+  }
+
+  if (
+    message.includes("already have") ||
+    message.includes("entitlement")
+  ) {
+    return "You already have access to this SECORA product.";
+  }
+
+  if (
+    message.includes("permission denied") ||
+    message.includes("row-level security")
+  ) {
+    return "Access verification was blocked. Please sign in again and try once more.";
+  }
+
+  return rawMessage;
+}
+
+/* =========================================================
+   FEEDBACK UI
+   ========================================================= */
+
+function showRedeemFeedback(
+  element,
+  message,
+  type = "info"
+) {
+  if (!element) return;
+
+  element.textContent = message;
+
+  element.classList.remove(
+    "success",
+    "error",
+    "info"
+  );
+
+  element.classList.add(type);
+}
+
+function clearRedeemFeedback(element) {
+  if (!element) return;
+
+  element.textContent = "";
+
+  element.classList.remove(
+    "success",
+    "error",
+    "info"
+  );
+}
+
+/* =========================================================
+   LOADING STATE
+   ========================================================= */
+
+function setRedeemLoading(button, loading) {
+  if (!button) return;
+
+  if (loading) {
+    button.disabled = true;
+    button.classList.add("is-loading");
+    button.dataset.originalText =
+      button.textContent;
+  } else {
+    button.disabled = false;
+    button.classList.remove("is-loading");
+
+    if (button.dataset.originalText) {
+      button.textContent =
+        button.dataset.originalText;
+
+      delete button.dataset.originalText;
+    }
+  }
+}
+
+/* =========================================================
+   UNLOCKED CARD STATE
+   ========================================================= */
+
+function markAccessCardUnlocked(product) {
+  const card = document.querySelector(
+    `[data-access-product="${product}"]`
+  );
+
+  if (!card) return;
+
+  card.classList.add("is-unlocked");
+
+  const status =
+    card.querySelector(
+      ".secora-access-status"
+    );
+
+  if (status) {
+    status.textContent =
+      "ACCESS UNLOCKED";
+  }
+}
+
+/* =========================================================
+   PURCHASE BUTTONS
+   =========================================================
+
+   Cashfree is intentionally NOT connected here yet.
+
+   These buttons remain visual placeholders until the secure
+   server-side Cashfree integration is implemented.
+
+   Never place Cashfree secret credentials in this file.
+   ========================================================= */
+
+function setupPurchaseButtons() {
+  const purchaseButtons =
+    document.querySelectorAll(
+      "[data-purchase-product]"
+    );
+
+  purchaseButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const product =
+        button.dataset.purchaseProduct;
+
+      /*
+        Payment integration will be added later.
+
+        Future flow:
+
+        User
+          ↓
+        Purchase button
+          ↓
+        SECORA backend
+          ↓
+        Cashfree order creation
+          ↓
+        Cashfree checkout
+          ↓
+        Cashfree webhook
+          ↓
+        Payment verification
+          ↓
+        Supabase entitlement
+          ↓
+        Product unlocked
+      */
+
+      showPurchaseComingSoon(product);
+    });
+  });
+}
+
+function showPurchaseComingSoon(product) {
+  const card = document.querySelector(
+    `[data-access-product="${product}"]`
+  );
+
+  if (!card) return;
+
+  const feedback =
+    card.querySelector(
+      ".secora-redeem-feedback"
+    );
+
+  if (!feedback) return;
+
+  const productName =
+    product === "core"
+      ? "SECORA CORE"
+      : "SECORA BLACKLINE";
+
+  showRedeemFeedback(
+    feedback,
+    `${productName} purchases will be available soon. Use an access code if you already have one.`,
+    "info"
+  );
+}
+
+/* =========================================================
+   OPTIONAL ACCESS STATE CHECK
+   =========================================================
+
+   This helper can be used later when the dashboard starts
+   loading entitlement data directly.
+
+   It does NOT replace database/RLS security.
+   ========================================================= */
+
+async function setAccessProductState(
+  product,
+  unlocked
+) {
+  const card = document.querySelector(
+    `[data-access-product="${product}"]`
+  );
+
+  if (!card) return;
+
+  if (unlocked) {
+    markAccessCardUnlocked(product);
+  } else {
+    card.classList.remove("is-unlocked");
+
+    const status =
+      card.querySelector(
+        ".secora-access-status"
+      );
+
+    if (status) {
+      status.textContent =
+        "LIFETIME ACCESS";
+    }
+  }
+}
