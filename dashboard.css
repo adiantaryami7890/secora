@@ -11583,3 +11583,521 @@ a[class*="unlock"] {
 /* ============================================================
    END — SECORA DATE / TIME CAPSULE V2
    ============================================================ */
+/* ============================================================
+   SECORA — DATE CARD FINAL OVERRIDE
+   REAL SELECTOR: .date-card / #currentDate
+   ============================================================
+   • Larger premium date capsule
+   • UHD+ typography
+   • Glass depth
+   • Platinum border
+   • Animated ambient spectrum line
+   • Moving color atmosphere
+   • Hover polish
+   • Responsive
+   ============================================================ */
+
+
+/* ============================================================
+   01 — MAIN DATE CARD
+   ============================================================ */
+
+.date-card {
+
+  position: relative !important;
+
+  display: inline-flex !important;
+
+  align-items: center !important;
+  justify-content: center !important;
+
+  box-sizing: border-box !important;
+
+  width: auto !important;
+
+  min-width: 270px !important;
+
+  min-height: 62px !important;
+
+  padding: 0 25px !important;
+
+  margin: 0 !important;
+
+  border-radius: 17px !important;
+
+  overflow: hidden !important;
+
+  isolation: isolate !important;
+
+  /*
+     DEEP GLASS
+  */
+  background:
+    linear-gradient(
+      135deg,
+      rgba(24, 30, 40, 0.96) 0%,
+      rgba(13, 18, 26, 0.98) 52%,
+      rgba(7, 11, 17, 0.99) 100%
+    ) !important;
+
+  /*
+     PLATINUM / STEEL BORDER
+  */
+  border:
+    1px solid rgba(166, 181, 201, 0.34) !important;
+
+  /*
+     PREMIUM DEPTH
+  */
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.32),
+    0 0 28px rgba(89, 119, 164, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.55) !important;
+
+  /*
+     GLASS
+  */
+  backdrop-filter:
+    blur(24px) saturate(145%) !important;
+
+  -webkit-backdrop-filter:
+    blur(24px) saturate(145%) !important;
+
+  /*
+     TYPOGRAPHY
+  */
+  color: #E9EDF3 !important;
+
+  font-family: inherit !important;
+
+  font-size: 15px !important;
+
+  font-weight: 750 !important;
+
+  line-height: 1 !important;
+
+  letter-spacing: 0.015em !important;
+
+  text-rendering: geometricPrecision !important;
+
+  -webkit-font-smoothing: antialiased !important;
+
+  -moz-osx-font-smoothing: grayscale !important;
+
+  transition:
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 280ms ease,
+    box-shadow 320ms ease,
+    background 320ms ease !important;
+}
+
+
+/* ============================================================
+   02 — MOVING AMBIENT LIGHT
+   ============================================================ */
+
+.date-card::before {
+
+  content: "";
+
+  position: absolute !important;
+
+  z-index: -1 !important;
+
+  top: -85px !important;
+
+  left: -20% !important;
+
+  width: 140% !important;
+
+  height: 190px !important;
+
+  border-radius: 50% !important;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(117, 103, 200, 0.14) 0%,
+      rgba(91, 139, 225, 0.085) 25%,
+      rgba(67, 209, 154, 0.045) 43%,
+      transparent 70%
+    ) !important;
+
+  filter: blur(17px) !important;
+
+  opacity: 0.72 !important;
+
+  pointer-events: none !important;
+
+  animation:
+    secoraDateAmbient 8s ease-in-out infinite alternate !important;
+}
+
+
+@keyframes secoraDateAmbient {
+
+  0% {
+
+    transform:
+      translateX(-32px)
+      scale(0.90);
+
+    opacity: 0.48;
+
+  }
+
+  35% {
+
+    transform:
+      translateX(-5px)
+      scale(1.02);
+
+    opacity: 0.72;
+
+  }
+
+  70% {
+
+    transform:
+      translateX(24px)
+      scale(1.08);
+
+    opacity: 0.84;
+
+  }
+
+  100% {
+
+    transform:
+      translateX(42px)
+      scale(0.96);
+
+    opacity: 0.58;
+
+  }
+}
+
+
+/* ============================================================
+   03 — CONTINUOUS MOVING COLOR LINE
+   ============================================================ */
+
+.date-card::after {
+
+  content: "";
+
+  position: absolute !important;
+
+  z-index: 4 !important;
+
+  left: -42% !important;
+
+  bottom: 0 !important;
+
+  width: 48% !important;
+
+  height: 2px !important;
+
+  border-radius: 999px !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      #7567C8 20%,
+      #6EA8FF 42%,
+      #83E8BD 65%,
+      #D6B878 82%,
+      transparent 100%
+    ) !important;
+
+  background-size: 220% 100% !important;
+
+  box-shadow:
+    0 0 7px rgba(110, 168, 255, 0.38),
+    0 0 16px rgba(117, 103, 200, 0.18) !important;
+
+  pointer-events: none !important;
+
+  animation:
+    secoraDateLine 4.2s linear infinite !important;
+}
+
+
+@keyframes secoraDateLine {
+
+  0% {
+
+    left: -48%;
+
+    background-position: 0% 50%;
+
+    opacity: 0.25;
+
+  }
+
+  15% {
+    opacity: 0.85;
+  }
+
+  45% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 0.82;
+  }
+
+  100% {
+
+    left: 110%;
+
+    background-position: 100% 50%;
+
+    opacity: 0.18;
+
+  }
+}
+
+
+/* ============================================================
+   04 — TOP GLASS REFLECTION
+   ============================================================ */
+
+.date-card span#currentDate::before {
+
+  content: "";
+
+  position: absolute;
+
+  left: 12%;
+
+  right: 12%;
+
+  top: -1px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.18),
+      transparent
+    );
+
+  pointer-events: none;
+}
+
+
+/* ============================================================
+   05 — ACTUAL DATE TEXT
+   ============================================================ */
+
+.date-card span#currentDate {
+
+  position: relative !important;
+
+  z-index: 6 !important;
+
+  display: inline-block !important;
+
+  color: #E9EDF3 !important;
+
+  font-family: inherit !important;
+
+  font-size: 15px !important;
+
+  font-weight: 750 !important;
+
+  line-height: 1.2 !important;
+
+  letter-spacing: 0.015em !important;
+
+  white-space: nowrap !important;
+
+  text-rendering: geometricPrecision !important;
+
+  -webkit-font-smoothing: antialiased !important;
+
+  text-shadow:
+    0 1px 14px rgba(255, 255, 255, 0.045) !important;
+
+  transition:
+    color 250ms ease,
+    text-shadow 250ms ease !important;
+}
+
+
+/* ============================================================
+   06 — HOVER
+   ============================================================ */
+
+.date-card:hover {
+
+  transform:
+    translateY(-3px)
+    scale(1.018) !important;
+
+  border-color:
+    rgba(192, 207, 226, 0.52) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(30, 38, 50, 0.98) 0%,
+      rgba(13, 19, 28, 0.98) 52%,
+      rgba(7, 11, 17, 0.99) 100%
+    ) !important;
+
+  box-shadow:
+    0 22px 48px rgba(0, 0, 0, 0.38),
+    0 0 34px rgba(110, 168, 255, 0.09),
+    0 0 52px rgba(117, 103, 200, 0.045),
+    inset 0 1px 0 rgba(255, 255, 255, 0.13),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.48) !important;
+}
+
+
+.date-card:hover span#currentDate {
+
+  color: #F7F9FC !important;
+
+  text-shadow:
+    0 0 18px rgba(220, 230, 245, 0.08) !important;
+}
+
+
+/* ============================================================
+   07 — LARGE DESKTOP
+   ============================================================ */
+
+@media (min-width: 1440px) {
+
+  .date-card {
+
+    min-width: 285px !important;
+
+    min-height: 66px !important;
+
+    padding: 0 27px !important;
+
+    border-radius: 18px !important;
+  }
+
+  .date-card span#currentDate {
+
+    font-size: 16px !important;
+
+    font-weight: 750 !important;
+  }
+}
+
+
+/* ============================================================
+   08 — ULTRA HD
+   ============================================================ */
+
+@media (min-width: 1800px) {
+
+  .date-card {
+
+    min-width: 305px !important;
+
+    min-height: 70px !important;
+
+    padding: 0 30px !important;
+
+    border-radius: 19px !important;
+  }
+
+  .date-card span#currentDate {
+
+    font-size: 17px !important;
+
+    font-weight: 800 !important;
+
+    letter-spacing: 0.018em !important;
+  }
+}
+
+
+/* ============================================================
+   09 — SHORT DESKTOP
+   ============================================================ */
+
+@media (max-height: 760px) and (min-width: 901px) {
+
+  .date-card {
+
+    min-width: 245px !important;
+
+    min-height: 52px !important;
+
+    padding: 0 19px !important;
+
+    border-radius: 14px !important;
+  }
+
+  .date-card span#currentDate {
+
+    font-size: 13px !important;
+  }
+}
+
+
+/* ============================================================
+   10 — MOBILE
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+  .date-card {
+
+    width: 100% !important;
+
+    min-width: 0 !important;
+
+    min-height: 52px !important;
+
+    padding: 0 18px !important;
+
+    border-radius: 14px !important;
+  }
+
+  .date-card span#currentDate {
+
+    font-size: 13px !important;
+
+    white-space: normal !important;
+
+    text-align: center !important;
+
+    line-height: 1.35 !important;
+  }
+}
+
+
+/* ============================================================
+   11 — REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .date-card {
+
+    transition: none !important;
+  }
+
+  .date-card::before,
+  .date-card::after {
+
+    animation: none !important;
+  }
+}
+
+
+/* ============================================================
+   END — SECORA DATE CARD FINAL OVERRIDE
+   ============================================================ */
