@@ -5889,4 +5889,544 @@ input:focus-visible {
     font-size: 6px;
   }
 }
+/* =========================================================
+   SECORA ACCESS CENTER
+   Premium CORE / BLACKLINE Redeem + Purchase UI
+   Paste at the VERY BOTTOM of dashboard.css
+   ========================================================= */
 
+.secora-access-center {
+  width: 100%;
+  margin: 48px 0 32px;
+  padding: 34px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(74, 120, 255, 0.13), transparent 34%),
+    radial-gradient(circle at 90% 100%, rgba(137, 72, 255, 0.10), transparent 34%),
+    linear-gradient(145deg, #0b0d12 0%, #10131a 52%, #0b0d12 100%);
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+/* Subtle top shine */
+.secora-access-center::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.16),
+    transparent
+  );
+  pointer-events: none;
+}
+
+.secora-access-header {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin-bottom: 28px;
+}
+
+.secora-access-eyebrow {
+  margin: 0 0 8px;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.secora-access-title {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(26px, 3vw, 38px);
+  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+.secora-access-subtitle {
+  margin: 12px 0 0;
+  max-width: 650px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* Product grid */
+.secora-access-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Product card */
+.secora-access-card {
+  position: relative;
+  min-width: 0;
+  padding: 25px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.045),
+      rgba(255, 255, 255, 0.018)
+    );
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    background 220ms ease;
+}
+
+.secora-access-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+}
+
+/* CORE accent */
+.secora-access-card[data-access-product="core"]::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(88, 137, 255, 0.85),
+    transparent
+  );
+}
+
+/* BLACKLINE accent */
+.secora-access-card[data-access-product="blackline"]::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(168, 104, 255, 0.85),
+    transparent
+  );
+}
+
+.secora-access-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+}
+
+/* Product header */
+.secora-access-product-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.secora-access-product-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.035);
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.secora-access-product-label {
+  margin: 0 0 5px;
+  color: rgba(255, 255, 255, 0.43);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.secora-access-product-title {
+  margin: 0;
+  color: #ffffff;
+  font-size: 21px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.secora-access-status {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  padding: 7px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+/* Description */
+.secora-access-description {
+  min-height: 48px;
+  margin: 0 0 22px;
+  color: rgba(255, 255, 255, 0.53);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* Divider */
+.secora-access-divider {
+  width: 100%;
+  height: 1px;
+  margin: 0 0 20px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* Redeem section */
+.secora-redeem-label {
+  display: block;
+  margin-bottom: 9px;
+  color: rgba(255, 255, 255, 0.64);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.03em;
+}
+
+.secora-redeem-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 9px;
+}
+
+.secora-redeem-input {
+  width: 100%;
+  min-width: 0;
+  height: 46px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 11px;
+  outline: none;
+  background: rgba(0, 0, 0, 0.22);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.secora-redeem-input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.secora-redeem-input:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.secora-redeem-input:focus {
+  border-color: rgba(112, 151, 255, 0.55);
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 3px rgba(78, 119, 255, 0.08);
+}
+
+.secora-redeem-button {
+  position: relative;
+  height: 46px;
+  min-width: 108px;
+  padding: 0 17px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 11px;
+  background: #f4f5f7;
+  color: #0a0c10;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease,
+    opacity 180ms ease;
+}
+
+.secora-redeem-button:hover {
+  transform: translateY(-1px);
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.08);
+}
+
+.secora-redeem-button:active {
+  transform: translateY(0);
+}
+
+.secora-redeem-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+  transform: none;
+}
+
+/* Loading state */
+.secora-redeem-button.is-loading {
+  color: transparent;
+  pointer-events: none;
+}
+
+.secora-redeem-button.is-loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 15px;
+  height: 15px;
+  margin: -7.5px 0 0 -7.5px;
+  border: 2px solid rgba(0, 0, 0, 0.18);
+  border-top-color: #000000;
+  border-radius: 50%;
+  animation: secoraRedeemSpin 700ms linear infinite;
+}
+
+@keyframes secoraRedeemSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Feedback */
+.secora-redeem-feedback {
+  min-height: 18px;
+  margin: 10px 2px 0;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.secora-redeem-feedback.success {
+  color: #8fe3b0;
+}
+
+.secora-redeem-feedback.error {
+  color: #ff9696;
+}
+
+.secora-redeem-feedback.info {
+  color: #9db9ff;
+}
+
+/* Purchase area */
+.secora-purchase-area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 19px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.secora-purchase-copy {
+  min-width: 0;
+}
+
+.secora-purchase-label {
+  margin: 0 0 4px;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.secora-purchase-description {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.34);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.secora-purchase-button {
+  flex: 0 0 auto;
+  min-width: 130px;
+  height: 40px;
+  padding: 0 15px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.045);
+  color: rgba(255, 255, 255, 0.38);
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  cursor: not-allowed;
+}
+
+.secora-purchase-button span {
+  display: block;
+  margin-top: 2px;
+  color: rgba(255, 255, 255, 0.23);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+}
+
+/* Security note */
+.secora-access-security {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  position: relative;
+  z-index: 1;
+  margin-top: 20px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.secora-access-security-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  flex: 0 0 25px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 11px;
+}
+
+.secora-access-security p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.36);
+  font-size: 10px;
+  line-height: 1.65;
+}
+
+/* Unlocked state */
+.secora-access-card.is-unlocked {
+  border-color: rgba(115, 226, 164, 0.25);
+  background:
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(87, 213, 145, 0.07),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.045),
+      rgba(255, 255, 255, 0.018)
+    );
+}
+
+.secora-access-card.is-unlocked .secora-access-status {
+  border-color: rgba(115, 226, 164, 0.2);
+  background: rgba(115, 226, 164, 0.06);
+  color: #8fe3b0;
+}
+
+.secora-access-card.is-unlocked .secora-access-product-number {
+  border-color: rgba(115, 226, 164, 0.2);
+  color: #8fe3b0;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .secora-access-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .secora-access-card {
+    padding: 23px;
+  }
+}
+
+@media (max-width: 640px) {
+  .secora-access-center {
+    margin-top: 32px;
+    padding: 22px 16px;
+    border-radius: 19px;
+  }
+
+  .secora-access-title {
+    font-size: 27px;
+  }
+
+  .secora-access-subtitle {
+    font-size: 13px;
+  }
+
+  .secora-access-card {
+    padding: 20px;
+    border-radius: 17px;
+  }
+
+  .secora-access-product-head {
+    gap: 10px;
+  }
+
+  .secora-access-status {
+    padding: 6px 8px;
+    font-size: 8px;
+  }
+
+  .secora-access-product-title {
+    font-size: 19px;
+  }
+
+  .secora-redeem-row {
+    grid-template-columns: 1fr;
+  }
+
+  .secora-redeem-button {
+    width: 100%;
+  }
+
+  .secora-purchase-area {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .secora-purchase-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .secora-access-product-head {
+    align-items: flex-start;
+  }
+
+  .secora-access-status {
+    max-width: 110px;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.35;
+  }
+
+  .secora-access-security {
+    padding: 12px;
+  }
+}
