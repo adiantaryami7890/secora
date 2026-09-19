@@ -4165,3 +4165,563 @@ input[type="text"]:focus {
 /* ============================================================
    END — SECORA CORE PREMIUM THEME
    ============================================================ */
+/* ============================================================
+   SECORA ORIGIN
+   GRAPHITE × SILVER × ARCTIC WHITE
+   PREMIUM FREE-TIER THEME
+   Paste this entire block at the VERY BOTTOM of dashboard.css
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   ORIGIN COURSE CARDS — BASE
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-card {
+
+    position: relative !important;
+
+    background:
+        radial-gradient(
+            520px 300px at 92% 0%,
+            rgba(190, 205, 220, 0.075),
+            transparent 62%
+        ),
+        radial-gradient(
+            420px 260px at 0% 100%,
+            rgba(160, 175, 190, 0.025),
+            transparent 65%
+        ),
+        linear-gradient(
+            145deg,
+            #171C22 0%,
+            #12171D 46%,
+            #0B0F14 100%
+        ) !important;
+
+    border: 1px solid rgba(174, 184, 197, 0.30) !important;
+
+    box-shadow:
+        0 18px 50px rgba(0, 0, 0, 0.40),
+        0 0 20px rgba(190, 205, 220, 0.045),
+        inset 0 1px 0 rgba(255, 255, 255, 0.055),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.65) !important;
+
+    overflow: hidden !important;
+
+    isolation: isolate;
+
+    transition:
+        transform 280ms ease,
+        border-color 280ms ease,
+        box-shadow 280ms ease,
+        background 280ms ease !important;
+}
+
+
+/* ------------------------------------------------------------
+   PREMIUM SILVER METALLIC BORDER
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-card::before {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    inset: 0 !important;
+
+    padding: 1px !important;
+
+    border-radius: inherit !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(221, 229, 237, 0.72) 0%,
+            rgba(174, 184, 197, 0.34) 18%,
+            rgba(80, 88, 98, 0.14) 42%,
+            rgba(174, 184, 197, 0.28) 72%,
+            rgba(221, 229, 237, 0.58) 100%
+        ) !important;
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0) !important;
+
+    -webkit-mask-composite: xor !important;
+
+    mask-composite: exclude !important;
+
+    pointer-events: none !important;
+
+    z-index: 10 !important;
+
+    opacity: 0.92 !important;
+}
+
+
+/* ------------------------------------------------------------
+   SOFT SILVER OUTER AURA
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-card::after {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    inset: -3px !important;
+
+    border-radius: inherit !important;
+
+    background:
+        radial-gradient(
+            circle at 10% 5%,
+            rgba(221, 229, 237, 0.075),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 90% 5%,
+            rgba(190, 205, 220, 0.11),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(174, 184, 197, 0.045),
+            transparent 38%
+        ) !important;
+
+    filter: blur(13px) !important;
+
+    opacity: 0.72 !important;
+
+    pointer-events: none !important;
+
+    z-index: -1 !important;
+}
+
+
+/* ------------------------------------------------------------
+   ORIGIN TRACK LABEL
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-track-label {
+
+    color: #B8C1CB !important;
+
+    letter-spacing: 0.18em !important;
+
+    text-shadow:
+        0 0 16px rgba(190, 205, 220, 0.10) !important;
+}
+
+
+/* ------------------------------------------------------------
+   FUNDAMENTALS BADGE
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-level {
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(190, 205, 220, 0.10),
+            rgba(190, 205, 220, 0.025)
+        ) !important;
+
+    border:
+        1px solid rgba(174, 184, 197, 0.42) !important;
+
+    color: #C7D0D9 !important;
+
+    box-shadow:
+        0 0 12px rgba(190, 205, 220, 0.055),
+        inset 0 1px 0 rgba(255, 255, 255, 0.045) !important;
+
+    letter-spacing: 0.12em !important;
+}
+
+
+/* ------------------------------------------------------------
+   PERCENTAGE
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-percentage {
+
+    color: #DCE2E8 !important;
+
+    text-shadow:
+        0 0 15px rgba(221, 229, 237, 0.08) !important;
+}
+
+
+/* ------------------------------------------------------------
+   COURSE TITLE — ARCTIC WHITE
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-card h3 {
+
+    color: #EDF1F5 !important;
+
+    text-shadow:
+        0 3px 18px rgba(0, 0, 0, 0.42) !important;
+
+    letter-spacing: -0.025em !important;
+}
+
+
+/* ------------------------------------------------------------
+   COURSE DESCRIPTION
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-card > p {
+
+    color: #929BA6 !important;
+}
+
+
+/* ------------------------------------------------------------
+   COURSE META
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-card-meta {
+
+    color: #707983 !important;
+}
+
+
+/* ------------------------------------------------------------
+   PROGRESS TRACK
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-progress {
+
+    background:
+        linear-gradient(
+            90deg,
+            #191E23,
+            #242A30
+        ) !important;
+
+    border:
+        1px solid rgba(174, 184, 197, 0.10) !important;
+
+    box-shadow:
+        inset 0 1px 3px rgba(0, 0, 0, 0.55) !important;
+}
+
+
+/* ------------------------------------------------------------
+   PROGRESS BAR — SILVER
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-progress-bar {
+
+    background:
+        linear-gradient(
+            90deg,
+            #7E8995 0%,
+            #AEB8C5 48%,
+            #DDE5ED 100%
+        ) !important;
+
+    box-shadow:
+        0 0 11px rgba(190, 205, 220, 0.20),
+        0 0 25px rgba(190, 205, 220, 0.075) !important;
+}
+
+
+/* ------------------------------------------------------------
+   FOOTER DIVIDER
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-card-footer {
+
+    border-top-color:
+        rgba(174, 184, 197, 0.12) !important;
+}
+
+
+/* ------------------------------------------------------------
+   SELF-PACED
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-card-time {
+
+    color: #69717A !important;
+
+    font-style: italic;
+}
+
+
+/* ------------------------------------------------------------
+   LOCKED / EXPLORE
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-explore {
+
+    color: #D5DCE3 !important;
+
+    text-shadow:
+        0 0 14px rgba(221, 229, 237, 0.06) !important;
+}
+
+
+/* ------------------------------------------------------------
+   TOP CARD AREA
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-card-top {
+
+    position: relative !important;
+}
+
+
+/* ------------------------------------------------------------
+   TOP-RIGHT SILVER EDGE LIGHT
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-card-top::after {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    top: 0 !important;
+
+    right: 0 !important;
+
+    width: 125px !important;
+
+    height: 1px !important;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(221, 229, 237, 0.40)
+        ) !important;
+
+    box-shadow:
+        0 0 11px rgba(190, 205, 220, 0.16) !important;
+
+    pointer-events: none !important;
+}
+
+
+/* ------------------------------------------------------------
+   BOTTOM-LEFT SILVER EDGE LIGHT
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-card-bottom::before {
+
+    content: "" !important;
+
+    position: absolute !important;
+
+    bottom: 0 !important;
+
+    left: 0 !important;
+
+    width: 105px !important;
+
+    height: 1px !important;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(174, 184, 197, 0.32),
+            transparent
+        ) !important;
+
+    box-shadow:
+        0 0 12px rgba(190, 205, 220, 0.10) !important;
+
+    pointer-events: none !important;
+}
+
+
+/* ------------------------------------------------------------
+   HOVER — PREMIUM SILVER GLOW
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-card:hover {
+
+    transform:
+        translateY(-4px) !important;
+
+    border-color:
+        rgba(221, 229, 237, 0.60) !important;
+
+    background:
+        radial-gradient(
+            560px 320px at 92% 0%,
+            rgba(190, 205, 220, 0.105),
+            transparent 62%
+        ),
+        radial-gradient(
+            450px 280px at 0% 100%,
+            rgba(160, 175, 190, 0.035),
+            transparent 65%
+        ),
+        linear-gradient(
+            145deg,
+            #1B2026 0%,
+            #14191F 46%,
+            #0B0F14 100%
+        ) !important;
+
+    box-shadow:
+        0 24px 62px rgba(0, 0, 0, 0.52),
+        0 0 25px rgba(190, 205, 220, 0.10),
+        0 0 60px rgba(190, 205, 220, 0.045),
+        inset 0 1px 0 rgba(255, 255, 255, 0.075),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.70) !important;
+}
+
+
+/* ------------------------------------------------------------
+   HOVER METALLIC BORDER
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-card:hover::before {
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(245, 248, 251, 0.95) 0%,
+            rgba(221, 229, 237, 0.65) 18%,
+            rgba(105, 115, 126, 0.22) 45%,
+            rgba(174, 184, 197, 0.55) 76%,
+            rgba(245, 248, 251, 0.85) 100%
+        ) !important;
+
+    box-shadow:
+        0 0 18px rgba(221, 229, 237, 0.13) !important;
+}
+
+
+/* ------------------------------------------------------------
+   HOVER OUTER AURA
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-card:hover::after {
+
+    opacity: 1 !important;
+
+    filter: blur(15px) !important;
+}
+
+
+/* ------------------------------------------------------------
+   ORIGIN TRACK HEADER
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"]
+.course-track-header h2 {
+
+    color: #EDF1F5 !important;
+
+    text-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.42) !important;
+}
+
+
+/* ------------------------------------------------------------
+   ORIGIN TRACK EYEBROW
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"]
+.course-track-header .eyebrow {
+
+    color: #B8C1CB !important;
+
+    text-shadow:
+        0 0 18px rgba(190, 205, 220, 0.10) !important;
+}
+
+
+/* ------------------------------------------------------------
+   ORIGIN TRACK INDEX
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"]
+.course-track-index {
+
+    border-color:
+        rgba(174, 184, 197, 0.34) !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            #181D23,
+            #0D1116
+        ) !important;
+
+    color: #C7D0D9 !important;
+
+    box-shadow:
+        0 0 20px rgba(190, 205, 220, 0.055),
+        inset 0 1px 0 rgba(255, 255, 255, 0.045) !important;
+}
+
+
+/* ------------------------------------------------------------
+   ORIGIN TRACK COUNT
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"]
+.course-track-count {
+
+    color: #9DA6AF !important;
+}
+
+
+/* ------------------------------------------------------------
+   TEXT SELECTION
+   ------------------------------------------------------------ */
+
+.course-track[data-track="fundamentals"] .course-card ::selection {
+
+    background:
+        rgba(190, 205, 220, 0.22) !important;
+
+    color: #FFFFFF !important;
+}
+
+
+/* ------------------------------------------------------------
+   MOBILE
+   ------------------------------------------------------------ */
+
+@media (max-width: 760px) {
+
+    .course-track[data-track="fundamentals"] .course-card {
+
+        box-shadow:
+            0 16px 42px rgba(0, 0, 0, 0.43),
+            0 0 18px rgba(190, 205, 220, 0.045),
+            inset 0 1px 0 rgba(255, 255, 255, 0.045) !important;
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   REDUCED MOTION
+   ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .course-track[data-track="fundamentals"] .course-card {
+
+        transition: none !important;
+    }
+
+}
+
+
+/* ============================================================
+   END — SECORA ORIGIN PREMIUM FREE-TIER THEME
+   ============================================================ */
