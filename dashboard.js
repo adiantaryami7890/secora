@@ -3367,3 +3367,607 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+/* ============================================================
+   SECORA — ACCESS STATE HOTFIX
+   ============================================================
+
+   PURPOSE:
+   Fix CORE / BLACKLINE becoming locked again after refresh.
+
+   ROOT CAUSE:
+   The existing dashboard access loader requests:
+
+       products → id, code, name, title
+
+   But the real SECORA products table contains:
+
+       id, code, name, access_mode, description, ...
+
+   There is NO "title" column.
+
+   This override independently reloads the authenticated user's
+   entitlements using the real schema and repairs the rendered
+   course cards.
+
+   IMPORTANT:
+   - Does NOT modify Supabase data.
+   - Does NOT bypass RLS.
+   - Does NOT grant access.
+   - Only reflects an entitlement that already exists.
+   - ORIGIN remains free.
+   - CORE requires an active CORE entitlement.
+   - BLACKLINE requires an active BLACKLINE entitlement.
+
+   ============================================================ */
+
+(() => {
+
+  "use strict";
+
+
+  /* ==========================================================
+     WAIT UNTIL THE EXISTING DASHBOARD HAS FINISHED RENDERING
+     ========================================================== */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+      /*
+       * Give the existing SECORA dashboard controller time
+       * to authenticate, load courses and render cards.
+       */
+      window.setTimeout(
+        () => {
+
+          secoraRefreshAccessState();
+
+        },
+        700
+      );
+
+    },
+    {
+      once: true
+    }
+  );
+
+
+  /* ==========================================================
+     MAIN ACCESS REFRESH
+     ========================================================== */
+
+  async function secoraRefreshAccessState() {
+
+    try {
+
+      /*
+       * Find the existing SECORA Supabase client.
+       */
+
+      const supabase =
+        window.secoraSupabase ||
+        window.supabaseClient;
+
+
+      if (
+        !supabase ||
+        !supabase.auth
+      ) {
+
+        console.warn(
+          "SECORA ACCESS HOTFIX: Supabase client unavailable."
+        );
+
+        return;
+
+      }
+
+
+      /* ======================================================
+         GET CURRENT AUTHENTICATED SESSION
+         ====================================================== */
+
+      const {
+        data: sessionData,
+        error: sessionError
+      } =
+        await supabase.auth.getSession();
+
+
+      if (
+        sessionError ||
+        !sessionData?.session?.user
+      ) {
+
+        console.warn(
+          "SECORA ACCESS HOTFIX: No authenticated session."
+        );
+
+        return;
+
+      }
+
+
+      const user =
+        sessionData.session.user;
+
+
+      /* ======================================================
+         LOAD USER ENTITLEMENTS
+         ====================================================== */
+
+      const {
+        data: entitlements,
+        error: entitlementError
+      } =
+        await supabase
+          .from("user_entitlements")
+          .select(`
+            id,
+            product_id,
+            status,
+            granted_at,
+            expires_at,
+            source
+          `)
+          .eq(
+            "user_id",
+            user.id
+          );
+
+
+      if (entitlementError) {
+
+        console.error(
+          "SECORA ACCESS HOTFIX: Could not load entitlements.",
+          entitlementError
+        );
+
+        return;
+
+      }
+
+
+      const activeEntitlements =
+        (entitlements || [])
+          .filter(
+            entitlement => {
+
+              /*
+               * Only ACTIVE entitlements count.
+               */
+
+              if (
+                String(
+                  entitlement.status ||
+                  ""
+                ).toLowerCase() !==
+                "active"
+              ) {
+
+                return false;
+
+              }
+
+
+              /*
+               * Lifetime entitlement:
+               *
+               * expires_at = NULL
+               */
+
+              if (
+                !entitlement.expires_at
+              ) {
+
+                return true;
+
+              }
+
+
+              /*
+               * Time-limited entitlement.
+               */
+
+              return (
+                new Date(
+                  entitlement.expires_at
+                ).getTime() >
+                Date.now()
+              );
+
+            }
+          );
+
+
+      /* ======================================================
+         NO ENTITLEMENTS
+         ====================================================== */
+
+      if (
+        !activeEntitlements.length
+      ) {
+
+        console.info(
+          "SECORA ACCESS HOTFIX: No active paid entitlement."
+        );
+
+        /*
+         * ORIGIN remains free.
+         *
+         * CORE / BLACKLINE stay locked.
+         */
+
+        return;
+
+      }
+
+
+      /* ======================================================
+         COLLECT PRODUCT IDS
+         ====================================================== */
+
+      const productIds =
+        activeEntitlements
+          .map(
+            entitlement =>
+              entitlement.product_id
+          )
+          .filter(Boolean);
+
+
+      if (
+        !productIds.length
+      ) {
+
+        return;
+
+      }
+
+
+      /* ======================================================
+         LOAD PRODUCTS
+         ======================================================
+
+         IMPORTANT:
+
+         We intentionally request ONLY columns that actually
+         exist in SECORA's products table.
+
+         NO "title".
+         */
+
+      const {
+        data: products,
+        error: productsError
+      } =
+        await supabase
+          .from("products")
+          .select(`
+            id,
+            code,
+            name,
+            access_mode
+          `)
+          .in(
+            "id",
+            productIds
+          );
+
+
+      if (productsError) {
+
+        console.error(
+          "SECORA ACCESS HOTFIX: Could not load products.",
+          productsError
+        );
+
+        return;
+
+      }
+
+
+      /* ======================================================
+         RESOLVE ACCESS
+         ====================================================== */
+
+      let hasCore =
+        false;
+
+      let hasBlackline =
+        false;
+
+
+      activeEntitlements.forEach(
+        entitlement => {
+
+          const product =
+            (products || [])
+              .find(
+                item =>
+                  item.id ===
+                  entitlement.product_id
+              );
+
+
+          if (!product) {
+
+            return;
+
+          }
+
+
+          const code =
+            String(
+              product.code ||
+              ""
+            )
+              .trim()
+              .toLowerCase();
+
+
+          if (
+            code ===
+            "core"
+          ) {
+
+            hasCore =
+              true;
+
+          }
+
+
+          if (
+            code ===
+            "blackline"
+          ) {
+
+            hasBlackline =
+              true;
+
+          }
+
+        }
+      );
+
+
+      /* ======================================================
+         REPAIR RENDERED COURSE CARDS
+         ====================================================== */
+
+      if (hasCore) {
+
+        secoraUnlockRenderedTrack(
+          "intermediate"
+        );
+
+      }
+
+
+      if (hasBlackline) {
+
+        secoraUnlockRenderedTrack(
+          "advanced"
+        );
+
+      }
+
+
+      /* ======================================================
+         LOG FINAL STATE
+         ====================================================== */
+
+      console.info(
+        "SECORA ACCESS HOTFIX:",
+        {
+          userId: user.id,
+          core: hasCore,
+          blackline: hasBlackline
+        }
+      );
+
+    }
+    catch (error) {
+
+      console.error(
+        "SECORA ACCESS HOTFIX ERROR:",
+        error
+      );
+
+    }
+
+  }
+
+
+  /* ==========================================================
+     UNLOCK RENDERED TRACK
+     ========================================================== */
+
+  function secoraUnlockRenderedTrack(
+    track
+  ) {
+
+    const cards =
+      document.querySelectorAll(
+        `.course-card[data-track="${track}"]`
+      );
+
+
+    if (
+      !cards.length
+    ) {
+
+      console.warn(
+        `SECORA ACCESS HOTFIX: No ${track} course cards found.`
+      );
+
+      return;
+
+    }
+
+
+    cards.forEach(
+      card => {
+
+        /* ====================================================
+           REMOVE LOCKED STATE
+           ==================================================== */
+
+        card.classList.remove(
+          "course-card-locked"
+        );
+
+        card.classList.add(
+          "course-card-unlocked"
+        );
+
+
+        card.dataset.access =
+          "granted";
+
+
+        /* ====================================================
+           REMOVE LOCK VISUAL
+           ==================================================== */
+
+        const lockMark =
+          card.querySelector(
+            ".course-lock-mark"
+          );
+
+
+        if (
+          lockMark
+        ) {
+
+          lockMark.remove();
+
+        }
+
+
+        const restrictedDot =
+          card.querySelector(
+            ".course-restricted-dot"
+          );
+
+
+        if (
+          restrictedDot
+        ) {
+
+          restrictedDot.remove();
+
+        }
+
+
+        /* ====================================================
+           RESTORE COURSE CONTENT AREA
+           ==================================================== */
+
+        const lockedSpace =
+          card.querySelector(
+            ".course-card-locked-space"
+          );
+
+
+        if (
+          lockedSpace
+        ) {
+
+          lockedSpace.remove();
+
+        }
+
+
+        /* ====================================================
+           RESTORE COURSE ACTION
+           ==================================================== */
+
+        const footer =
+          card.querySelector(
+            ".course-card-footer"
+          );
+
+
+        if (
+          !footer
+        ) {
+
+          return;
+
+        }
+
+
+        const lockedCaption =
+          footer.querySelector(
+            ".course-locked-caption"
+          );
+
+
+        if (
+          lockedCaption
+        ) {
+
+          /*
+           * Replace the restricted caption with the real
+           * course access action.
+           */
+
+          const slug =
+            card.dataset.course;
+
+
+          const accessLink =
+            document.createElement(
+              "a"
+            );
+
+
+          accessLink.href =
+            `course.html?slug=${encodeURIComponent(
+              slug || ""
+            )}`;
+
+
+          accessLink.className =
+            "course-explore";
+
+
+          accessLink.textContent =
+            "ACCESS →";
+
+
+          lockedCaption.replaceWith(
+            accessLink
+          );
+
+        }
+
+
+        /* ====================================================
+           UPDATE ACCESS ATTRIBUTE
+           ==================================================== */
+
+        card.setAttribute(
+          "data-access",
+          "granted"
+        );
+
+      }
+    );
+
+
+    /*
+     * Some existing click handlers ignore locked cards.
+     * Since we removed course-card-locked above, normal
+     * course-card navigation can work again.
+     */
+
+    console.info(
+      `SECORA ACCESS HOTFIX: ${cards.length} ${track} course card(s) unlocked.`
+    );
+
+  }
+
+})();
