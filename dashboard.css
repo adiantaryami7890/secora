@@ -1206,3 +1206,1304 @@
 /* =========================================================
    END — SECORA FINAL COURSE GRID FIX
    ========================================================= */
+/* ============================================================
+   SECORA — ACCESS CENTER
+   PREMIUM / UHD REDESIGN
+   ------------------------------------------------------------
+   Paste at the VERY BOTTOM of dashboard.css
+
+   This override affects ONLY the access / unlock section.
+   Existing dashboard CSS remains untouched.
+   ============================================================ */
+
+
+/* ============================================================
+   ACCESS CENTER — OUTER CONTAINER
+   ============================================================ */
+
+.access-center,
+.secora-access,
+[data-section="access"] {
+
+  position: relative !important;
+
+  width: 100% !important;
+
+  max-width: none !important;
+
+  margin-top: 70px !important;
+
+  padding: 46px !important;
+
+  overflow: hidden !important;
+
+  border: 1px solid rgba(255,255,255,.10) !important;
+
+  border-radius: 28px !important;
+
+  background:
+    radial-gradient(
+      900px 420px at 8% 0%,
+      rgba(83,112,205,.12),
+      transparent 62%
+    ),
+    radial-gradient(
+      700px 380px at 95% 100%,
+      rgba(113,73,173,.09),
+      transparent 62%
+    ),
+    linear-gradient(
+      145deg,
+      #101720 0%,
+      #0b1118 52%,
+      #0b1017 100%
+    ) !important;
+
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.34),
+    inset 0 1px 0 rgba(255,255,255,.045) !important;
+
+  isolation: isolate !important;
+}
+
+
+/* ============================================================
+   TOP LIGHT / ATMOSPHERE
+   ============================================================ */
+
+.access-center::before,
+.secora-access::before,
+[data-section="access"]::before {
+
+  content: "" !important;
+
+  position: absolute !important;
+
+  inset: 0 !important;
+
+  pointer-events: none !important;
+
+  background:
+    linear-gradient(
+      115deg,
+      rgba(255,255,255,.025),
+      transparent 30%,
+      transparent 70%,
+      rgba(118,137,255,.025)
+    ) !important;
+
+  z-index: -1 !important;
+}
+
+
+.access-center::after,
+.secora-access::after,
+[data-section="access"]::after {
+
+  content: "" !important;
+
+  position: absolute !important;
+
+  top: -180px !important;
+
+  right: -180px !important;
+
+  width: 420px !important;
+
+  height: 420px !important;
+
+  border-radius: 50% !important;
+
+  background:
+    rgba(80,106,220,.07) !important;
+
+  filter: blur(80px) !important;
+
+  pointer-events: none !important;
+
+  z-index: -1 !important;
+}
+
+
+/* ============================================================
+   ACCESS HEADER
+   ============================================================ */
+
+.access-center > header,
+.access-center-header,
+.secora-access-header {
+
+  position: relative !important;
+
+  display: flex !important;
+
+  align-items: flex-end !important;
+
+  justify-content: space-between !important;
+
+  gap: 35px !important;
+
+  margin-bottom: 38px !important;
+
+  padding-bottom: 0 !important;
+}
+
+
+.access-center h2,
+.secora-access h2 {
+
+  margin: 0 !important;
+
+  color: #f5f7fb !important;
+
+  font-family:
+    "Manrope",
+    "Inter",
+    sans-serif !important;
+
+  font-size: clamp(
+    32px,
+    3vw,
+    46px
+  ) !important;
+
+  font-weight: 800 !important;
+
+  line-height: 1.02 !important;
+
+  letter-spacing: -.055em !important;
+
+  text-rendering: geometricPrecision !important;
+
+  -webkit-font-smoothing: antialiased !important;
+}
+
+
+.access-center .eyebrow,
+.access-center .kicker,
+.secora-access .eyebrow {
+
+  display: block !important;
+
+  margin-bottom: 13px !important;
+
+  color: #8298d7 !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 9px !important;
+
+  font-weight: 800 !important;
+
+  line-height: 1 !important;
+
+  letter-spacing: .22em !important;
+
+  text-transform: uppercase !important;
+}
+
+
+.access-center > p,
+.access-center-header p,
+.secora-access-header p {
+
+  max-width: 760px !important;
+
+  margin: 12px 0 0 !important;
+
+  color: #8e9bad !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 13px !important;
+
+  font-weight: 450 !important;
+
+  line-height: 1.65 !important;
+
+  letter-spacing: -.005em !important;
+}
+
+
+/* ============================================================
+   PREMIUM TRACK TABS
+   ------------------------------------------------------------
+   Visual tab system without requiring HTML/JS changes.
+   ============================================================ */
+
+.access-center .access-tabs,
+.secora-access .access-tabs {
+
+  display: grid !important;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr)) !important;
+
+  gap: 10px !important;
+
+  width: 100% !important;
+
+  margin-bottom: 24px !important;
+
+  padding: 6px !important;
+
+  border:
+    1px solid rgba(255,255,255,.075) !important;
+
+  border-radius: 14px !important;
+
+  background:
+    rgba(255,255,255,.025) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025) !important;
+}
+
+
+.access-center .access-tab,
+.secora-access .access-tab {
+
+  min-height: 52px !important;
+
+  border: 0 !important;
+
+  border-radius: 10px !important;
+
+  background: transparent !important;
+
+  color: #6e7b8f !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 10px !important;
+
+  font-weight: 800 !important;
+
+  letter-spacing: .12em !important;
+
+  text-transform: uppercase !important;
+}
+
+
+.access-center .access-tab.active,
+.secora-access .access-tab.active,
+.access-center .access-tab:hover,
+.secora-access .access-tab:hover {
+
+  color: #eef3ff !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(81,109,211,.20),
+      rgba(73,91,164,.08)
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.055),
+    0 8px 25px rgba(0,0,0,.18) !important;
+}
+
+
+/* ============================================================
+   ACCESS CARDS GRID
+   ============================================================ */
+
+.access-grid,
+.access-cards,
+.secora-access-grid {
+
+  display: grid !important;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr)) !important;
+
+  gap: 22px !important;
+
+  width: 100% !important;
+
+  margin: 0 !important;
+
+  padding: 0 !important;
+}
+
+
+/* ============================================================
+   INDIVIDUAL CORE / BLACKLINE CARD
+   ============================================================ */
+
+.access-grid > *,
+.access-cards > *,
+.secora-access-grid > *,
+[data-access-product] {
+
+  position: relative !important;
+
+  display: flex !important;
+
+  flex-direction: column !important;
+
+  min-width: 0 !important;
+
+  min-height: 430px !important;
+
+  padding: 32px !important;
+
+  overflow: hidden !important;
+
+  border:
+    1px solid rgba(255,255,255,.095) !important;
+
+  border-radius: 22px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(23,31,43,.98),
+      rgba(12,18,26,.98)
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 20px 55px rgba(0,0,0,.22) !important;
+
+  transition:
+    transform .28s ease,
+    border-color .28s ease,
+    box-shadow .28s ease,
+    background .28s ease !important;
+}
+
+
+.access-grid > *::before,
+.access-cards > *::before,
+.secora-access-grid > *::before,
+[data-access-product]::before {
+
+  content: "" !important;
+
+  position: absolute !important;
+
+  top: 0 !important;
+
+  left: 30px !important;
+
+  right: 30px !important;
+
+  height: 1px !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(125,151,255,.65),
+      transparent
+    ) !important;
+
+  opacity: .55 !important;
+}
+
+
+.access-grid > *:hover,
+.access-cards > *:hover,
+.secora-access-grid > *:hover,
+[data-access-product]:hover {
+
+  transform:
+    translateY(-4px) !important;
+
+  border-color:
+    rgba(115,141,235,.26) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.045),
+    0 30px 75px rgba(0,0,0,.34) !important;
+}
+
+
+/* ============================================================
+   CORE / BLACKLINE PRODUCT LABEL
+   ============================================================ */
+
+[data-access-product] .product-label,
+[data-access-product] .access-label,
+[data-access-product] .kicker {
+
+  color: #8297c5 !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 9px !important;
+
+  font-weight: 800 !important;
+
+  letter-spacing: .19em !important;
+
+  text-transform: uppercase !important;
+}
+
+
+/* ============================================================
+   PRODUCT NUMBER
+   ============================================================ */
+
+[data-access-product] .access-number,
+[data-access-product] .product-number {
+
+  width: 46px !important;
+
+  height: 46px !important;
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  margin-bottom: 20px !important;
+
+  border:
+    1px solid rgba(255,255,255,.10) !important;
+
+  border-radius: 12px !important;
+
+  background:
+    rgba(255,255,255,.025) !important;
+
+  color: #b7c2d3 !important;
+
+  font-family:
+    "Manrope",
+    sans-serif !important;
+
+  font-size: 11px !important;
+
+  font-weight: 800 !important;
+}
+
+
+/* ============================================================
+   PRODUCT TITLE
+   ============================================================ */
+
+[data-access-product] h3,
+[data-access-product] h4 {
+
+  margin: 8px 0 0 !important;
+
+  color: #f0f3f8 !important;
+
+  font-family:
+    "Manrope",
+    "Inter",
+    sans-serif !important;
+
+  font-size: clamp(
+    23px,
+    2vw,
+    29px
+  ) !important;
+
+  font-weight: 800 !important;
+
+  line-height: 1.08 !important;
+
+  letter-spacing: -.045em !important;
+
+  text-rendering: geometricPrecision !important;
+
+  -webkit-font-smoothing: antialiased !important;
+}
+
+
+/* ============================================================
+   PRODUCT DESCRIPTION
+   ============================================================ */
+
+[data-access-product] > p,
+[data-access-product] .description,
+[data-access-product] .access-description {
+
+  max-width: 610px !important;
+
+  margin: 13px 0 0 !important;
+
+  color: #8995a8 !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 12px !important;
+
+  font-weight: 450 !important;
+
+  line-height: 1.7 !important;
+}
+
+
+/* ============================================================
+   LIFETIME BADGE
+   ============================================================ */
+
+[data-access-product] .lifetime,
+[data-access-product] .access-badge {
+
+  display: inline-flex !important;
+
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  width: fit-content !important;
+
+  min-height: 30px !important;
+
+  padding: 0 12px !important;
+
+  border:
+    1px solid rgba(119,144,219,.16) !important;
+
+  border-radius: 999px !important;
+
+  background:
+    rgba(91,113,184,.07) !important;
+
+  color: #91a3ce !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 8px !important;
+
+  font-weight: 800 !important;
+
+  letter-spacing: .12em !important;
+
+  text-transform: uppercase !important;
+}
+
+
+/* ============================================================
+   REDEEM AREA
+   ============================================================ */
+
+[data-access-product] .redeem-section,
+[data-access-product] .access-redeem,
+[data-access-product] .redeem-box {
+
+  width: 100% !important;
+
+  margin-top: 30px !important;
+
+  padding-top: 25px !important;
+
+  border-top:
+    1px solid rgba(255,255,255,.07) !important;
+}
+
+
+/* ============================================================
+   REDEEM LABEL
+   ============================================================ */
+
+[data-access-product] .redeem-title,
+[data-access-product] .redeem-label {
+
+  margin-bottom: 10px !important;
+
+  color: #c3cad6 !important;
+
+  font-family:
+    "Manrope",
+    sans-serif !important;
+
+  font-size: 11px !important;
+
+  font-weight: 750 !important;
+
+  letter-spacing: -.01em !important;
+}
+
+
+/* ============================================================
+   REDEEM SUBTEXT
+   ============================================================ */
+
+[data-access-product] .redeem-description,
+[data-access-product] .redeem-help {
+
+  margin-bottom: 14px !important;
+
+  color: #657286 !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 9px !important;
+
+  line-height: 1.5 !important;
+}
+
+
+/* ============================================================
+   REDEEM FORM
+   ============================================================ */
+
+[data-access-product] .redeem-row,
+[data-access-product] .redeem-form {
+
+  display: grid !important;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto !important;
+
+  gap: 12px !important;
+
+  width: 100% !important;
+
+  align-items: stretch !important;
+}
+
+
+/* ============================================================
+   REDEEM INPUT
+   ============================================================ */
+
+[data-access-product]
+.secora-redeem-input,
+[data-access-product]
+.access-redeem-input,
+[data-access-product]
+input[type="text"] {
+
+  width: 100% !important;
+
+  min-width: 0 !important;
+
+  height: 58px !important;
+
+  box-sizing: border-box !important;
+
+  padding:
+    0 18px !important;
+
+  border:
+    1px solid rgba(255,255,255,.105) !important;
+
+  border-radius: 13px !important;
+
+  outline: none !important;
+
+  background:
+    rgba(5,9,14,.72) !important;
+
+  color: #dfe6f1 !important;
+
+  font-family:
+    "JetBrains Mono",
+    "SFMono-Regular",
+    Consolas,
+    monospace !important;
+
+  font-size: 12px !important;
+
+  font-weight: 600 !important;
+
+  letter-spacing: .035em !important;
+
+  box-shadow:
+    inset 0 1px 2px rgba(0,0,0,.25) !important;
+
+  transition:
+    border-color .2s ease,
+    background .2s ease,
+    box-shadow .2s ease !important;
+}
+
+
+[data-access-product]
+.secora-redeem-input::placeholder,
+[data-access-product]
+.access-redeem-input::placeholder,
+[data-access-product]
+input[type="text"]::placeholder {
+
+  color: #465266 !important;
+
+  opacity: 1 !important;
+}
+
+
+[data-access-product]
+.secora-redeem-input:focus,
+[data-access-product]
+.access-redeem-input:focus,
+[data-access-product]
+input[type="text"]:focus {
+
+  border-color:
+    rgba(104,134,240,.55) !important;
+
+  background:
+    rgba(7,12,20,.92) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(80,108,205,.09),
+    inset 0 1px 2px rgba(0,0,0,.3) !important;
+}
+
+
+/* ============================================================
+   REDEEM BUTTON
+   ============================================================ */
+
+[data-access-product]
+[data-redeem-product] {
+
+  min-width: 142px !important;
+
+  min-height: 58px !important;
+
+  padding:
+    0 24px !important;
+
+  border:
+    1px solid rgba(255,255,255,.14) !important;
+
+  border-radius: 13px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f4f6f9,
+      #dfe4eb
+    ) !important;
+
+  color: #10151c !important;
+
+  font-family:
+    "Manrope",
+    sans-serif !important;
+
+  font-size: 11px !important;
+
+  font-weight: 850 !important;
+
+  letter-spacing: -.01em !important;
+
+  cursor: pointer !important;
+
+  box-shadow:
+    0 10px 28px rgba(0,0,0,.20) !important;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    background .2s ease !important;
+}
+
+
+[data-access-product]
+[data-redeem-product]:hover {
+
+  transform:
+    translateY(-2px) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #e8edf3
+    ) !important;
+
+  box-shadow:
+    0 16px 35px rgba(0,0,0,.30) !important;
+}
+
+
+[data-access-product]
+[data-redeem-product]:active {
+
+  transform:
+    translateY(0) !important;
+}
+
+
+/* ============================================================
+   PURCHASE AREA
+   ============================================================ */
+
+[data-access-product] .purchase-section,
+[data-access-product] .purchase-area,
+[data-access-product] .access-purchase {
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  justify-content: space-between !important;
+
+  gap: 25px !important;
+
+  margin-top: auto !important;
+
+  padding-top: 28px !important;
+
+  border-top:
+    1px solid rgba(255,255,255,.07) !important;
+}
+
+
+/* ============================================================
+   PURCHASE LABEL
+   ============================================================ */
+
+[data-access-product] .purchase-label {
+
+  color: #73829a !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 8px !important;
+
+  font-weight: 800 !important;
+
+  letter-spacing: .16em !important;
+
+  text-transform: uppercase !important;
+}
+
+
+[data-access-product] .purchase-title {
+
+  margin-top: 7px !important;
+
+  color: #d8dee8 !important;
+
+  font-family:
+    "Manrope",
+    sans-serif !important;
+
+  font-size: 13px !important;
+
+  font-weight: 750 !important;
+
+  letter-spacing: -.015em !important;
+}
+
+
+[data-access-product] .purchase-note {
+
+  margin-top: 4px !important;
+
+  color: #5f6c80 !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 9px !important;
+}
+
+
+/* ============================================================
+   PURCHASE BUTTON
+   ============================================================ */
+
+[data-access-product]
+[data-purchase-product] {
+
+  min-width: 185px !important;
+
+  min-height: 54px !important;
+
+  padding:
+    0 22px !important;
+
+  border:
+    1px solid rgba(255,255,255,.13) !important;
+
+  border-radius: 12px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(42,51,65,.95),
+      rgba(24,31,41,.95)
+    ) !important;
+
+  color: #e5eaf2 !important;
+
+  font-family:
+    "Manrope",
+    sans-serif !important;
+
+  font-size: 10px !important;
+
+  font-weight: 800 !important;
+
+  letter-spacing: .01em !important;
+
+  cursor: pointer !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 10px 28px rgba(0,0,0,.18) !important;
+
+  transition:
+    transform .22s ease,
+    border-color .22s ease,
+    background .22s ease,
+    box-shadow .22s ease !important;
+}
+
+
+[data-access-product]
+[data-purchase-product]::after {
+
+  content: "→" !important;
+
+  margin-left: 12px !important;
+
+  color: #91a7ff !important;
+
+  font-size: 14px !important;
+}
+
+
+[data-access-product]
+[data-purchase-product]:hover {
+
+  transform:
+    translateY(-3px) !important;
+
+  border-color:
+    rgba(122,149,244,.36) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(55,68,91,.98),
+      rgba(27,36,49,.98)
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 18px 40px rgba(0,0,0,.28) !important;
+}
+
+
+/* ============================================================
+   COMING SOON TEXT
+   ============================================================ */
+
+[data-access-product]
+[data-purchase-product] small,
+[data-access-product]
+[data-purchase-product] .coming-soon {
+
+  display: block !important;
+
+  margin-top: 4px !important;
+
+  color: #637188 !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 7px !important;
+
+  font-weight: 800 !important;
+
+  letter-spacing: .13em !important;
+
+  text-transform: uppercase !important;
+}
+
+
+/* ============================================================
+   REDEEM FEEDBACK
+   ============================================================ */
+
+[data-access-product]
+.secora-redeem-feedback {
+
+  min-height: 18px !important;
+
+  margin-top: 10px !important;
+
+  color: #718098 !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 9px !important;
+
+  line-height: 1.4 !important;
+}
+
+
+[data-access-product]
+.secora-redeem-feedback.success {
+
+  color: #71c8a7 !important;
+}
+
+
+[data-access-product]
+.secora-redeem-feedback.error {
+
+  color: #e27d89 !important;
+}
+
+
+/* ============================================================
+   ACCESS UNLOCKED STATE
+   ============================================================ */
+
+[data-access-product].is-unlocked {
+
+  border-color:
+    rgba(91,191,157,.22) !important;
+
+  background:
+    radial-gradient(
+      500px 300px at 100% 0%,
+      rgba(52,164,127,.08),
+      transparent 65%
+    ),
+    linear-gradient(
+      145deg,
+      #121d1d,
+      #0c1417
+    ) !important;
+}
+
+
+[data-access-product].is-unlocked
+[data-redeem-product] {
+
+  background:
+    linear-gradient(
+      145deg,
+      #4b9e82,
+      #397965
+    ) !important;
+
+  color: #f5fffb !important;
+}
+
+
+/* ============================================================
+   INFORMATION STRIP
+   ============================================================ */
+
+.access-center .access-note,
+.secora-access .access-note,
+.access-center .info-strip {
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  gap: 12px !important;
+
+  width: 100% !important;
+
+  min-height: 46px !important;
+
+  margin-top: 20px !important;
+
+  padding:
+    0 16px !important;
+
+  box-sizing: border-box !important;
+
+  border:
+    1px solid rgba(255,255,255,.06) !important;
+
+  border-radius: 12px !important;
+
+  background:
+    rgba(255,255,255,.018) !important;
+
+  color: #657287 !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 9px !important;
+
+  line-height: 1.45 !important;
+}
+
+
+/* ============================================================
+   REMOVE OLD BLUR / GLASS EFFECTS INSIDE ACCESS CENTER
+   ============================================================ */
+
+.access-center *,
+.secora-access *,
+[data-section="access"] * {
+
+  -webkit-backdrop-filter:
+    none !important;
+
+  backdrop-filter:
+    none !important;
+}
+
+
+/* Keep the outer depth clean */
+.access-center,
+.secora-access,
+[data-section="access"] {
+
+  -webkit-backdrop-filter:
+    none !important;
+
+  backdrop-filter:
+    none !important;
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 1000px) {
+
+  .access-center,
+  .secora-access,
+  [data-section="access"] {
+
+    padding: 34px !important;
+
+  }
+
+
+  .access-grid,
+  .access-cards,
+  .secora-access-grid {
+
+    grid-template-columns:
+      1fr !important;
+
+  }
+
+
+  [data-access-product] {
+
+    min-height: 400px !important;
+
+  }
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 650px) {
+
+  .access-center,
+  .secora-access,
+  [data-section="access"] {
+
+    padding: 24px !important;
+
+    border-radius: 20px !important;
+
+  }
+
+
+  .access-center h2,
+  .secora-access h2 {
+
+    font-size: 31px !important;
+
+  }
+
+
+  .access-grid,
+  .access-cards,
+  .secora-access-grid {
+
+    gap: 15px !important;
+
+  }
+
+
+  [data-access-product] {
+
+    min-height: auto !important;
+
+    padding: 24px !important;
+
+    border-radius: 18px !important;
+
+  }
+
+
+  [data-access-product] .redeem-row,
+  [data-access-product] .redeem-form {
+
+    grid-template-columns:
+      1fr !important;
+
+  }
+
+
+  [data-access-product]
+  [data-redeem-product] {
+
+    width: 100% !important;
+
+  }
+
+
+  [data-access-product]
+  .purchase-section,
+  [data-access-product]
+  .purchase-area,
+  [data-access-product]
+  .access-purchase {
+
+    align-items:
+      stretch !important;
+
+    flex-direction:
+      column !important;
+
+  }
+
+
+  [data-access-product]
+  [data-purchase-product] {
+
+    width: 100% !important;
+
+  }
+}
+
+
+/* ============================================================
+   END — PREMIUM ACCESS CENTER
+   ============================================================ */
