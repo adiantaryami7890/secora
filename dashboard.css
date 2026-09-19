@@ -13497,3 +13497,584 @@ a[class*="unlock"] {
 /* ============================================================
    17 — END
    ============================================================ */
+/* ============================================================
+   SECORA — FINAL COURSE ACTION FIX
+   ============================================================
+   FIXES:
+   • Empty ACCESS buttons
+   • Empty UNLOCK buttons
+   • Removes old Explore text
+   • Removes old pseudo-element conflicts
+   • ORIGIN  = ACCESS →
+   • CORE    = UNLOCK →
+   • BLACKLINE = UNLOCK →
+   • Keeps existing links functional
+   ============================================================ */
+
+
+/* ============================================================
+   01 — HARD RESET OLD ACTION STYLING
+   ============================================================ */
+
+.course-card .course-explore,
+.course-card .course-locked-caption {
+
+    position: relative !important;
+
+    display: inline-flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    box-sizing: border-box !important;
+
+    width: auto !important;
+
+    min-width: 116px !important;
+
+    height: 42px !important;
+
+    min-height: 42px !important;
+
+    padding: 0 16px !important;
+
+    margin: 0 !important;
+
+    overflow: hidden !important;
+
+    border-radius: 10px !important;
+
+    font-family: inherit !important;
+
+    font-size: 0 !important;
+
+    line-height: 1 !important;
+
+    letter-spacing: 0 !important;
+
+    text-indent: 0 !important;
+
+    text-transform: none !important;
+
+    white-space: nowrap !important;
+
+    text-decoration: none !important;
+
+    text-shadow: none !important;
+
+    opacity: 1 !important;
+
+    visibility: visible !important;
+
+    -webkit-text-fill-color: transparent !important;
+
+    backdrop-filter:
+        blur(14px) saturate(135%) !important;
+
+    -webkit-backdrop-filter:
+        blur(14px) saturate(135%) !important;
+
+    transition:
+        transform 220ms ease,
+        background 220ms ease,
+        border-color 220ms ease,
+        box-shadow 220ms ease !important;
+}
+
+
+/* ============================================================
+   02 — ACCESS BUTTON
+   ============================================================ */
+
+.course-card .course-explore {
+
+    color: transparent !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.105),
+            rgba(255,255,255,0.035)
+        ) !important;
+
+    border:
+        1px solid rgba(205,216,229,0.38) !important;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.22),
+        inset 0 1px rgba(255,255,255,0.10),
+        inset 0 -1px rgba(0,0,0,0.25) !important;
+
+    cursor: pointer !important;
+}
+
+
+/* ============================================================
+   03 — DESTROY OLD PSEUDO CONTENT
+   ============================================================ */
+
+.course-card .course-explore::before,
+.course-card .course-explore::after {
+
+    box-sizing: border-box !important;
+
+    position: relative !important;
+
+    display: inline-block !important;
+
+    visibility: visible !important;
+
+    opacity: 1 !important;
+
+    width: auto !important;
+
+    height: auto !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    text-indent: 0 !important;
+
+    overflow: visible !important;
+
+    transform: none !important;
+
+    animation: none !important;
+
+    background: none !important;
+
+    box-shadow: none !important;
+
+    border: 0 !important;
+}
+
+
+/* ============================================================
+   04 — REAL ACCESS TEXT
+   ============================================================ */
+
+.course-card .course-explore::before {
+
+    content: "ACCESS" !important;
+
+    color: #F3F6FA !important;
+
+    -webkit-text-fill-color: #F3F6FA !important;
+
+    font-family: inherit !important;
+
+    font-size: 12.5px !important;
+
+    font-weight: 850 !important;
+
+    line-height: 1 !important;
+
+    letter-spacing: 0.10em !important;
+
+    text-indent: 0 !important;
+
+    white-space: nowrap !important;
+
+    z-index: 5 !important;
+}
+
+
+/* ============================================================
+   05 — REAL ACCESS ARROW
+   ============================================================ */
+
+.course-card .course-explore::after {
+
+    content: "→" !important;
+
+    color: #F3F6FA !important;
+
+    -webkit-text-fill-color: #F3F6FA !important;
+
+    font-family: Arial, sans-serif !important;
+
+    font-size: 18px !important;
+
+    font-weight: 600 !important;
+
+    line-height: 1 !important;
+
+    letter-spacing: 0 !important;
+
+    text-indent: 0 !important;
+
+    margin-left: 9px !important;
+
+    z-index: 5 !important;
+
+    transition:
+        transform 200ms ease !important;
+}
+
+
+/* ============================================================
+   06 — ACCESS HOVER
+   ============================================================ */
+
+.course-card .course-explore:hover {
+
+    transform:
+        translateY(-2px)
+        scale(1.025) !important;
+
+    color: transparent !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.17),
+            rgba(255,255,255,0.055)
+        ) !important;
+
+    border-color:
+        rgba(235,242,250,0.60) !important;
+
+    box-shadow:
+        0 12px 28px rgba(0,0,0,0.30),
+        0 0 24px rgba(200,215,232,0.08),
+        inset 0 1px rgba(255,255,255,0.15) !important;
+}
+
+
+.course-card .course-explore:hover::before {
+
+    color: #FFFFFF !important;
+
+    -webkit-text-fill-color: #FFFFFF !important;
+}
+
+
+.course-card .course-explore:hover::after {
+
+    color: #FFFFFF !important;
+
+    -webkit-text-fill-color: #FFFFFF !important;
+
+    transform:
+        translateX(4px) !important;
+}
+
+
+/* ============================================================
+   07 — ORIGIN ACCESS
+   ============================================================ */
+
+.course-track[data-track="fundamentals"]
+.course-card .course-explore {
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(221,229,237,0.18),
+            rgba(174,184,197,0.055)
+        ) !important;
+
+    border-color:
+        rgba(174,184,197,0.42) !important;
+
+    box-shadow:
+        0 8px 21px rgba(0,0,0,0.22),
+        0 0 18px rgba(174,184,197,0.055),
+        inset 0 1px rgba(255,255,255,0.10) !important;
+}
+
+
+/* ============================================================
+   08 — LOCKED BUTTON RESET
+   ============================================================ */
+
+.course-card .course-locked-caption {
+
+    color: transparent !important;
+
+    -webkit-text-fill-color: transparent !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.065),
+            rgba(255,255,255,0.022)
+        ) !important;
+
+    border:
+        1px solid rgba(165,165,165,0.28) !important;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.20),
+        inset 0 1px rgba(255,255,255,0.065),
+        inset 0 -1px rgba(0,0,0,0.25) !important;
+}
+
+
+/* ============================================================
+   09 — REAL UNLOCK TEXT
+   ============================================================ */
+
+.course-card .course-locked-caption::before {
+
+    content: "UNLOCK" !important;
+
+    position: relative !important;
+
+    display: inline-block !important;
+
+    color: #E9EDF3 !important;
+
+    -webkit-text-fill-color: #E9EDF3 !important;
+
+    font-family: inherit !important;
+
+    font-size: 12.5px !important;
+
+    font-weight: 850 !important;
+
+    line-height: 1 !important;
+
+    letter-spacing: 0.10em !important;
+
+    text-indent: 0 !important;
+
+    white-space: nowrap !important;
+
+    z-index: 5 !important;
+}
+
+
+/* ============================================================
+   10 — REAL UNLOCK ARROW
+   ============================================================ */
+
+.course-card .course-locked-caption::after {
+
+    content: "→" !important;
+
+    position: relative !important;
+
+    display: inline-block !important;
+
+    color: #E9EDF3 !important;
+
+    -webkit-text-fill-color: #E9EDF3 !important;
+
+    font-family: Arial, sans-serif !important;
+
+    font-size: 18px !important;
+
+    font-weight: 600 !important;
+
+    line-height: 1 !important;
+
+    letter-spacing: 0 !important;
+
+    text-indent: 0 !important;
+
+    margin-left: 9px !important;
+
+    z-index: 5 !important;
+}
+
+
+/* ============================================================
+   11 — CORE UNLOCK
+   ============================================================ */
+
+.course-track[data-track="intermediate"]
+.course-card .course-locked-caption {
+
+    color: transparent !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(77,141,255,0.18),
+            rgba(43,78,139,0.055)
+        ) !important;
+
+    border-color:
+        rgba(77,141,255,0.42) !important;
+
+    box-shadow:
+        0 8px 21px rgba(0,0,0,0.22),
+        0 0 20px rgba(77,141,255,0.065),
+        inset 0 1px rgba(255,255,255,0.09) !important;
+}
+
+
+.course-track[data-track="intermediate"]
+.course-card .course-locked-caption::before,
+
+.course-track[data-track="intermediate"]
+.course-card .course-locked-caption::after {
+
+    color: #EAF2FF !important;
+
+    -webkit-text-fill-color: #EAF2FF !important;
+}
+
+
+/* ============================================================
+   12 — BLACKLINE UNLOCK
+   ============================================================ */
+
+.course-track[data-track="advanced"]
+.course-card .course-locked-caption {
+
+    color: transparent !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(198,161,91,0.19),
+            rgba(104,84,48,0.055)
+        ) !important;
+
+    border-color:
+        rgba(198,161,91,0.45) !important;
+
+    box-shadow:
+        0 8px 21px rgba(0,0,0,0.24),
+        0 0 20px rgba(198,161,91,0.07),
+        inset 0 1px rgba(255,255,255,0.09) !important;
+}
+
+
+.course-track[data-track="advanced"]
+.course-card .course-locked-caption::before,
+
+.course-track[data-track="advanced"]
+.course-card .course-locked-caption::after {
+
+    color: #F5EBD5 !important;
+
+    -webkit-text-fill-color: #F5EBD5 !important;
+}
+
+
+/* ============================================================
+   13 — LARGE DESKTOP
+   ============================================================ */
+
+@media (min-width: 1440px) {
+
+    .course-card .course-explore,
+    .course-card .course-locked-caption {
+
+        min-width: 126px !important;
+
+        height: 44px !important;
+
+        min-height: 44px !important;
+
+        padding: 0 18px !important;
+    }
+
+
+    .course-card .course-explore::before,
+    .course-card .course-locked-caption::before {
+
+        font-size: 13px !important;
+
+        letter-spacing: 0.105em !important;
+    }
+
+
+    .course-card .course-explore::after,
+    .course-card .course-locked-caption::after {
+
+        font-size: 18px !important;
+
+        margin-left: 10px !important;
+    }
+}
+
+
+/* ============================================================
+   14 — UHD
+   ============================================================ */
+
+@media (min-width: 1800px) {
+
+    .course-card .course-explore,
+    .course-card .course-locked-caption {
+
+        min-width: 136px !important;
+
+        height: 47px !important;
+
+        min-height: 47px !important;
+
+        padding: 0 20px !important;
+
+        border-radius: 11px !important;
+    }
+
+
+    .course-card .course-explore::before,
+    .course-card .course-locked-caption::before {
+
+        font-size: 13.5px !important;
+
+        letter-spacing: 0.11em !important;
+    }
+
+
+    .course-card .course-explore::after,
+    .course-card .course-locked-caption::after {
+
+        font-size: 19px !important;
+
+        margin-left: 11px !important;
+    }
+}
+
+
+/* ============================================================
+   15 — MOBILE
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+    .course-card .course-explore,
+    .course-card .course-locked-caption {
+
+        min-width: 102px !important;
+
+        height: 37px !important;
+
+        min-height: 37px !important;
+
+        padding: 0 13px !important;
+
+        border-radius: 9px !important;
+    }
+
+
+    .course-card .course-explore::before,
+    .course-card .course-locked-caption::before {
+
+        font-size: 10.5px !important;
+
+        letter-spacing: 0.08em !important;
+    }
+
+
+    .course-card .course-explore::after,
+    .course-card .course-locked-caption::after {
+
+        font-size: 15px !important;
+
+        margin-left: 7px !important;
+    }
+}
+
+
+/* ============================================================
+   END — FINAL ACTION FIX
+   ============================================================ */
