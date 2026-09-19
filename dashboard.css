@@ -8690,3 +8690,261 @@ body > .main-content {
 /* ============================================================
    END — MAIN LAYOUT POSITION FIX
    ============================================================ */
+/* ============================================================
+   SECORA — FINAL SIDEBAR / MAIN LAYOUT FIX
+   ------------------------------------------------------------
+   Restores fixed sidebar behavior.
+   Prevents sidebar from pushing dashboard content downward.
+   Keeps sidebar glass + scrollbar + navigation styling.
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   01 — SIDEBAR MUST NOT OCCUPY NORMAL DOCUMENT FLOW
+   ------------------------------------------------------------ */
+
+.sidebar {
+  position: fixed !important;
+
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+
+  height: 100vh !important;
+  height: 100dvh !important;
+
+  max-height: 100vh !important;
+  max-height: 100dvh !important;
+
+  margin: 0 !important;
+
+  box-sizing: border-box !important;
+
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+
+  z-index: 1000 !important;
+
+  /*
+     Keep the premium glass appearance.
+  */
+  backdrop-filter: blur(30px) saturate(135%);
+  -webkit-backdrop-filter: blur(30px) saturate(135%);
+}
+
+
+/* ------------------------------------------------------------
+   02 — MAIN PAGE MUST START AT THE TOP
+   ------------------------------------------------------------ */
+
+main {
+  position: relative !important;
+
+  top: auto !important;
+
+  margin-top: 0 !important;
+
+  padding-top: 0 !important;
+
+  transform: none !important;
+}
+
+
+/* ------------------------------------------------------------
+   03 — COMMON MAIN WRAPPERS
+   ------------------------------------------------------------ */
+
+.main,
+.main-content,
+.dashboard,
+.dashboard-main,
+.page-content,
+.content-area,
+.dashboard-content,
+.dashboard-container,
+.home-content {
+  margin-top: 0 !important;
+
+  transform: none !important;
+}
+
+
+/* ------------------------------------------------------------
+   04 — HEADER / TOPBAR
+   ------------------------------------------------------------ */
+
+.topbar,
+.top-bar,
+.header,
+.dashboard-header,
+.main-header,
+.header-content,
+.topbar-content {
+  margin-top: 0 !important;
+
+  top: auto !important;
+
+  transform: none !important;
+}
+
+
+/* ------------------------------------------------------------
+   05 — CRITICAL:
+   SIDEBAR SHOULD NOT PUSH SIBLING CONTENT
+   ------------------------------------------------------------ */
+
+.sidebar + *,
+.sidebar ~ main,
+.sidebar ~ .main,
+.sidebar ~ .main-content,
+.sidebar ~ .dashboard,
+.sidebar ~ .dashboard-main {
+  margin-top: 0 !important;
+
+  padding-top: 0 !important;
+
+  transform: none !important;
+}
+
+
+/* ------------------------------------------------------------
+   06 — RESTORE MAIN HORIZONTAL POSITION
+   ------------------------------------------------------------
+   Your sidebar width is handled by the existing
+   --sidebar-width variable.
+   ------------------------------------------------------------ */
+
+main,
+.main,
+.main-content,
+.dashboard,
+.dashboard-main,
+.page-content,
+.content-area {
+  margin-left: var(--sidebar-width, 260px) !important;
+
+  box-sizing: border-box !important;
+}
+
+
+/* ------------------------------------------------------------
+   07 — IF YOUR MAIN CONTENT USES WIDTH CALCULATION
+   ------------------------------------------------------------ */
+
+main,
+.main,
+.main-content,
+.dashboard,
+.dashboard-main {
+  width: auto !important;
+
+  min-height: 100vh;
+}
+
+
+/* ------------------------------------------------------------
+   08 — DO NOT FORCE A VERTICAL OFFSET
+   ------------------------------------------------------------ */
+
+body {
+  padding-top: 0 !important;
+
+  margin-top: 0 !important;
+}
+
+
+/* ------------------------------------------------------------
+   09 — SIDEBAR SCROLLBAR
+   ------------------------------------------------------------ */
+
+.sidebar::-webkit-scrollbar {
+  width: 7px !important;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: rgba(4, 4, 9, 0.55) !important;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  border-radius: 999px !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(165, 155, 232, 0.70),
+      rgba(117, 103, 200, 0.40),
+      rgba(79, 68, 139, 0.25)
+    ) !important;
+
+  border: 1px solid rgba(205, 199, 239, 0.08);
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(
+      180deg,
+      #BDB6EE,
+      #7567C8,
+      #51478F
+    ) !important;
+}
+
+.sidebar {
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    #62579D
+    rgba(4, 4, 9, 0.55);
+}
+
+
+/* ------------------------------------------------------------
+   10 — DESKTOP
+   ------------------------------------------------------------ */
+
+@media (min-width: 901px) {
+
+  .sidebar {
+    position: fixed !important;
+
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+
+    height: 100vh !important;
+    height: 100dvh !important;
+  }
+
+  main,
+  .main,
+  .main-content,
+  .dashboard,
+  .dashboard-main {
+    margin-top: 0 !important;
+
+    padding-top: 0 !important;
+  }
+}
+
+
+/* ------------------------------------------------------------
+   11 — MOBILE
+   ------------------------------------------------------------ */
+
+@media (max-width: 900px) {
+
+  .sidebar {
+    position: fixed !important;
+
+    top: 0 !important;
+    left: 0 !important;
+
+    height: 100vh !important;
+    height: 100dvh !important;
+  }
+}
+
+
+/* ============================================================
+   END — FINAL LAYOUT FIX
+   ============================================================ */
