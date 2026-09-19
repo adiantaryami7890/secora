@@ -1,4 +1,4 @@
-// =========================================================
+ // =========================================================
 // SECORA
 // DYNAMIC DASHBOARD
 // V0.4.2
@@ -421,6 +421,42 @@ async function loadPlatformData(
 
 
   // =======================================================
+  // OWNER / ACCESS STATE
+  // =======================================================
+
+  let profile = null;
+
+  const {
+    data: profileData,
+    error: profileError
+  } =
+    await secoraSupabase
+      .from("profiles")
+      .select(`
+        id,
+        role
+      `)
+      .eq(
+        "id",
+        userId
+      )
+      .maybeSingle();
+
+  if (profileError) {
+
+    console.warn(
+      "Secora profile access check:",
+      profileError
+    );
+
+  }
+
+  profile =
+    profileData ||
+    null;
+
+
+  // =======================================================
   // MODULES
   // =======================================================
 
@@ -615,7 +651,16 @@ async function loadPlatformData(
 
     lessons,
 
-    progress
+    progress,
+
+    profile,
+
+    isOwner:
+      String(
+        profile?.role ||
+        ""
+      ).toLowerCase() ===
+      "owner"
 
   };
 
@@ -750,6 +795,27 @@ function buildCourseData(
         );
 
 
+      const isOwner =
+        data.isOwner === true;
+
+
+      const isOrigin =
+        track ===
+        "fundamentals";
+
+
+      // Temporary dashboard access presentation:
+      // ORIGIN is public.
+      // CORE / BLACKLINE are shown but locked.
+      // The owner account bypasses the presentation lock.
+      //
+      // Supabase RLS remains the real security boundary.
+
+      const hasDashboardAccess =
+        isOwner ||
+        isOrigin;
+
+
       return {
 
         ...course,
@@ -766,7 +832,11 @@ function buildCourseData(
 
         total,
 
-        percentage
+        percentage,
+
+        isOwner,
+
+        hasDashboardAccess
 
       };
 
@@ -1606,6 +1676,19 @@ function createEmptyTrack() {
 // =========================================================
 // CREATE COURSE CARD
 // =========================================================
+//
+// PREMIUM ACCESS SYSTEM
+//
+// The card remains visible to authenticated users.
+// ORIGIN is open.
+// CORE / BLACKLINE are visually restricted until entitlement
+// integration is connected.
+// Owner accounts bypass the dashboard presentation lock.
+//
+// IMPORTANT:
+// This is a presentation layer only.
+// Supabase RLS remains the real security boundary.
+// =========================================================
 
 
 function createCourseCard(
@@ -1635,21 +1718,122 @@ function createCourseCard(
         : "BLACKLINE";
 
 
+  const isLocked =
+    course.hasDashboardAccess !== true;
+
+
+  const accessLabel =
+    track ===
+    "intermediate"
+      ? "CORE ACCESS"
+      : "BLACKLINE ACCESS";
+
+
+  const accessDescription =
+    track ===
+    "intermediate"
+      ? "Reserved for SECORA CORE members."
+      : "Reserved for SECORA BLACKLINE members.";
+
+
+  const actionMarkup =
+    isLocked
+      ? `
+        <button
+          type="button"
+          class="course-access-button"
+          data-access-track="${escapeHTML(track)}"
+          aria-label="${escapeHTML(
+            accessLabel
+          )}"
+        >
+
+          <span
+            class="access-lock-icon"
+            aria-hidden="true"
+          ></span>
+
+          <span class="access-button-copy">
+
+            <strong>
+              ${accessLabel}
+            </strong>
+
+            <small>
+              Unlock access
+            </small>
+
+          </span>
+
+          <span
+            class="access-button-arrow"
+            aria-hidden="true"
+          >
+            →
+          </span>
+
+        </button>
+      `
+      : `
+        <a
+          href="course.html?slug=${encodeURIComponent(
+            course.slug
+          )}"
+          class="course-explore"
+        >
+          Explore →
+        </a>
+      `;
+
+
   return `
 
     <article
-      class="course-card"
+      class="course-card${isLocked
+        ? " course-card-locked"
+        : " course-card-unlocked"}"
       data-course="${escapeHTML(
         course.slug
       )}"
       data-track="${escapeHTML(
         track
       )}"
+      data-access="${isLocked
+        ? "locked"
+        : "granted"}"
     >
+
+      ${
+        isLocked
+          ? `
+            <div
+              class="course-access-seal"
+              aria-label="${escapeHTML(
+                accessLabel
+              )}"
+            >
+
+              <span
+                class="access-lock-icon"
+                aria-hidden="true"
+              ></span>
+
+              <span>
+                ${accessLabel}
+              </span>
+
+            </div>
+
+            <div
+              class="course-restricted-line"
+              aria-hidden="true"
+            ></div>
+          `
+          : ""
+      }
 
 
       <div class="course-card-top">
-
 
         <span class="course-level">
           ${escapeHTML(
@@ -1657,11 +1841,19 @@ function createCourseCard(
           )}
         </span>
 
-
-        <span class="course-percentage">
-          ${course.percentage}%
-        </span>
-
+        ${
+          isLocked
+            ? `
+              <span class="course-access-state">
+                RESTRICTED
+              </span>
+            `
+            : `
+              <span class="course-percentage">
+                ${course.percentage}%
+              </span>
+            `
+        }
 
       </div>
 
@@ -1686,63 +1878,72 @@ function createCourseCard(
       </p>
 
 
-      <div class="course-card-meta">
+      ${
+        isLocked
+          ? `
+            <div class="course-lock-message">
+
+              <span class="course-lock-message-line"></span>
+
+              <div>
+
+                <strong>
+                  ${accessDescription}
+                </strong>
+
+                <span>
+                  Course architecture is visible.
+                  Learning content remains protected.
+                </span>
+
+              </div>
+
+            </div>
+          `
+          : `
+            <div class="course-card-meta">
+
+              <span>
+                ${course.total}
+                LESSON${course.total === 1
+                  ? ""
+                  : "S"}
+              </span>
+
+              <span>
+                ${course.completed}
+                COMPLETED
+              </span>
+
+            </div>
 
 
-        <span>
-          ${course.total}
+            <div class="course-progress">
 
-          LESSON${course.total === 1
-            ? ""
-            : "S"}
+              <div
+                class="course-progress-bar"
+                style="width:${course.percentage}%"
+              ></div>
 
-        </span>
-
-
-        <span>
-          ${course.completed}
-          COMPLETED
-        </span>
-
-
-      </div>
-
-
-      <div class="course-progress">
-
-
-        <div
-          class="course-progress-bar"
-          style="width:${course.percentage}%"
-        ></div>
-
-
-      </div>
+            </div>
+          `
+      }
 
 
       <div class="course-card-footer">
 
-
         <span class="course-card-time">
 
-          ${getCourseDuration(
-            course
-          )}
+          ${
+            isLocked
+              ? "Premium learning path"
+              : getCourseDuration(course)
+          }
 
         </span>
 
 
-        <a
-          href="course.html?slug=${encodeURIComponent(
-            course.slug
-          )}"
-          class="course-explore"
-        >
-
-          Explore →
-
-        </a>
-
+        ${actionMarkup}
 
       </div>
 
@@ -1752,6 +1953,131 @@ function createCourseCard(
   `;
 
 }
+
+
+
+// =========================================================
+// COURSE ACCESS BUTTON
+// =========================================================
+//
+// Until Cashfree / redeem entitlements are wired into the
+// frontend, these buttons intentionally do not unlock content.
+// They provide the premium interaction surface.
+// =========================================================
+
+
+document.addEventListener(
+  "click",
+  event => {
+
+    const accessButton =
+      event.target.closest(
+        ".course-access-button"
+      );
+
+
+    if (
+      !accessButton
+    ) {
+
+      return;
+
+    }
+
+
+    const track =
+      accessButton.dataset.accessTrack ||
+      "intermediate";
+
+
+    // The payment / redeem destination will be connected
+    // in the next access-control phase.
+
+    console.info(
+      `SECORA ${track.toUpperCase()} access requested.`
+    );
+
+
+    accessButton.classList.add(
+      "is-requested"
+    );
+
+
+    window.setTimeout(
+      () => {
+
+        accessButton.classList.remove(
+          "is-requested"
+        );
+
+      },
+      650
+    );
+
+  }
+);
+
+
+
+// =========================================================
+// COURSE CARD CLICK SUPPORT
+// =========================================================
+
+
+document.addEventListener(
+  "click",
+  event => {
+
+    const card =
+      event.target.closest(
+        ".course-card"
+      );
+
+
+    if (
+      !card ||
+      card.classList.contains(
+        "course-card-locked"
+      )
+    ) {
+
+      return;
+
+    }
+
+
+    const link =
+      card.querySelector(
+        ".course-explore"
+      );
+
+
+    if (
+      !link
+    ) {
+
+      return;
+
+    }
+
+
+    if (
+      event.target.closest(
+        "a"
+      )
+    ) {
+
+      return;
+
+    }
+
+
+    window.location.href =
+      link.href;
+
+  }
+);
+
 
 
 
