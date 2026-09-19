@@ -11,3 +11,1198 @@
 @media(max-width:620px){:root{--sidebar:60px}.topbar{height:64px;padding:0 14px}.mobile-brand{display:block}.search{display:none}.content{width:calc(100% - 28px);padding:30px 0 60px}.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.stat-card{min-height:116px;padding:17px}.stat-card strong{font-size:27px}.section-header{align-items:flex-start;flex-direction:column}.course-grid{gap:52px}.course-track-grid{grid-template-columns:1fr}.course-track-header h2{font-size:40px}.track-unlock-button{min-width:155px;height:43px}.course-card{min-height:290px}.path-banner{align-items:flex-start;flex-direction:column;padding:26px 22px}.secora-access-center{padding:19px 15px;margin-top:36px}.access-center-heading{align-items:flex-start}.access-heading-mark{display:none}.access-product-card{padding:17px}.access-product-top{grid-template-columns:32px minmax(0,1fr)}.access-product-status{grid-column:2;justify-self:start;margin-top:-4px}.access-redeem-row{grid-template-columns:1fr}.access-redeem-button{width:100%}.access-purchase{align-items:stretch;flex-direction:column}.access-purchase-button{width:100%}}
 @media(max-width:390px){.stats-grid{grid-template-columns:1fr}.course-track-header h2{font-size:36px}.welcome h1{font-size:31px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
+/* =========================================================
+   SECORA — FINAL COURSE GRID FIX
+   V0.5.5
+   ---------------------------------------------------------
+   IMPORTANT:
+   Current dashboard.js generates:
+
+   .course-grid
+   .course-track
+   .track-heading
+   .track-heading-copy
+   .track-heading-meta
+   .track-course-grid
+   .course-card
+
+   This override intentionally targets those exact classes.
+   ========================================================= */
+
+
+/* =========================================================
+   MAIN CONTENT WIDTH
+   ========================================================= */
+
+.main {
+  min-width: 0 !important;
+  width: auto !important;
+}
+
+.content {
+  width: min(
+    calc(100% - 64px),
+    1420px
+  ) !important;
+
+  max-width: 1420px !important;
+
+  margin-left: auto !important;
+  margin-right: auto !important;
+
+  min-width: 0 !important;
+}
+
+
+/* =========================================================
+   EXPLORE / COURSE AREA
+   ========================================================= */
+
+.section {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.course-grid {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+}
+
+
+/* =========================================================
+   TRACK CONTAINER
+   ========================================================= */
+
+.course-grid.course-track-layout {
+
+  display: flex !important;
+
+  flex-direction: column !important;
+
+  align-items: stretch !important;
+
+  width: 100% !important;
+
+  max-width: none !important;
+
+  min-width: 0 !important;
+
+  gap: 76px !important;
+
+  margin: 0 !important;
+
+}
+
+
+/* =========================================================
+   INDIVIDUAL TRACK
+   ========================================================= */
+
+.course-track {
+
+  display: block !important;
+
+  width: 100% !important;
+
+  max-width: none !important;
+
+  min-width: 0 !important;
+
+  margin: 0 !important;
+
+  padding: 0 !important;
+}
+
+
+/* =========================================================
+   TRACK HEADER
+   ========================================================= */
+
+.track-heading {
+
+  display: flex !important;
+
+  align-items: flex-end !important;
+
+  justify-content: space-between !important;
+
+  gap: 32px !important;
+
+  width: 100% !important;
+
+  margin: 0 0 22px !important;
+
+  padding: 0 !important;
+
+  min-width: 0 !important;
+}
+
+
+/* =========================================================
+   TRACK HEADING COPY
+   ========================================================= */
+
+.track-heading-copy {
+
+  flex: 1 1 auto !important;
+
+  min-width: 0 !important;
+}
+
+
+.track-kicker {
+
+  display: block !important;
+
+  margin: 0 0 8px !important;
+
+  color: #7190ff !important;
+
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif !important;
+
+  font-size: 9px !important;
+
+  font-weight: 800 !important;
+
+  line-height: 1 !important;
+
+  letter-spacing: .18em !important;
+
+  text-transform: uppercase !important;
+}
+
+
+/* =========================================================
+   TRACK TITLE
+   ---------------------------------------------------------
+   Premium display typography only for:
+   SECORA ORIGIN
+   SECORA CORE
+   SECORA BLACKLINE
+   ========================================================= */
+
+.track-heading h2 {
+
+  margin: 0 !important;
+
+  color: #f4f7fb !important;
+
+  font-family:
+    "Bebas Neue",
+    "Arial Narrow",
+    sans-serif !important;
+
+  font-size: 36px !important;
+
+  font-weight: 400 !important;
+
+  line-height: .95 !important;
+
+  letter-spacing: .025em !important;
+
+  text-transform: uppercase !important;
+}
+
+
+.track-heading p {
+
+  max-width: 720px !important;
+
+  margin: 9px 0 0 !important;
+
+  color: #8490a2 !important;
+
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif !important;
+
+  font-size: 11px !important;
+
+  font-weight: 400 !important;
+
+  line-height: 1.65 !important;
+}
+
+
+/* =========================================================
+   TRACK META
+   ========================================================= */
+
+.track-heading-meta {
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  justify-content: flex-end !important;
+
+  gap: 12px !important;
+
+  flex: 0 0 auto !important;
+}
+
+
+.track-course-count {
+
+  color: #687487 !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 9px !important;
+
+  font-weight: 700 !important;
+
+  letter-spacing: .08em !important;
+
+  text-transform: uppercase !important;
+
+  white-space: nowrap !important;
+}
+
+
+/* =========================================================
+   UNLOCK BUTTON
+   ========================================================= */
+
+.track-access-button {
+
+  display: inline-flex !important;
+
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  gap: 10px !important;
+
+  min-height: 36px !important;
+
+  padding: 0 15px !important;
+
+  border:
+    1px solid rgba(111,142,255,.28) !important;
+
+  border-radius: 9px !important;
+
+  background:
+    rgba(73,99,190,.10) !important;
+
+  color: #aebeff !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 9px !important;
+
+  font-weight: 800 !important;
+
+  letter-spacing: .08em !important;
+
+  text-transform: uppercase !important;
+
+  cursor: pointer !important;
+
+  transition:
+    background .2s ease,
+    border-color .2s ease,
+    transform .2s ease !important;
+}
+
+
+.track-access-button span {
+
+  font-size: 13px !important;
+
+  line-height: 1 !important;
+}
+
+
+.track-access-button:hover {
+
+  background:
+    rgba(73,99,190,.18) !important;
+
+  border-color:
+    rgba(111,142,255,.48) !important;
+
+  transform:
+    translateY(-2px) !important;
+}
+
+
+/* =========================================================
+   ACCESS GRANTED
+   ========================================================= */
+
+.track-access-badge {
+
+  display: inline-flex !important;
+
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  min-height: 28px !important;
+
+  padding: 0 10px !important;
+
+  border:
+    1px solid rgba(86,190,150,.18) !important;
+
+  border-radius: 999px !important;
+
+  background:
+    rgba(58,164,126,.06) !important;
+
+  color: #6fba9d !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 7px !important;
+
+  font-weight: 800 !important;
+
+  letter-spacing: .12em !important;
+
+  white-space: nowrap !important;
+}
+
+
+/* =========================================================
+   COURSE GRID — THE IMPORTANT FIX
+   ========================================================= */
+
+.track-course-grid {
+
+  display: grid !important;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    ) !important;
+
+  align-items: stretch !important;
+
+  width: 100% !important;
+
+  max-width: none !important;
+
+  min-width: 0 !important;
+
+  gap: 18px !important;
+
+  margin: 0 !important;
+
+  padding: 0 !important;
+}
+
+
+/* =========================================================
+   COURSE CARD
+   ========================================================= */
+
+.track-course-grid .course-card {
+
+  position: relative !important;
+
+  display: flex !important;
+
+  flex-direction: column !important;
+
+  width: 100% !important;
+
+  min-width: 0 !important;
+
+  min-height: 305px !important;
+
+  padding: 24px !important;
+
+  overflow: hidden !important;
+
+  box-sizing: border-box !important;
+
+  border:
+    1px solid rgba(255,255,255,.085) !important;
+
+  border-radius: 17px !important;
+
+  background:
+    radial-gradient(
+      500px 260px at 100% 0%,
+      rgba(65,91,170,.10),
+      transparent 65%
+    ),
+    linear-gradient(
+      145deg,
+      #111925 0%,
+      #0d141d 100%
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025),
+    0 18px 45px rgba(0,0,0,.18) !important;
+
+  transition:
+    transform .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease,
+    background .25s ease !important;
+}
+
+
+/* =========================================================
+   CARD TOP LIGHT
+   ========================================================= */
+
+.track-course-grid .course-card::before {
+
+  content: "" !important;
+
+  position: absolute !important;
+
+  top: 0 !important;
+
+  left: 22px !important;
+
+  right: 22px !important;
+
+  height: 1px !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(111,142,255,.62),
+      transparent
+    ) !important;
+
+  opacity: .55 !important;
+
+  pointer-events: none !important;
+}
+
+
+/* =========================================================
+   CARD HOVER
+   ========================================================= */
+
+.track-course-grid .course-card:hover {
+
+  transform:
+    translateY(-5px) !important;
+
+  border-color:
+    rgba(102,133,255,.26) !important;
+
+  background:
+    radial-gradient(
+      520px 280px at 100% 0%,
+      rgba(65,91,170,.15),
+      transparent 65%
+    ),
+    linear-gradient(
+      145deg,
+      #141e2b 0%,
+      #101823 100%
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 25px 55px rgba(0,0,0,.28) !important;
+}
+
+
+/* =========================================================
+   COURSE TOP
+   ========================================================= */
+
+.track-course-grid .course-card-top {
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  justify-content: space-between !important;
+
+  width: 100% !important;
+
+  margin-bottom: 19px !important;
+}
+
+
+.track-course-grid .course-level {
+
+  display: inline-flex !important;
+
+  align-items: center !important;
+
+  min-height: 21px !important;
+
+  padding: 0 8px !important;
+
+  border:
+    1px solid rgba(91,127,255,.22) !important;
+
+  border-radius: 5px !important;
+
+  background:
+    rgba(74,105,210,.08) !important;
+
+  color: #7f99ef !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 7px !important;
+
+  font-weight: 800 !important;
+
+  letter-spacing: .11em !important;
+
+}
+
+
+.track-course-grid .course-percentage {
+
+  color: #b3bdd0 !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 9px !important;
+
+  font-weight: 800 !important;
+}
+
+
+/* =========================================================
+   COURSE TRACK LABEL
+   ========================================================= */
+
+.track-course-grid .course-track-label {
+
+  display: block !important;
+
+  margin-bottom: 8px !important;
+
+  color: #65758d !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 7px !important;
+
+  font-weight: 800 !important;
+
+  letter-spacing: .16em !important;
+
+  text-transform: uppercase !important;
+}
+
+
+/* =========================================================
+   COURSE TITLE
+   ========================================================= */
+
+.track-course-grid .course-card h3 {
+
+  margin: 0 !important;
+
+  color: #eef2f7 !important;
+
+  font-family:
+    "Manrope",
+    "Inter",
+    sans-serif !important;
+
+  font-size: 20px !important;
+
+  font-weight: 800 !important;
+
+  line-height: 1.18 !important;
+
+  letter-spacing: -.035em !important;
+}
+
+
+/* =========================================================
+   COURSE DESCRIPTION
+   ========================================================= */
+
+.track-course-grid .course-card > p {
+
+  margin: 12px 0 0 !important;
+
+  color: #7d899b !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 10px !important;
+
+  font-weight: 400 !important;
+
+  line-height: 1.65 !important;
+}
+
+
+/* =========================================================
+   CARD META
+   ========================================================= */
+
+.track-course-grid .course-card-meta {
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  justify-content: space-between !important;
+
+  width: 100% !important;
+
+  margin-top: auto !important;
+
+  margin-bottom: 11px !important;
+
+  padding-top: 20px !important;
+
+  color: #5f6c7f !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 7px !important;
+
+  font-weight: 800 !important;
+
+  letter-spacing: .09em !important;
+
+}
+
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
+
+.track-course-grid .course-progress {
+
+  width: 100% !important;
+
+  height: 4px !important;
+
+  margin: 0 0 17px !important;
+
+  overflow: hidden !important;
+
+  border-radius: 999px !important;
+
+  background:
+    rgba(255,255,255,.055) !important;
+}
+
+
+.track-course-grid .course-progress-bar {
+
+  height: 100% !important;
+
+  min-width: 0 !important;
+
+  border-radius: inherit !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      #4f72f5,
+      #7f9aff
+    ) !important;
+}
+
+
+/* =========================================================
+   COURSE FOOTER
+   ========================================================= */
+
+.track-course-grid .course-card-footer {
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  justify-content: space-between !important;
+
+  width: 100% !important;
+
+  padding-top: 13px !important;
+
+  border-top:
+    1px solid rgba(255,255,255,.055) !important;
+}
+
+
+.track-course-grid .course-card-time {
+
+  color: #657287 !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 8px !important;
+
+  font-weight: 500 !important;
+}
+
+
+/* =========================================================
+   EXPLORE
+   ========================================================= */
+
+.track-course-grid .course-explore {
+
+  display: inline-flex !important;
+
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  color: #d6deea !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 9px !important;
+
+  font-weight: 800 !important;
+
+  text-decoration: none !important;
+
+  cursor: pointer !important;
+
+  transition:
+    color .2s ease,
+    transform .2s ease !important;
+}
+
+
+.track-course-grid .course-explore:hover {
+
+  color: #91a7ff !important;
+
+  transform:
+    translateX(3px) !important;
+}
+
+
+/* =========================================================
+   LOCKED COURSE
+   ========================================================= */
+
+.track-course-grid .course-locked {
+
+  border: 0 !important;
+
+  background: transparent !important;
+
+  padding: 0 !important;
+
+}
+
+
+/* =========================================================
+   EMPTY TRACK
+   ========================================================= */
+
+.track-course-grid .empty-track-card {
+
+  grid-column:
+    1 / -1 !important;
+
+  min-height: 145px !important;
+
+  display: flex !important;
+
+  flex-direction: column !important;
+
+  justify-content: center !important;
+
+  padding: 25px !important;
+
+  border:
+    1px dashed rgba(255,255,255,.09) !important;
+
+  border-radius: 15px !important;
+
+  background:
+    rgba(255,255,255,.018) !important;
+}
+
+
+.empty-track-label {
+
+  margin-bottom: 8px !important;
+
+  color: #62708a !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 7px !important;
+
+  font-weight: 800 !important;
+
+  letter-spacing: .16em !important;
+}
+
+
+.empty-track-card strong {
+
+  color: #cbd3df !important;
+
+  font-family:
+    "Manrope",
+    sans-serif !important;
+
+  font-size: 15px !important;
+}
+
+
+.empty-track-card p {
+
+  margin: 5px 0 0 !important;
+
+  color: #667387 !important;
+
+  font-family:
+    "Inter",
+    sans-serif !important;
+
+  font-size: 10px !important;
+}
+
+
+/* =========================================================
+   TRACK COLOR DIFFERENTIATION
+   ========================================================= */
+
+.course-track-fundamentals
+.track-course-grid
+.course-card {
+
+  background:
+    radial-gradient(
+      500px 260px at 100% 0%,
+      rgba(130,145,160,.10),
+      transparent 65%
+    ),
+    linear-gradient(
+      145deg,
+      #18212b 0%,
+      #0d131a 100%
+    ) !important;
+}
+
+
+.course-track-intermediate
+.track-course-grid
+.course-card {
+
+  background:
+    radial-gradient(
+      500px 260px at 100% 0%,
+      rgba(45,105,165,.12),
+      transparent 65%
+    ),
+    linear-gradient(
+      145deg,
+      #172b43 0%,
+      #0d141d 100%
+    ) !important;
+}
+
+
+.course-track-advanced
+.track-course-grid
+.course-card {
+
+  background:
+    radial-gradient(
+      500px 260px at 100% 0%,
+      rgba(130,78,160,.11),
+      transparent 65%
+    ),
+    linear-gradient(
+      145deg,
+      #211c34 0%,
+      #100f19 100%
+    ) !important;
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+   ========================================================= */
+
+@media (min-width: 1400px) {
+
+  .content {
+
+    width: min(
+      calc(100% - 72px),
+      1480px
+    ) !important;
+
+    max-width: 1480px !important;
+  }
+
+
+  .track-course-grid {
+
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0, 1fr)
+      ) !important;
+
+    gap: 20px !important;
+  }
+
+
+  .track-course-grid .course-card {
+
+    min-height: 320px !important;
+
+    padding: 26px !important;
+  }
+
+
+  .track-course-grid .course-card h3 {
+
+    font-size: 21px !important;
+  }
+}
+
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+@media (min-width: 1101px) and (max-width: 1399px) {
+
+  .track-course-grid {
+
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0, 1fr)
+      ) !important;
+  }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  .content {
+
+    width:
+      calc(100% - 48px) !important;
+
+    max-width:
+      none !important;
+  }
+
+
+  .track-course-grid {
+
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      ) !important;
+
+    gap: 16px !important;
+  }
+
+
+  .course-grid.course-track-layout {
+
+    gap: 60px !important;
+  }
+}
+
+
+/* =========================================================
+   SMALL TABLET
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+  .content {
+
+    width:
+      calc(100% - 32px) !important;
+  }
+
+
+  .track-heading {
+
+    align-items:
+      flex-start !important;
+
+    flex-direction:
+      column !important;
+
+    gap:
+      14px !important;
+  }
+
+
+  .track-heading-meta {
+
+    justify-content:
+      flex-start !important;
+  }
+
+
+  .track-course-grid {
+
+    grid-template-columns:
+      1fr !important;
+  }
+
+
+  .track-course-grid .course-card {
+
+    min-height:
+      285px !important;
+  }
+
+
+  .course-grid.course-track-layout {
+
+    gap:
+      50px !important;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 520px) {
+
+  .content {
+
+    width:
+      calc(100% - 24px) !important;
+  }
+
+
+  .track-heading h2 {
+
+    font-size:
+      31px !important;
+  }
+
+
+  .track-heading p {
+
+    font-size:
+      10px !important;
+  }
+
+
+  .track-course-grid .course-card {
+
+    min-height:
+      275px !important;
+
+    padding:
+      21px !important;
+  }
+
+
+  .track-course-grid .course-card h3 {
+
+    font-size:
+      19px !important;
+  }
+
+
+  .track-course-grid .course-card > p {
+
+    font-size:
+      10px !important;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL SCREEN
+   ========================================================= */
+
+@media (max-width: 390px) {
+
+  .track-heading h2 {
+
+    font-size:
+      28px !important;
+  }
+
+
+  .track-course-grid .course-card {
+
+    padding:
+      19px !important;
+  }
+}
+
+
+/* =========================================================
+   PERFORMANCE / SAFETY
+   ========================================================= */
+
+.track-course-grid,
+.track-course-grid .course-card,
+.course-grid.course-track-layout {
+
+  box-sizing:
+    border-box !important;
+}
+
+
+.track-course-grid .course-card * {
+
+  max-width:
+    100% !important;
+}
+
+
+/* =========================================================
+   END — SECORA FINAL COURSE GRID FIX
+   ========================================================= */
