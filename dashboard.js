@@ -3344,3 +3344,26 @@ loadAccessState = async function () {
   }
 };
 })();
+/* ============================================================
+   SECORA — SIDEBAR ACTIVE NAVIGATION
+   Moves the Aurora active state when a sidebar item is clicked
+   ============================================================ */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const sidebarNavItems = document.querySelectorAll(
+    ".navigation .nav-item"
+  );
+
+  sidebarNavItems.forEach((item) => {
+    item.addEventListener("click", () => {
+
+      /* Remove active state from every sidebar navigation item */
+      sidebarNavItems.forEach((navItem) => {
+        navItem.classList.remove("active");
+      });
+
+      /* Add active state to the clicked item */
+      item.classList.add("active");
+    });
+  });
+});
