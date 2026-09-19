@@ -3108,143 +3108,150 @@ input[type="text"]:focus {
 /* ============================================================
    END — PURCHASE AREA
    ============================================================ */
-/* ============================================================
-   SECORA BLACKLINE — PREMIUM OBSIDIAN / AMETHYST THEME
-   Paste this entire block at the VERY BOTTOM of dashboard.css
+ /* ============================================================
+   SECORA BLACKLINE
+   OBSIDIAN × CHAMPAGNE × PLATINUM
+   FINAL CORRECT OVERRIDE
    ============================================================ */
 
 
 /* ------------------------------------------------------------
-   BLACKLINE CARD — BASE
+   BLACKLINE CARDS
    ------------------------------------------------------------ */
 
-.secora-access-center
-.access-product-card.access-product-blackline {
+.course-track[data-track="advanced"] .course-card {
 
-  position: relative;
+  position: relative !important;
 
   background:
     radial-gradient(
-      circle at 88% 8%,
-      rgba(126, 86, 184, 0.16),
-      transparent 30%
+      520px 300px at 92% 0%,
+      rgba(198, 161, 91, 0.13),
+      transparent 62%
     ),
     radial-gradient(
-      circle at 15% 92%,
-      rgba(92, 63, 137, 0.07),
-      transparent 34%
+      420px 260px at 0% 100%,
+      rgba(198, 161, 91, 0.035),
+      transparent 65%
     ),
     linear-gradient(
-      135deg,
-      #08090d 0%,
-      #101019 46%,
-      #171323 100%
-    );
+      145deg,
+      #181A20 0%,
+      #111318 46%,
+      #090B0F 100%
+    ) !important;
 
-  border: 1px solid transparent;
-
-  background-clip: padding-box;
+  border: 1px solid rgba(198, 161, 91, 0.42) !important;
 
   box-shadow:
-    0 24px 70px rgba(0, 0, 0, 0.42),
-    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    0 18px 50px rgba(0, 0, 0, 0.42),
+    0 0 22px rgba(198, 161, 91, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.65) !important;
 
-  overflow: hidden;
+  overflow: hidden !important;
+
+  isolation: isolate;
 
   transition:
+    transform 280ms ease,
     border-color 280ms ease,
     box-shadow 280ms ease,
-    transform 280ms ease,
-    background 280ms ease;
+    background 280ms ease !important;
 }
 
 
 /* ------------------------------------------------------------
-   PREMIUM GRADIENT BORDER
+   METALLIC BORDER GLOW
    ------------------------------------------------------------ */
 
-.secora-access-center
-.access-product-card.access-product-blackline::before {
+.course-track[data-track="advanced"] .course-card::before {
 
-  content: "";
+  content: "" !important;
 
-  position: absolute;
+  position: absolute !important;
 
-  inset: 0;
+  inset: 0 !important;
 
-  padding: 1px;
+  padding: 1px !important;
 
-  border-radius: inherit;
+  border-radius: inherit !important;
 
   background:
     linear-gradient(
       135deg,
-      #30283d 0%,
-      #604582 38%,
-      #211d2c 72%,
-      #3b304c 100%
-    );
+      rgba(226, 201, 138, 0.90) 0%,
+      rgba(198, 161, 91, 0.42) 18%,
+      rgba(75, 72, 65, 0.16) 42%,
+      rgba(198, 161, 91, 0.35) 72%,
+      rgba(226, 201, 138, 0.78) 100%
+    ) !important;
 
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
+    linear-gradient(#fff 0 0) !important;
 
-  -webkit-mask-composite: xor;
+  -webkit-mask-composite: xor !important;
 
-  mask-composite: exclude;
+  mask-composite: exclude !important;
 
-  pointer-events: none;
+  pointer-events: none !important;
 
-  opacity: 0.95;
+  z-index: 10 !important;
+
+  opacity: 1 !important;
 }
 
 
 /* ------------------------------------------------------------
-   SUBTLE TOP LIGHT
+   LARGE SOFT OUTER GLOW
    ------------------------------------------------------------ */
 
-.secora-access-center
-.access-product-card.access-product-blackline::after {
+.course-track[data-track="advanced"] .course-card::after {
 
-  content: "";
+  content: "" !important;
 
-  position: absolute;
+  position: absolute !important;
 
-  top: -120px;
-  right: -100px;
+  inset: -3px !important;
 
-  width: 300px;
-  height: 300px;
+  border-radius: inherit !important;
 
   background:
     radial-gradient(
-      circle,
-      rgba(155, 122, 200, 0.13) 0%,
-      rgba(155, 122, 200, 0.05) 32%,
-      transparent 70%
-    );
+      circle at 10% 5%,
+      rgba(226, 201, 138, 0.14),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 90% 5%,
+      rgba(226, 201, 138, 0.17),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(198, 161, 91, 0.08),
+      transparent 38%
+    ) !important;
 
-  pointer-events: none;
+  filter: blur(13px) !important;
 
-  filter: blur(10px);
+  opacity: 0.95 !important;
 
-  opacity: 0.8;
+  pointer-events: none !important;
+
+  z-index: -1 !important;
 }
 
 
 /* ------------------------------------------------------------
-   HOVER — VERY SUBTLE
+   TOP EDGE LIGHT
    ------------------------------------------------------------ */
 
-.secora-access-center
-.access-product-card.access-product-blackline:hover {
+.course-track[data-track="advanced"] .course-card
+.course-card-top {
 
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.48),
-    0 0 45px rgba(110, 74, 168, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.045);
+  position: relative !important;
 }
 
 
@@ -3252,804 +3259,14 @@ input[type="text"]:focus {
    BLACKLINE LABEL
    ------------------------------------------------------------ */
 
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-product-label {
+.course-track[data-track="advanced"] .course-track-label {
 
-  color: #9b7ac8;
+  color: #C6A15B !important;
 
-  letter-spacing: 0.16em;
-
-  text-transform: uppercase;
+  letter-spacing: 0.18em !important;
 
   text-shadow:
-    0 0 18px rgba(155, 122, 200, 0.18);
-}
-
-
-/* ------------------------------------------------------------
-   PRODUCT NUMBER
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-product-number {
-
-  background:
-    linear-gradient(
-      145deg,
-      #17131f,
-      #0e0f15
-    );
-
-  border: 1px solid #30283d;
-
-  color: #b5a9c9;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.035),
-    0 8px 24px rgba(0, 0, 0, 0.18);
-}
-
-
-/* ------------------------------------------------------------
-   BLACKLINE TITLE
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-product-title {
-
-  color: #e7e4ef;
-
-  text-shadow:
-    0 2px 18px rgba(0, 0, 0, 0.32);
-}
-
-
-/* ------------------------------------------------------------
-   LIFETIME STATUS
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-product-status {
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(36, 27, 53, 0.75),
-      rgba(16, 16, 25, 0.8)
-    );
-
-  border: 1px solid #30283d;
-
-  color: #a99bbd;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.025);
-}
-
-
-/* STATUS DOT */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-status-dot {
-
-  background: #9b7ac8;
-
-  box-shadow:
-    0 0 10px rgba(155, 122, 200, 0.55),
-    0 0 22px rgba(155, 122, 200, 0.18);
-}
-
-
-/* ------------------------------------------------------------
-   DESCRIPTION
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-product-description {
-
-  color: #9a96a8;
-
-  border-bottom-color: rgba(80, 69, 98, 0.32);
-}
-
-
-/* ------------------------------------------------------------
-   METHOD HEADING
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-method-heading {
-
-  color: #b8b2c1;
-}
-
-
-/* ------------------------------------------------------------
-   METHOD ICON
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-method-icon {
-
-  background:
-    linear-gradient(
-      145deg,
-      #17131f,
-      #0d0e14
-    );
-
-  border-color: #30283d;
-
-  color: #a990c4;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.03),
-    0 8px 20px rgba(0, 0, 0, 0.18);
-}
-
-
-/* ------------------------------------------------------------
-   INPUT WRAPPER
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-input-wrap {
-
-  background:
-    linear-gradient(
-      135deg,
-      #090a0f 0%,
-      #101019 100%
-    );
-
-  border-color: #30283d;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.025),
-    0 12px 28px rgba(0, 0, 0, 0.22);
-
-  transition:
-    border-color 220ms ease,
-    box-shadow 220ms ease;
-}
-
-
-/* INPUT FOCUS */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-input-wrap:focus-within {
-
-  border-color: #604582;
-
-  box-shadow:
-    0 0 0 3px rgba(110, 74, 168, 0.08),
-    0 14px 32px rgba(0, 0, 0, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03);
-}
-
-
-/* ------------------------------------------------------------
-   INPUT PREFIX
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-input-prefix {
-
-  background:
-    linear-gradient(
-      180deg,
-      #17131f,
-      #101019
-    );
-
-  border-right-color: #30283d;
-
-  color: #817592;
-}
-
-
-/* ------------------------------------------------------------
-   REDEEM INPUT
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-redeem-input {
-
-  color: #e7e4ef;
-
-  caret-color: #9b7ac8;
-}
-
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-redeem-input::placeholder {
-
-  color: #514b5d;
-}
-
-
-/* ------------------------------------------------------------
-   REDEEM BUTTON — PLATINUM
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-redeem-button {
-
-  background:
-    linear-gradient(
-      135deg,
-      #e7e4ef 0%,
-      #d4cfdd 52%,
-      #c6bfce 100%
-    );
-
-  color: #090a0e;
-
-  border: 1px solid rgba(255, 255, 255, 0.32);
-
-  box-shadow:
-    0 12px 28px rgba(0, 0, 0, 0.26),
-    inset 0 1px 0 rgba(255, 255, 255, 0.65);
-
-  transition:
-    transform 200ms ease,
-    box-shadow 200ms ease,
-    background 200ms ease;
-}
-
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-redeem-button:hover {
-
-  background:
-    linear-gradient(
-      135deg,
-      #f0edf5 0%,
-      #ddd9e5 50%,
-      #d0cbd8 100%
-    );
-
-  transform: translateY(-1px);
-
-  box-shadow:
-    0 16px 34px rgba(0, 0, 0, 0.30),
-    0 0 24px rgba(155, 122, 200, 0.10),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
-}
-
-
-/* ------------------------------------------------------------
-   REDEEM ARROW
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-redeem-button svg {
-
-  color: #17121e;
-}
-
-
-/* ------------------------------------------------------------
-   FEEDBACK
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-feedback {
-
-  color: #9b7ac8;
-}
-
-
-/* ------------------------------------------------------------
-   PURCHASE AREA
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-purchase {
-
-  border-top-color: rgba(80, 69, 98, 0.34);
-}
-
-
-/* ------------------------------------------------------------
-   PURCHASE LABEL
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.purchase-copy {
-
-  color: #9a96a8;
-}
-
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.purchase-copy strong {
-
-  color: #e1dce9;
-}
-
-
-/* ------------------------------------------------------------
-   PURCHASE BUTTON — AMETHYST
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-purchase-button {
-
-  position: relative;
-
-  background:
-    linear-gradient(
-      135deg,
-      #241b35 0%,
-      #3a2854 48%,
-      #241b35 100%
-    );
-
-  border: 1px solid #604582;
-
-  color: #e7e4ef;
-
-  box-shadow:
-    0 16px 34px rgba(0, 0, 0, 0.30),
-    inset 0 1px 0 rgba(255, 255, 255, 0.045);
-
-  transition:
-    transform 220ms ease,
-    border-color 220ms ease,
-    box-shadow 220ms ease,
-    background 220ms ease;
-}
-
-
-/* PURCHASE BUTTON TOP LIGHT */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-purchase-button::before {
-
-  content: "";
-
-  position: absolute;
-
-  inset: 1px;
-
-  border-radius: inherit;
-
-  background:
-    linear-gradient(
-      110deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.055) 45%,
-      transparent 75%
-    );
-
-  pointer-events: none;
-}
-
-
-/* PURCHASE BUTTON HOVER */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-purchase-button:hover {
-
-  transform: translateY(-2px);
-
-  border-color: #8062a4;
-
-  background:
-    linear-gradient(
-      135deg,
-      #2d2142 0%,
-      #493365 50%,
-      #2d2142 100%
-    );
-
-  box-shadow:
-    0 20px 42px rgba(0, 0, 0, 0.34),
-    0 0 34px rgba(126, 86, 184, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-
-
-/* ------------------------------------------------------------
-   COMING SOON TEXT
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-purchase-button .coming-soon {
-
-  color: #9b7ac8;
-
-  letter-spacing: 0.14em;
-}
-
-
-/* ------------------------------------------------------------
-   PURCHASE ARROW
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-purchase-button .arrow {
-
-  color: #c9bfd7;
-
-  transition:
-    transform 200ms ease;
-}
-
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-purchase-button:hover .arrow {
-
-  transform: translateX(4px);
-
-  color: #e7e4ef;
-}
-
-
-/* ------------------------------------------------------------
-   SECURITY NOTE
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-security-note {
-
-  color: #746d7d;
-}
-
-
-/* ------------------------------------------------------------
-   BLACKLINE MICRO-GLOW
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-product-top {
-
-  position: relative;
-}
-
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-product-top::after {
-
-  content: "";
-
-  position: absolute;
-
-  left: 0;
-  bottom: -1px;
-
-  width: 90px;
-  height: 1px;
-
-  background:
-    linear-gradient(
-      90deg,
-      #604582,
-      rgba(96, 69, 130, 0)
-    );
-
-  opacity: 0.75;
-}
-
-
-/* ------------------------------------------------------------
-   BLACKLINE ACCESS EYEBROW
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline
-.access-product-top
-.access-product-label::before {
-
-  content: "";
-
-  display: inline-block;
-
-  width: 5px;
-  height: 5px;
-
-  margin-right: 7px;
-
-  border-radius: 50%;
-
-  background: #9b7ac8;
-
-  box-shadow:
-    0 0 9px rgba(155, 122, 200, 0.55);
-
-  vertical-align: middle;
-}
-
-
-/* ------------------------------------------------------------
-   PREMIUM SELECTION
-   ------------------------------------------------------------ */
-
-.secora-access-center
-.access-product-card.access-product-blackline ::selection {
-
-  background: rgba(126, 86, 184, 0.30);
-
-  color: #ffffff;
-}
-
-
-/* ------------------------------------------------------------
-   RESPONSIVE — MOBILE
-   ------------------------------------------------------------ */
-
-@media (max-width: 700px) {
-
-  .secora-access-center
-  .access-product-card.access-product-blackline {
-
-    background:
-      radial-gradient(
-        circle at 90% 5%,
-        rgba(126, 86, 184, 0.13),
-        transparent 35%
-      ),
-      linear-gradient(
-        145deg,
-        #08090d 0%,
-        #101019 55%,
-        #171323 100%
-      );
-  }
-
-  .secora-access-center
-  .access-product-card.access-product-blackline
-  .access-purchase-button {
-
-    box-shadow:
-      0 12px 28px rgba(0, 0, 0, 0.28),
-      inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  }
-
-}
-
-
-/* ------------------------------------------------------------
-   ACCESSIBILITY — REDUCED MOTION
-   ------------------------------------------------------------ */
-
-@media (prefers-reduced-motion: reduce) {
-
-  .secora-access-center
-  .access-product-card.access-product-blackline,
-  .secora-access-center
-  .access-product-card.access-product-blackline
-  .access-redeem-button,
-  .secora-access-center
-  .access-product-card.access-product-blackline
-  .access-purchase-button {
-
-    transition: none;
-  }
-}
-/* ============================================================
-   SECORA BLACKLINE — OBSIDIAN × CHAMPAGNE × PLATINUM
-   PREMIUM COLOR + ULTRA-HD BORDER GLOW
-   Paste at the VERY BOTTOM of dashboard.css
-   ============================================================ */
-
-
-/* ------------------------------------------------------------
-   BLACKLINE COURSE GRID — PREMIUM COLOR SYSTEM
-   ------------------------------------------------------------ */
-
-.track-section[data-track="advanced"] .track-course-card,
-.course-track[data-track="advanced"] .track-course-card,
-[data-track="advanced"] .track-course-card {
-
-    position: relative;
-
-    background:
-        radial-gradient(
-            circle at 88% 8%,
-            rgba(198, 161, 91, 0.12),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 8% 92%,
-            rgba(198, 161, 91, 0.035),
-            transparent 34%
-        ),
-        linear-gradient(
-            145deg,
-            #181A20 0%,
-            #111318 46%,
-            #090B0F 100%
-        ) !important;
-
-    border: 1px solid rgba(198, 161, 91, 0.34) !important;
-
-    box-shadow:
-        0 18px 55px rgba(0, 0, 0, 0.42),
-        0 0 24px rgba(198, 161, 91, 0.07),
-        inset 0 1px 0 rgba(255, 255, 255, 0.045),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.55);
-
-    overflow: hidden;
-
-    transition:
-        transform 280ms ease,
-        border-color 280ms ease,
-        box-shadow 280ms ease,
-        background 280ms ease;
-
-    isolation: isolate;
-}
-
-
-/* ------------------------------------------------------------
-   PREMIUM METALLIC BORDER
-   ------------------------------------------------------------ */
-
-.track-section[data-track="advanced"] .track-course-card::before,
-.course-track[data-track="advanced"] .track-course-card::before,
-[data-track="advanced"] .track-course-card::before {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    border-radius: inherit;
-
-    padding: 1px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(226, 201, 138, 0.72) 0%,
-            rgba(198, 161, 91, 0.32) 18%,
-            rgba(73, 69, 60, 0.18) 42%,
-            rgba(198, 161, 91, 0.28) 72%,
-            rgba(226, 201, 138, 0.62) 100%
-        );
-
-    -webkit-mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-
-    -webkit-mask-composite: xor;
-
-    mask-composite: exclude;
-
-    pointer-events: none;
-
-    z-index: 5;
-
-    opacity: 0.95;
-}
-
-
-/* ------------------------------------------------------------
-   ENHANCED OUTER GOLD AURA
-   ------------------------------------------------------------ */
-
-.track-section[data-track="advanced"] .track-course-card::after,
-.course-track[data-track="advanced"] .track-course-card::after,
-[data-track="advanced"] .track-course-card::after {
-
-    content: "";
-
-    position: absolute;
-
-    inset: -2px;
-
-    border-radius: inherit;
-
-    background:
-        radial-gradient(
-            circle at 15% 10%,
-            rgba(226, 201, 138, 0.16),
-            transparent 24%
-        ),
-        radial-gradient(
-            circle at 85% 10%,
-            rgba(226, 201, 138, 0.18),
-            transparent 28%
-        ),
-        radial-gradient(
-            circle at 50% 100%,
-            rgba(198, 161, 91, 0.09),
-            transparent 38%
-        );
-
-    filter: blur(10px);
-
-    opacity: 0.8;
-
-    pointer-events: none;
-
-    z-index: -1;
-}
-
-
-/* ------------------------------------------------------------
-   HOVER — STRONGER PREMIUM GLOW
-   ------------------------------------------------------------ */
-
-.track-section[data-track="advanced"] .track-course-card:hover,
-.course-track[data-track="advanced"] .track-course-card:hover,
-[data-track="advanced"] .track-course-card:hover {
-
-    transform: translateY(-4px);
-
-    border-color: rgba(226, 201, 138, 0.72) !important;
-
-    background:
-        radial-gradient(
-            circle at 88% 8%,
-            rgba(198, 161, 91, 0.17),
-            transparent 32%
-        ),
-        radial-gradient(
-            circle at 12% 90%,
-            rgba(198, 161, 91, 0.055),
-            transparent 36%
-        ),
-        linear-gradient(
-            145deg,
-            #1B1D23 0%,
-            #121419 46%,
-            #090B0F 100%
-        ) !important;
-
-    box-shadow:
-        0 24px 65px rgba(0, 0, 0, 0.52),
-        0 0 25px rgba(198, 161, 91, 0.13),
-        0 0 65px rgba(198, 161, 91, 0.075),
-        inset 0 1px 0 rgba(255, 255, 255, 0.065),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.6);
-}
-
-
-/* ------------------------------------------------------------
-   COURSE CARD TOP LINE
-   ------------------------------------------------------------ */
-
-.track-section[data-track="advanced"] .track-course-card
-.course-card-top,
-.course-track[data-track="advanced"] .track-course-card
-.course-card-top,
-[data-track="advanced"] .track-course-card
-.course-card-top {
-
-    color: #B9B6B0;
+    0 0 16px rgba(198, 161, 91, 0.18) !important;
 }
 
 
@@ -4057,76 +3274,49 @@ input[type="text"]:focus {
    ADVANCED BADGE
    ------------------------------------------------------------ */
 
-.track-section[data-track="advanced"] .track-course-card
-.course-level-badge,
-.track-section[data-track="advanced"] .track-course-card
-.level-badge,
-.course-track[data-track="advanced"] .track-course-card
-.course-level-badge,
-[data-track="advanced"] .track-course-card
-.course-level-badge {
+.course-track[data-track="advanced"] .course-level {
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(198, 161, 91, 0.15),
-            rgba(198, 161, 91, 0.045)
-        ) !important;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(198, 161, 91, 0.16),
+      rgba(198, 161, 91, 0.045)
+    ) !important;
 
-    border: 1px solid rgba(198, 161, 91, 0.48) !important;
+  border:
+    1px solid rgba(198, 161, 91, 0.55) !important;
 
-    color: #D8BD82 !important;
+  color: #DCC58F !important;
 
-    box-shadow:
-        0 0 12px rgba(198, 161, 91, 0.07),
-        inset 0 1px 0 rgba(255, 255, 255, 0.035);
-
-    letter-spacing: 0.13em;
+  box-shadow:
+    0 0 14px rgba(198, 161, 91, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.045) !important;
 }
 
 
 /* ------------------------------------------------------------
-   BLACKLINE LABEL
+   PERCENTAGE
    ------------------------------------------------------------ */
 
-.track-section[data-track="advanced"] .track-course-card
-.course-track-label,
-.track-section[data-track="advanced"] .track-course-card
-.track-card-label,
-.course-track[data-track="advanced"] .track-course-card
-.course-track-label,
-[data-track="advanced"] .track-course-card
-.course-track-label {
+.course-track[data-track="advanced"] .course-percentage {
 
-    color: #C6A15B !important;
+  color: #E3DED3 !important;
 
-    letter-spacing: 0.18em;
-
-    text-shadow:
-        0 0 18px rgba(198, 161, 91, 0.16);
+  text-shadow:
+    0 0 16px rgba(226, 201, 138, 0.10) !important;
 }
 
 
 /* ------------------------------------------------------------
-   COURSE TITLES — ULTRA-HD PLATINUM
+   COURSE TITLE
    ------------------------------------------------------------ */
 
-.track-section[data-track="advanced"] .track-course-card
-h3,
-.track-section[data-track="advanced"] .track-course-card
-.course-title,
-.course-track[data-track="advanced"] .track-course-card
-h3,
-[data-track="advanced"] .track-course-card
-h3 {
+.course-track[data-track="advanced"] .course-card h3 {
 
-    color: #F1EFE9 !important;
+  color: #F1EFE9 !important;
 
-    text-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.04),
-        0 8px 25px rgba(0, 0, 0, 0.38);
-
-    letter-spacing: -0.025em;
+  text-shadow:
+    0 3px 18px rgba(0, 0, 0, 0.42) !important;
 }
 
 
@@ -4134,53 +3324,19 @@ h3 {
    COURSE DESCRIPTION
    ------------------------------------------------------------ */
 
-.track-section[data-track="advanced"] .track-course-card
-p,
-.track-section[data-track="advanced"] .track-course-card
-.course-description,
-.course-track[data-track="advanced"] .track-course-card
-p,
-[data-track="advanced"] .track-course-card
-p {
+.course-track[data-track="advanced"] .course-card > p {
 
-    color: #96958F !important;
+  color: #999791 !important;
 }
 
 
 /* ------------------------------------------------------------
-   PROGRESS PERCENTAGE
+   COURSE META
    ------------------------------------------------------------ */
 
-.track-section[data-track="advanced"] .track-course-card
-.course-progress-percent,
-.track-section[data-track="advanced"] .track-course-card
-.progress-percent,
-.course-track[data-track="advanced"] .track-course-card
-.course-progress-percent,
-[data-track="advanced"] .track-course-card
-.progress-percent {
+.course-track[data-track="advanced"] .course-card-meta {
 
-    color: #DDD8CC !important;
-
-    text-shadow:
-        0 0 15px rgba(226, 201, 138, 0.10);
-}
-
-
-/* ------------------------------------------------------------
-   LESSON COUNT / COMPLETION TEXT
-   ------------------------------------------------------------ */
-
-.track-section[data-track="advanced"] .track-course-card
-.course-meta,
-.track-section[data-track="advanced"] .track-course-card
-.course-stats,
-.course-track[data-track="advanced"] .track-course-card
-.course-meta,
-[data-track="advanced"] .track-course-card
-.course-meta {
-
-    color: #777772 !important;
+  color: #77766F !important;
 }
 
 
@@ -4188,285 +3344,230 @@ p {
    PROGRESS TRACK
    ------------------------------------------------------------ */
 
-.track-section[data-track="advanced"] .track-course-card
-.progress-track,
-.track-section[data-track="advanced"] .track-course-card
-.progress-bar-bg,
-.course-track[data-track="advanced"] .track-course-card
-.progress-track,
-[data-track="advanced"] .track-course-card
-.progress-track {
+.course-track[data-track="advanced"] .course-progress {
 
-    background:
-        linear-gradient(
-            90deg,
-            #1B1C20,
-            #22231F
-        ) !important;
+  background:
+    linear-gradient(
+      90deg,
+      #1A1B1E,
+      #24231F
+    ) !important;
 
-    border: 1px solid rgba(198, 161, 91, 0.10);
+  border:
+    1px solid rgba(198, 161, 91, 0.12) !important;
+
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.55) !important;
 }
 
 
 /* ------------------------------------------------------------
-   PROGRESS FILL — CHAMPAGNE METAL
+   PROGRESS BAR
    ------------------------------------------------------------ */
 
-.track-section[data-track="advanced"] .track-course-card
-.progress-fill,
-.track-section[data-track="advanced"] .track-course-card
-.progress-bar-fill,
-.course-track[data-track="advanced"] .track-course-card
-.progress-fill,
-[data-track="advanced"] .track-course-card
-.progress-fill {
+.course-track[data-track="advanced"] .course-progress-bar {
 
-    background:
-        linear-gradient(
-            90deg,
-            #9D7B3F 0%,
-            #C6A15B 48%,
-            #E2C98A 100%
-        ) !important;
+  background:
+    linear-gradient(
+      90deg,
+      #9D7B3F 0%,
+      #C6A15B 48%,
+      #E2C98A 100%
+    ) !important;
 
-    box-shadow:
-        0 0 12px rgba(198, 161, 91, 0.26),
-        0 0 28px rgba(198, 161, 91, 0.10);
+  box-shadow:
+    0 0 12px rgba(198, 161, 91, 0.35),
+    0 0 28px rgba(198, 161, 91, 0.13) !important;
 }
 
 
 /* ------------------------------------------------------------
-   BOTTOM DIVIDER
+   FOOTER
    ------------------------------------------------------------ */
 
-.track-section[data-track="advanced"] .track-course-card
-.course-card-divider,
-.track-section[data-track="advanced"] .track-course-card
-.card-divider,
-.course-track[data-track="advanced"] .track-course-card
-.course-card-divider,
-[data-track="advanced"] .track-course-card
-.course-card-divider {
+.course-track[data-track="advanced"] .course-card-footer {
 
-    background:
-        linear-gradient(
-            90deg,
-            rgba(198, 161, 91, 0.18),
-            rgba(255, 255, 255, 0.045),
-            rgba(198, 161, 91, 0.18)
-        ) !important;
+  border-top-color:
+    rgba(198, 161, 91, 0.14) !important;
 }
 
 
 /* ------------------------------------------------------------
-   SELF-PACED TEXT
+   DURATION
    ------------------------------------------------------------ */
 
-.track-section[data-track="advanced"] .track-course-card
-.self-paced,
-.track-section[data-track="advanced"] .track-course-card
-.course-mode,
-.course-track[data-track="advanced"] .track-course-card
-.self-paced,
-[data-track="advanced"] .track-course-card
-.self-paced {
+.course-track[data-track="advanced"] .course-card-time {
 
-    color: #686862 !important;
-
-    font-style: italic;
+  color: #686861 !important;
 }
 
 
 /* ------------------------------------------------------------
-   LOCKED TEXT
+   EXPLORE / LOCKED
    ------------------------------------------------------------ */
 
-.track-section[data-track="advanced"] .track-course-card
-.locked,
-.track-section[data-track="advanced"] .track-course-card
-.course-locked,
-.course-track[data-track="advanced"] .track-course-card
-.locked,
-[data-track="advanced"] .track-course-card
-.locked {
+.course-track[data-track="advanced"] .course-explore {
 
-    color: #D6D2C9 !important;
+  color: #E2DED4 !important;
 
-    text-shadow:
-        0 0 14px rgba(226, 201, 138, 0.08);
+  text-shadow:
+    0 0 14px rgba(226, 201, 138, 0.08) !important;
+}
+
+
+/* GOLD ARROW */
+.course-track[data-track="advanced"] .course-explore::first-letter {
+
+  color: #C6A15B !important;
 }
 
 
 /* ------------------------------------------------------------
-   LOCK ARROW
+   HOVER
    ------------------------------------------------------------ */
 
-.track-section[data-track="advanced"] .track-course-card
-.locked svg,
-.track-section[data-track="advanced"] .track-course-card
-.course-locked svg,
-.course-track[data-track="advanced"] .track-course-card
-.locked svg,
-[data-track="advanced"] .track-course-card
-.locked svg {
+.course-track[data-track="advanced"] .course-card:hover {
 
-    color: #C6A15B !important;
+  transform:
+    translateY(-5px) !important;
+
+  border-color:
+    rgba(226, 201, 138, 0.78) !important;
+
+  background:
+    radial-gradient(
+      560px 320px at 92% 0%,
+      rgba(198, 161, 91, 0.18),
+      transparent 62%
+    ),
+    radial-gradient(
+      450px 280px at 0% 100%,
+      rgba(198, 161, 91, 0.05),
+      transparent 65%
+    ),
+    linear-gradient(
+      145deg,
+      #1C1E24 0%,
+      #121419 46%,
+      #090B0F 100%
+    ) !important;
+
+  box-shadow:
+    0 25px 65px rgba(0, 0, 0, 0.55),
+    0 0 28px rgba(198, 161, 91, 0.16),
+    0 0 75px rgba(198, 161, 91, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.075),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.7) !important;
 }
 
 
 /* ------------------------------------------------------------
-   CORNER LIGHT — TOP RIGHT
+   HOVER METALLIC BORDER
    ------------------------------------------------------------ */
 
-.track-section[data-track="advanced"] .track-course-card
-.course-card-top::after,
-.course-track[data-track="advanced"] .track-course-card
-.course-card-top::after,
-[data-track="advanced"] .track-course-card
-.course-card-top::after {
+.course-track[data-track="advanced"] .course-card:hover::before {
 
-    content: "";
+  background:
+    linear-gradient(
+      135deg,
+      rgba(244, 220, 165, 1) 0%,
+      rgba(226, 201, 138, 0.75) 18%,
+      rgba(104, 92, 69, 0.24) 45%,
+      rgba(198, 161, 91, 0.70) 76%,
+      rgba(244, 220, 165, 0.96) 100%
+    ) !important;
 
-    position: absolute;
-
-    top: 0;
-    right: 0;
-
-    width: 130px;
-    height: 1px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(226, 201, 138, 0.55)
-        );
-
-    box-shadow:
-        0 0 12px rgba(198, 161, 91, 0.22);
-
-    pointer-events: none;
+  box-shadow:
+    0 0 20px rgba(198, 161, 91, 0.18) !important;
 }
 
 
 /* ------------------------------------------------------------
-   CORNER LIGHT — BOTTOM LEFT
+   HOVER OUTER AURA
    ------------------------------------------------------------ */
 
-.track-section[data-track="advanced"] .track-course-card
-.course-card-bottom::before,
-.course-track[data-track="advanced"] .track-course-card
-.course-card-bottom::before,
-[data-track="advanced"] .track-course-card
-.course-card-bottom::before {
+.course-track[data-track="advanced"] .course-card:hover::after {
 
-    content: "";
+  opacity: 1 !important;
 
-    position: absolute;
-
-    bottom: 0;
-    left: 0;
-
-    width: 110px;
-    height: 1px;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(198, 161, 91, 0.42),
-            transparent
-        );
-
-    box-shadow:
-        0 0 14px rgba(198, 161, 91, 0.15);
-
-    pointer-events: none;
+  filter: blur(15px) !important;
 }
 
 
 /* ------------------------------------------------------------
-   TEXT SELECTION
+   BLACKLINE TRACK HEADER
    ------------------------------------------------------------ */
 
-.track-section[data-track="advanced"] .track-course-card ::selection,
-.course-track[data-track="advanced"] .track-course-card ::selection,
-[data-track="advanced"] .track-course-card ::selection {
+.course-track[data-track="advanced"]
+.course-track-header h2 {
 
-    background: rgba(198, 161, 91, 0.28);
+  color: #F1EFE9 !important;
 
-    color: #FFFFFF;
+  text-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.42) !important;
 }
 
 
 /* ------------------------------------------------------------
-   BLACKLINE SECTION HEADING
+   BLACKLINE TRACK EYEBROW
    ------------------------------------------------------------ */
 
-.track-section[data-track="advanced"] .track-section-title,
-.track-section[data-track="advanced"] h2,
-.course-track[data-track="advanced"] h2 {
+.course-track[data-track="advanced"]
+.course-track-header .eyebrow {
 
-    color: #F1EFE9 !important;
+  color: #C6A15B !important;
 
-    text-shadow:
-        0 8px 30px rgba(0, 0, 0, 0.42);
+  text-shadow:
+    0 0 18px rgba(198, 161, 91, 0.18) !important;
 }
 
 
 /* ------------------------------------------------------------
-   BLACKLINE SECTION ACCENT
+   BLACKLINE TRACK INDEX
    ------------------------------------------------------------ */
 
-.track-section[data-track="advanced"] .track-section-title::after,
-.course-track[data-track="advanced"] h2::after {
+.course-track[data-track="advanced"]
+.course-track-index {
 
-    background:
-        linear-gradient(
-            90deg,
-            #9D7B3F,
-            #C6A15B,
-            #E2C98A,
-            transparent
-        ) !important;
+  border-color:
+    rgba(198, 161, 91, 0.38) !important;
 
-    box-shadow:
-        0 0 18px rgba(198, 161, 91, 0.18);
+  background:
+    linear-gradient(
+      145deg,
+      #181A1F,
+      #0D0F13
+    ) !important;
+
+  color: #C6A15B !important;
+
+  box-shadow:
+    0 0 22px rgba(198, 161, 91, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.045) !important;
 }
 
 
 /* ------------------------------------------------------------
-   STRONGER HOVER BORDER
+   BLACKLINE TRACK COUNT
    ------------------------------------------------------------ */
 
-.track-section[data-track="advanced"] .track-course-card:hover::before,
-.course-track[data-track="advanced"] .track-course-card:hover::before,
-[data-track="advanced"] .track-course-card:hover::before {
+.course-track[data-track="advanced"]
+.course-track-count {
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(242, 219, 163, 0.95) 0%,
-            rgba(198, 161, 91, 0.62) 20%,
-            rgba(92, 83, 66, 0.24) 46%,
-            rgba(198, 161, 91, 0.56) 78%,
-            rgba(242, 219, 163, 0.88) 100%
-        );
-
-    opacity: 1;
+  color: #AAA69D !important;
 }
 
 
 /* ------------------------------------------------------------
-   HOVER GOLD AURA
+   SELECTED TEXT
    ------------------------------------------------------------ */
 
-.track-section[data-track="advanced"] .track-course-card:hover::after,
-.course-track[data-track="advanced"] .track-course-card:hover::after,
-[data-track="advanced"] .track-course-card:hover::after {
+.course-track[data-track="advanced"] .course-card ::selection {
 
-    opacity: 1;
+  background:
+    rgba(198, 161, 91, 0.30) !important;
 
-    filter: blur(12px);
+  color: #FFFFFF !important;
 }
 
 
@@ -4474,40 +3575,15 @@ p {
    MOBILE
    ------------------------------------------------------------ */
 
-@media (max-width: 900px) {
+@media (max-width: 760px) {
 
-    .track-section[data-track="advanced"] .track-course-card,
-    .course-track[data-track="advanced"] .track-course-card,
-    [data-track="advanced"] .track-course-card {
+  .course-track[data-track="advanced"] .course-card {
 
-        box-shadow:
-            0 14px 40px rgba(0, 0, 0, 0.40),
-            0 0 18px rgba(198, 161, 91, 0.055),
-            inset 0 1px 0 rgba(255, 255, 255, 0.04);
-    }
-
-}
-
-
-@media (max-width: 600px) {
-
-    .track-section[data-track="advanced"] .track-course-card,
-    .course-track[data-track="advanced"] .track-course-card,
-    [data-track="advanced"] .track-course-card {
-
-        background:
-            radial-gradient(
-                circle at 88% 8%,
-                rgba(198, 161, 91, 0.09),
-                transparent 34%
-            ),
-            linear-gradient(
-                145deg,
-                #17191E 0%,
-                #101216 48%,
-                #090B0F 100%
-            ) !important;
-    }
+    box-shadow:
+      0 16px 42px rgba(0, 0, 0, 0.44),
+      0 0 20px rgba(198, 161, 91, 0.07),
+      inset 0 1px 0 rgba(255, 255, 255, 0.045) !important;
+  }
 
 }
 
@@ -4518,15 +3594,14 @@ p {
 
 @media (prefers-reduced-motion: reduce) {
 
-    .track-section[data-track="advanced"] .track-course-card,
-    .course-track[data-track="advanced"] .track-course-card,
-    [data-track="advanced"] .track-course-card {
+  .course-track[data-track="advanced"] .course-card {
 
-        transition: none !important;
-    }
+    transition: none !important;
+  }
+
 }
 
 
 /* ============================================================
-   END — SECORA BLACKLINE PREMIUM THEME
+   END BLACKLINE THEME
    ============================================================ */
