@@ -5683,3 +5683,210 @@ input:focus-visible {
   }
 
 }
+
+
+/* =========================================================
+   SECORA PREMIUM ACCESS — TRACK LEVEL V2
+   One unlock control per premium track.
+   Individual CORE / BLACKLINE cards show only a small lock.
+   ========================================================= */
+
+.course-track-header {
+  align-items: center;
+}
+
+.course-track-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  flex: 0 0 auto;
+}
+
+.track-unlock-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 30px;
+  padding: 0 9px 0 11px;
+  border: 1px solid rgba(105,136,255,.22);
+  border-radius: 7px;
+  background: rgba(255,255,255,.025);
+  color: #9eafd2;
+  font-family: "Inter","DM Sans",sans-serif;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  cursor: pointer;
+  transition:
+    border-color .2s ease,
+    background .2s ease,
+    transform .2s ease,
+    color .2s ease;
+}
+
+.track-unlock-button::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #708cff;
+  box-shadow: 0 0 10px rgba(112,140,255,.42);
+}
+
+.track-unlock-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(115,145,255,.46);
+  background: rgba(84,113,224,.08);
+  color: #cbd6ee;
+}
+
+.track-unlock-arrow {
+  color: #7e9bff;
+  font-size: 11px;
+  line-height: 1;
+  transition: transform .2s ease;
+}
+
+.track-unlock-button:hover .track-unlock-arrow {
+  transform: translateX(2px);
+}
+
+.course-track[data-track="advanced"] .track-unlock-button {
+  border-color: rgba(190,102,124,.24);
+  color: #cba0aa;
+}
+
+.course-track[data-track="advanced"] .track-unlock-button::before {
+  background: #bd6d82;
+  box-shadow: 0 0 10px rgba(189,109,130,.36);
+}
+
+.course-track[data-track="advanced"] .track-unlock-button:hover {
+  border-color: rgba(204,116,140,.45);
+  background: rgba(143,57,78,.08);
+  color: #e1bbc4;
+}
+
+.course-track[data-track="advanced"] .track-unlock-arrow {
+  color: #c47b90;
+}
+
+/* Remove the previous repeated per-card access UI. */
+.course-card-locked .course-access-seal,
+.course-card-locked .course-lock-message,
+.course-card-locked .course-access-button {
+  display: none !important;
+}
+
+/* Small lock only. */
+.course-lock-mark {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 8;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 8px;
+  background: rgba(8,12,18,.72);
+  color: #75839a;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 7px 20px rgba(0,0,0,.20);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: .88;
+}
+
+.course-card-locked:hover .course-lock-mark {
+  border-color: rgba(126,150,212,.18);
+  color: #9baac1;
+}
+
+.course-track[data-track="intermediate"] .course-lock-mark {
+  border-color: rgba(100,132,222,.16);
+  color: #778fc8;
+}
+
+.course-track[data-track="advanced"] .course-lock-mark {
+  border-color: rgba(181,91,115,.17);
+  color: #a97988;
+}
+
+.course-lock-mark .access-lock-icon {
+  transform: scale(.78);
+}
+
+.course-card-locked .course-card-top {
+  padding-right: 48px;
+}
+
+.course-card-locked .course-card-footer {
+  border-top: 1px solid rgba(255,255,255,.045);
+}
+
+.course-locked-caption {
+  color: #596679;
+  font-family: "Inter",sans-serif;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: .12em;
+}
+
+.course-card-locked-space {
+  min-height: 38px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.course-card-locked-space span {
+  display: block;
+  height: 2px;
+  width: 28px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.045);
+}
+
+.course-card-locked-space span:last-child {
+  width: 46px;
+  opacity: .55;
+}
+
+@media (max-width: 760px) {
+  .course-track-header {
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .course-track-actions {
+    margin-top: 4px;
+  }
+
+  .track-unlock-button {
+    min-height: 28px;
+    padding: 0 8px;
+  }
+
+  .course-track-count {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .course-track-actions {
+    position: absolute;
+    top: 4px;
+    right: 0;
+  }
+
+  .track-unlock-button {
+    font-size: 6px;
+  }
+}
+
