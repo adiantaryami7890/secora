@@ -8144,3 +8144,1240 @@ input[type="text"]:focus {
 /* ============================================================
    END — SECORA APERTURE MARK
    ============================================================ */
+/* ============================================================
+   SECORA — SIDEBAR V3
+   ------------------------------------------------------------
+   ULTRA GLASS / VIBRANT / LARGE ICONOGRAPHY
+   INDIGO × AURORA VIOLET × PLATINUM
+   ------------------------------------------------------------
+   COMPLETE SIDEBAR OVERRIDE
+   Paste this ENTIRE block at the VERY BOTTOM of dashboard.css
+   ============================================================ */
+
+
+/* ============================================================
+   01 — SIDEBAR FOUNDATION
+   ============================================================ */
+
+.sidebar {
+  position: relative !important;
+
+  height: 100vh !important;
+  height: 100dvh !important;
+
+  max-height: 100vh !important;
+  max-height: 100dvh !important;
+
+  box-sizing: border-box !important;
+
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+
+  scrollbar-gutter: stable;
+
+  isolation: isolate;
+
+  /*
+     Ultra-dark transparent glass base.
+  */
+  background:
+    radial-gradient(
+      circle at 20% 8%,
+      rgba(117, 103, 200, 0.19) 0%,
+      rgba(117, 103, 200, 0.075) 22%,
+      transparent 47%
+    ),
+    radial-gradient(
+      circle at 100% 38%,
+      rgba(87, 72, 170, 0.12) 0%,
+      transparent 40%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(12, 11, 22, 0.91) 0%,
+      rgba(9, 9, 17, 0.94) 50%,
+      rgba(5, 6, 11, 0.97) 100%
+    ) !important;
+
+  /*
+     Glass blur.
+  */
+  backdrop-filter: blur(30px) saturate(135%);
+  -webkit-backdrop-filter: blur(30px) saturate(135%);
+
+  /*
+     Architectural right edge.
+  */
+  border-right: 1px solid rgba(165, 155, 232, 0.15) !important;
+
+  box-shadow:
+    18px 0 55px rgba(0, 0, 0, 0.25),
+    inset -1px 0 rgba(255, 255, 255, 0.025),
+    inset 0 1px rgba(255, 255, 255, 0.018);
+
+  color: #F0EEF7 !important;
+
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* ============================================================
+   02 — GLASS ATMOSPHERE
+   ============================================================ */
+
+.sidebar::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: -1;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at 15% 5%,
+      rgba(142, 126, 235, 0.15),
+      transparent 34%
+    ),
+    radial-gradient(
+      ellipse at 88% 25%,
+      rgba(91, 75, 174, 0.10),
+      transparent 36%
+    ),
+    linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.025),
+      transparent 30%,
+      transparent 70%,
+      rgba(117, 103, 200, 0.025)
+    );
+}
+
+
+/* ============================================================
+   03 — GLASS EDGE LIGHT
+   ============================================================ */
+
+.sidebar::after {
+  content: "";
+
+  position: absolute;
+
+  top: 5%;
+  right: -1px;
+
+  width: 1px;
+  height: 90%;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(165, 155, 232, 0.08) 12%,
+      rgba(165, 155, 232, 0.30) 48%,
+      rgba(117, 103, 200, 0.10) 80%,
+      transparent 100%
+    );
+
+  box-shadow:
+    0 0 10px rgba(117, 103, 200, 0.08);
+}
+
+
+/* ============================================================
+   04 — BRAND AREA
+   ============================================================ */
+
+.brand {
+  position: relative !important;
+
+  display: inline-flex !important;
+
+  align-items: center !important;
+
+  gap: 13px !important;
+
+  color: #F4F2FA !important;
+
+  font-size: 21px !important;
+
+  font-weight: 850 !important;
+
+  letter-spacing: 0.025em !important;
+
+  text-decoration: none !important;
+
+  text-rendering: geometricPrecision;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+
+/* ============================================================
+   05 — NAVIGATION STRUCTURE
+   ============================================================ */
+
+.navigation {
+  position: relative;
+
+  padding-top: 4px;
+}
+
+
+/* ============================================================
+   06 — SECTION LABELS
+   ============================================================ */
+
+.nav-label {
+  color: #817B99 !important;
+
+  font-size: 11px !important;
+
+  font-weight: 800 !important;
+
+  letter-spacing: 0.22em !important;
+
+  line-height: 1.4 !important;
+
+  text-transform: uppercase;
+
+  padding-left: 7px !important;
+
+  opacity: 1 !important;
+
+  text-rendering: geometricPrecision;
+}
+
+.nav-label.second {
+  margin-top: 30px !important;
+}
+
+
+/* ============================================================
+   07 — NAV ITEM FOUNDATION
+   ============================================================ */
+
+.navigation .nav-item {
+  position: relative;
+
+  min-height: 56px !important;
+
+  padding: 0 16px !important;
+
+  margin: 4px 0 !important;
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  gap: 14px !important;
+
+  border-radius: 14px !important;
+
+  color: #9B97AA !important;
+
+  font-size: 15.5px !important;
+
+  font-weight: 700 !important;
+
+  letter-spacing: -0.012em !important;
+
+  line-height: 1.2 !important;
+
+  text-decoration: none !important;
+
+  border: 1px solid transparent !important;
+
+  background: transparent;
+
+  transition:
+    color 200ms ease,
+    background 240ms ease,
+    border-color 240ms ease,
+    transform 200ms ease,
+    box-shadow 240ms ease;
+}
+
+
+/* ============================================================
+   08 — ICON CONTAINER
+   ============================================================ */
+
+.navigation .nav-item > span:first-child {
+  position: relative;
+
+  width: 25px !important;
+  min-width: 25px !important;
+
+  height: 25px !important;
+
+  display: inline-flex !important;
+
+  align-items: center !important;
+  justify-content: center !important;
+
+  color: transparent !important;
+
+  font-size: 0 !important;
+
+  line-height: 1 !important;
+
+  flex-shrink: 0;
+
+  transition:
+    transform 220ms ease,
+    filter 220ms ease;
+}
+
+
+/* ============================================================
+   09 — NEW ICON SYSTEM
+   ------------------------------------------------------------
+   Dashboard  → architectural home
+   Courses    → layered module
+   Paths      → directional route
+   Topics     → diamond node
+   Bookmarks  → star marker
+   Progress   → orbital clock
+   ============================================================ */
+
+
+/* DASHBOARD */
+
+.navigation .nav-item:nth-of-type(1)
+> span:first-child::before {
+
+  content: "";
+
+  width: 13px;
+  height: 13px;
+
+  border: 1.7px solid #A8A2BE;
+
+  border-radius: 4px 4px 6px 6px;
+
+  transform: rotate(0deg);
+
+  clip-path: polygon(
+    50% 0%,
+    100% 38%,
+    100% 100%,
+    0% 100%,
+    0% 38%
+  );
+
+  box-shadow:
+    0 0 7px rgba(165, 155, 232, 0.07);
+
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    transform 200ms ease;
+}
+
+
+/* COURSES — layered square */
+
+.navigation .nav-item:nth-of-type(2)
+> span:first-child::before {
+
+  content: "";
+
+  width: 14px;
+  height: 14px;
+
+  border: 1.7px solid #A8A2BE;
+
+  border-radius: 3px;
+
+  box-shadow:
+    4px 4px 0 -2px rgba(117, 103, 200, 0.30),
+    0 0 7px rgba(165, 155, 232, 0.05);
+
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    transform 200ms ease;
+}
+
+
+/* COURSES inner layer */
+
+.navigation .nav-item:nth-of-type(2)
+> span:first-child::after {
+
+  content: "";
+
+  position: absolute;
+
+  width: 5px;
+  height: 5px;
+
+  border: 1px solid #A8A2BE;
+
+  border-radius: 1px;
+
+  transition:
+    border-color 200ms ease;
+}
+
+
+/* LEARNING PATHS — directional arrow */
+
+.navigation .nav-item:nth-of-type(3)
+> span:first-child::before {
+
+  content: "↗";
+
+  color: #A8A2BE;
+
+  font-size: 21px;
+
+  font-weight: 500;
+
+  line-height: 1;
+
+  transform: translateY(-1px);
+
+  text-shadow:
+    0 0 8px rgba(165, 155, 232, 0.08);
+
+  transition:
+    color 200ms ease,
+    transform 200ms ease,
+    text-shadow 200ms ease;
+}
+
+
+/* TOPICS — diamond node */
+
+.navigation .nav-item:nth-of-type(4)
+> span:first-child::before {
+
+  content: "";
+
+  width: 13px;
+  height: 13px;
+
+  border: 1.7px solid #A8A2BE;
+
+  transform: rotate(45deg);
+
+  border-radius: 2px;
+
+  box-shadow:
+    0 0 7px rgba(165, 155, 232, 0.06);
+
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    transform 200ms ease;
+}
+
+
+/* TOPICS inner point */
+
+.navigation .nav-item:nth-of-type(4)
+> span:first-child::after {
+
+  content: "";
+
+  position: absolute;
+
+  width: 4px;
+  height: 4px;
+
+  border-radius: 50%;
+
+  background: #A8A2BE;
+
+  box-shadow:
+    0 0 5px rgba(165, 155, 232, 0.12);
+
+  transition:
+    background 200ms ease,
+    box-shadow 200ms ease;
+}
+
+
+/* BOOKMARKS — custom star */
+
+.navigation .nav-item:nth-of-type(5)
+> span:first-child::before {
+
+  content: "✦";
+
+  color: #A8A2BE;
+
+  font-size: 20px;
+
+  font-weight: 400;
+
+  line-height: 1;
+
+  text-shadow:
+    0 0 7px rgba(165, 155, 232, 0.08);
+
+  transition:
+    color 200ms ease,
+    transform 200ms ease,
+    text-shadow 200ms ease;
+}
+
+
+/* PROGRESS — orbital ring */
+
+.navigation .nav-item:nth-of-type(6)
+> span:first-child::before {
+
+  content: "";
+
+  width: 14px;
+  height: 14px;
+
+  border: 1.7px solid #A8A2BE;
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 7px rgba(165, 155, 232, 0.06);
+
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+
+/* PROGRESS orbital hand */
+
+.navigation .nav-item:nth-of-type(6)
+> span:first-child::after {
+
+  content: "";
+
+  position: absolute;
+
+  width: 6px;
+  height: 1.5px;
+
+  background: #A8A2BE;
+
+  transform:
+    translate(2px, -2px)
+    rotate(45deg);
+
+  transform-origin: left center;
+
+  box-shadow:
+    0 0 5px rgba(165, 155, 232, 0.10);
+
+  transition:
+    background 200ms ease,
+    box-shadow 200ms ease;
+}
+
+
+/* ============================================================
+   10 — NAV TEXT
+   ============================================================ */
+
+.navigation .nav-item > span:last-child {
+  color: inherit !important;
+
+  font-size: 15.5px !important;
+
+  font-weight: 700 !important;
+
+  letter-spacing: -0.012em !important;
+
+  line-height: 1.2 !important;
+
+  white-space: nowrap;
+
+  text-rendering: geometricPrecision;
+
+  -webkit-font-smoothing: antialiased;
+
+  transition:
+    color 200ms ease;
+}
+
+
+/* ============================================================
+   11 — HOVER GLASS
+   ============================================================ */
+
+.navigation .nav-item:hover {
+
+  color: #E9E6F2 !important;
+
+  background:
+    linear-gradient(
+      100deg,
+      rgba(117, 103, 200, 0.13),
+      rgba(117, 103, 200, 0.055),
+      rgba(255, 255, 255, 0.015)
+    ) !important;
+
+  border-color:
+    rgba(165, 155, 232, 0.10) !important;
+
+  transform: translateX(2px);
+
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.035),
+    0 8px 25px rgba(0, 0, 0, 0.10);
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+
+/* Hover icons */
+
+.navigation .nav-item:hover
+> span:first-child {
+
+  transform: scale(1.08);
+}
+
+
+/* Hover icon color */
+
+.navigation .nav-item:hover
+> span:first-child::before {
+
+  border-color: #B5ADEB;
+  color: #B5ADEB;
+
+  filter:
+    drop-shadow(0 0 5px rgba(117, 103, 200, 0.20));
+}
+
+
+/* ============================================================
+   12 — ACTIVE ITEM — PREMIUM GLASS
+   ============================================================ */
+
+.navigation .nav-item.active {
+
+  color: #F6F3FC !important;
+
+  background:
+    linear-gradient(
+      105deg,
+      rgba(117, 103, 200, 0.30) 0%,
+      rgba(69, 59, 130, 0.23) 48%,
+      rgba(24, 22, 39, 0.42) 100%
+    ) !important;
+
+  border-color:
+    rgba(185, 177, 239, 0.22) !important;
+
+  box-shadow:
+    0 12px 32px rgba(43, 36, 87, 0.20),
+    inset 0 1px rgba(255, 255, 255, 0.075),
+    inset 0 -1px rgba(0, 0, 0, 0.20);
+
+  backdrop-filter: blur(20px) saturate(145%);
+  -webkit-backdrop-filter: blur(20px) saturate(145%);
+}
+
+
+/* Active vertical light */
+
+.navigation .nav-item.active::before {
+
+  content: "";
+
+  position: absolute;
+
+  left: -1px;
+  top: 9px;
+  bottom: 9px;
+
+  width: 2px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #D8D3F7,
+      #A59BE8 45%,
+      #7567C8
+    );
+
+  box-shadow:
+    0 0 10px rgba(165, 155, 232, 0.42),
+    0 0 20px rgba(117, 103, 200, 0.18);
+}
+
+
+/* Active top glass reflection */
+
+.navigation .nav-item.active::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 15%;
+  right: 15%;
+
+  top: -1px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(231, 227, 255, 0.20),
+      transparent
+    );
+
+  pointer-events: none;
+}
+
+
+/* ============================================================
+   13 — ACTIVE ICONS
+   ============================================================ */
+
+.navigation .nav-item.active
+> span:first-child {
+
+  transform: scale(1.08);
+
+  filter:
+    drop-shadow(0 0 7px rgba(165, 155, 232, 0.20));
+}
+
+
+/* Active generic line icons */
+
+.navigation .nav-item.active
+> span:first-child::before {
+
+  border-color: #C4BDF3 !important;
+
+  color: #C4BDF3 !important;
+
+  box-shadow:
+    0 0 9px rgba(165, 155, 232, 0.18);
+}
+
+
+/* Active icon text */
+
+.navigation .nav-item.active
+> span:first-child::after {
+
+  border-color: #C4BDF3 !important;
+
+  background: #C4BDF3 !important;
+
+  box-shadow:
+    0 0 8px rgba(165, 155, 232, 0.22);
+}
+
+
+/* ============================================================
+   14 — PERSONAL DIVIDER
+   ============================================================ */
+
+.nav-label.second::before {
+
+  content: "";
+
+  display: block;
+
+  width: 100%;
+
+  height: 1px;
+
+  margin-bottom: 22px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(165, 155, 232, 0.02),
+      rgba(165, 155, 232, 0.15),
+      rgba(165, 155, 232, 0.02)
+    );
+}
+
+
+/* ============================================================
+   15 — SIDEBAR ACCOUNT GLASS
+   ============================================================ */
+
+.sidebar-account {
+
+  position: relative;
+
+  padding: 13px !important;
+
+  border-radius: 16px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(43, 38, 75, 0.52),
+      rgba(18, 17, 30, 0.66)
+    ) !important;
+
+  border:
+    1px solid rgba(165, 155, 232, 0.13) !important;
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.22),
+    inset 0 1px rgba(255, 255, 255, 0.045);
+
+  backdrop-filter: blur(24px) saturate(135%);
+  -webkit-backdrop-filter: blur(24px) saturate(135%);
+}
+
+
+/* Account avatar */
+
+.sidebar-avatar {
+
+  width: 40px !important;
+  height: 40px !important;
+
+  min-width: 40px !important;
+
+  border-radius: 12px !important;
+
+  color: #F4F1FF !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      #7567C8,
+      #514879 62%,
+      #2A263D
+    ) !important;
+
+  border:
+    1px solid rgba(211, 205, 246, 0.23) !important;
+
+  box-shadow:
+    0 7px 20px rgba(117, 103, 200, 0.20),
+    inset 0 1px rgba(255, 255, 255, 0.14);
+}
+
+
+/* Account name */
+
+.sidebar-account-info strong {
+
+  color: #F1EEF8 !important;
+
+  font-size: 13px !important;
+
+  font-weight: 750 !important;
+
+  letter-spacing: -0.01em;
+}
+
+
+/* Account email */
+
+.sidebar-account-info span {
+
+  color: #908BA2 !important;
+
+  font-size: 10.5px !important;
+
+  font-weight: 550 !important;
+
+  letter-spacing: 0.005em;
+}
+
+
+/* ============================================================
+   16 — SETTINGS
+   ============================================================ */
+
+.sidebar-bottom > .nav-item {
+
+  min-height: 52px !important;
+
+  margin-top: 8px !important;
+
+  font-size: 15px !important;
+}
+
+
+/* Settings icon */
+
+.sidebar-bottom > .nav-item > span:first-child {
+
+  width: 25px !important;
+  min-width: 25px !important;
+
+  height: 25px !important;
+
+  font-size: 0 !important;
+
+  color: transparent !important;
+}
+
+
+/* Settings gear */
+
+.sidebar-bottom > .nav-item > span:first-child::before {
+
+  content: "◉";
+
+  color: #A8A2BE;
+
+  font-size: 17px;
+
+  line-height: 1;
+
+  text-shadow:
+    0 0 8px rgba(165, 155, 232, 0.08);
+}
+
+
+/* ============================================================
+   17 — LOGOUT
+   ============================================================ */
+
+.logout {
+
+  min-height: 52px !important;
+
+  padding: 0 16px !important;
+
+  margin-top: 2px !important;
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  gap: 14px !important;
+
+  border-radius: 14px !important;
+
+  color: #8D899C !important;
+
+  font-size: 15px !important;
+
+  font-weight: 700 !important;
+
+  letter-spacing: -0.01em;
+
+  background: transparent !important;
+
+  border: 1px solid transparent !important;
+
+  transition:
+    color 200ms ease,
+    background 220ms ease,
+    border-color 220ms ease,
+    transform 200ms ease;
+}
+
+
+/* Logout icon */
+
+.logout span:first-child {
+
+  width: 25px !important;
+  min-width: 25px !important;
+
+  display: inline-flex !important;
+
+  align-items: center;
+  justify-content: center;
+
+  color: transparent !important;
+
+  font-size: 0 !important;
+}
+
+
+/* Custom logout symbol */
+
+.logout span:first-child::before {
+
+  content: "↪";
+
+  color: #817C91;
+
+  font-size: 21px;
+
+  font-weight: 500;
+
+  line-height: 1;
+
+  transition:
+    color 200ms ease,
+    transform 200ms ease;
+}
+
+
+/* Logout hover */
+
+.logout:hover {
+
+  color: #E7E3F0 !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(117, 103, 200, 0.10),
+      rgba(117, 103, 200, 0.025)
+    ) !important;
+
+  border-color:
+    rgba(165, 155, 232, 0.09) !important;
+
+  transform: translateX(2px);
+}
+
+.logout:hover span:first-child::before {
+
+  color: #B5ADEB;
+
+  transform: translateX(2px);
+
+  text-shadow:
+    0 0 8px rgba(165, 155, 232, 0.18);
+}
+
+
+/* ============================================================
+   18 — ACCOUNT / BOTTOM SEPARATOR
+   ============================================================ */
+
+.sidebar-bottom {
+
+  position: relative;
+
+  flex-shrink: 0 !important;
+
+  padding-bottom: 24px !important;
+}
+
+.sidebar-bottom::before {
+
+  content: "";
+
+  position: absolute;
+
+  top: -14px;
+
+  left: 2px;
+  right: 2px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(165, 155, 232, 0.14),
+      transparent
+    );
+}
+
+
+/* ============================================================
+   19 — PREMIUM SCROLLBAR
+   ============================================================ */
+
+.sidebar::-webkit-scrollbar {
+
+  width: 7px !important;
+}
+
+.sidebar::-webkit-scrollbar-track {
+
+  background:
+    rgba(4, 4, 9, 0.55) !important;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+
+  border-radius: 999px !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(165, 155, 232, 0.70),
+      rgba(117, 103, 200, 0.40),
+      rgba(79, 68, 139, 0.25)
+    ) !important;
+
+  border:
+    1px solid rgba(205, 199, 239, 0.08);
+
+  box-shadow:
+    0 0 10px rgba(117, 103, 200, 0.18);
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+
+  background:
+    linear-gradient(
+      180deg,
+      #BDB6EE,
+      #7567C8,
+      #51478F
+    ) !important;
+
+  box-shadow:
+    0 0 14px rgba(117, 103, 200, 0.32);
+}
+
+
+/* Firefox */
+
+.sidebar {
+
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    #62579D
+    rgba(4, 4, 9, 0.55);
+}
+
+
+/* ============================================================
+   20 — SHORT SCREEN PROTECTION
+   ============================================================ */
+
+@media (max-height: 760px) and (min-width: 901px) {
+
+  .navigation .nav-item {
+
+    min-height: 50px !important;
+
+    margin: 2px 0 !important;
+  }
+
+  .sidebar-bottom {
+
+    padding-bottom: 16px !important;
+  }
+
+  .sidebar-account {
+
+    padding: 10px !important;
+  }
+}
+
+
+/* ============================================================
+   21 — LARGE / UHD DESKTOP
+   ============================================================ */
+
+@media (min-width: 1440px) {
+
+  .navigation .nav-item {
+
+    min-height: 58px !important;
+
+    font-size: 16px !important;
+  }
+
+  .navigation .nav-item > span:last-child {
+
+    font-size: 16px !important;
+  }
+
+  .navigation .nav-item > span:first-child {
+
+    width: 27px !important;
+    min-width: 27px !important;
+
+    height: 27px !important;
+  }
+
+  .nav-label {
+
+    font-size: 11.5px !important;
+  }
+
+  .brand {
+
+    font-size: 21px !important;
+  }
+}
+
+
+/* ============================================================
+   22 — VERY LARGE DISPLAY
+   ============================================================ */
+
+@media (min-width: 1800px) {
+
+  .navigation .nav-item {
+
+    min-height: 60px !important;
+
+    font-size: 16.5px !important;
+  }
+
+  .navigation .nav-item > span:last-child {
+
+    font-size: 16.5px !important;
+  }
+
+  .nav-label {
+
+    font-size: 12px !important;
+  }
+}
+
+
+/* ============================================================
+   23 — FOCUS ACCESSIBILITY
+   ============================================================ */
+
+.sidebar a:focus-visible,
+.sidebar button:focus-visible {
+
+  outline: 2px solid rgba(165, 155, 232, 0.60);
+
+  outline-offset: 3px;
+
+  box-shadow:
+    0 0 0 5px rgba(117, 103, 200, 0.10);
+}
+
+
+/* ============================================================
+   24 — REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .sidebar *,
+  .sidebar *::before,
+  .sidebar *::after {
+
+    animation: none !important;
+
+    transition: none !important;
+  }
+}
+
+
+/* ============================================================
+   END — SECORA SIDEBAR V3
+   ULTRA GLASS / VIBRANT / LARGE ICONOGRAPHY
+   ============================================================ */
