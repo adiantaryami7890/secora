@@ -3857,3 +3857,676 @@ input[type="text"]:focus {
     transition: none;
   }
 }
+/* ============================================================
+   SECORA BLACKLINE — OBSIDIAN × CHAMPAGNE × PLATINUM
+   PREMIUM COLOR + ULTRA-HD BORDER GLOW
+   Paste at the VERY BOTTOM of dashboard.css
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   BLACKLINE COURSE GRID — PREMIUM COLOR SYSTEM
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card,
+.course-track[data-track="advanced"] .track-course-card,
+[data-track="advanced"] .track-course-card {
+
+    position: relative;
+
+    background:
+        radial-gradient(
+            circle at 88% 8%,
+            rgba(198, 161, 91, 0.12),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 8% 92%,
+            rgba(198, 161, 91, 0.035),
+            transparent 34%
+        ),
+        linear-gradient(
+            145deg,
+            #181A20 0%,
+            #111318 46%,
+            #090B0F 100%
+        ) !important;
+
+    border: 1px solid rgba(198, 161, 91, 0.34) !important;
+
+    box-shadow:
+        0 18px 55px rgba(0, 0, 0, 0.42),
+        0 0 24px rgba(198, 161, 91, 0.07),
+        inset 0 1px 0 rgba(255, 255, 255, 0.045),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.55);
+
+    overflow: hidden;
+
+    transition:
+        transform 280ms ease,
+        border-color 280ms ease,
+        box-shadow 280ms ease,
+        background 280ms ease;
+
+    isolation: isolate;
+}
+
+
+/* ------------------------------------------------------------
+   PREMIUM METALLIC BORDER
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card::before,
+.course-track[data-track="advanced"] .track-course-card::before,
+[data-track="advanced"] .track-course-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    border-radius: inherit;
+
+    padding: 1px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(226, 201, 138, 0.72) 0%,
+            rgba(198, 161, 91, 0.32) 18%,
+            rgba(73, 69, 60, 0.18) 42%,
+            rgba(198, 161, 91, 0.28) 72%,
+            rgba(226, 201, 138, 0.62) 100%
+        );
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+
+    -webkit-mask-composite: xor;
+
+    mask-composite: exclude;
+
+    pointer-events: none;
+
+    z-index: 5;
+
+    opacity: 0.95;
+}
+
+
+/* ------------------------------------------------------------
+   ENHANCED OUTER GOLD AURA
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card::after,
+.course-track[data-track="advanced"] .track-course-card::after,
+[data-track="advanced"] .track-course-card::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: -2px;
+
+    border-radius: inherit;
+
+    background:
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(226, 201, 138, 0.16),
+            transparent 24%
+        ),
+        radial-gradient(
+            circle at 85% 10%,
+            rgba(226, 201, 138, 0.18),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(198, 161, 91, 0.09),
+            transparent 38%
+        );
+
+    filter: blur(10px);
+
+    opacity: 0.8;
+
+    pointer-events: none;
+
+    z-index: -1;
+}
+
+
+/* ------------------------------------------------------------
+   HOVER — STRONGER PREMIUM GLOW
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card:hover,
+.course-track[data-track="advanced"] .track-course-card:hover,
+[data-track="advanced"] .track-course-card:hover {
+
+    transform: translateY(-4px);
+
+    border-color: rgba(226, 201, 138, 0.72) !important;
+
+    background:
+        radial-gradient(
+            circle at 88% 8%,
+            rgba(198, 161, 91, 0.17),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 12% 90%,
+            rgba(198, 161, 91, 0.055),
+            transparent 36%
+        ),
+        linear-gradient(
+            145deg,
+            #1B1D23 0%,
+            #121419 46%,
+            #090B0F 100%
+        ) !important;
+
+    box-shadow:
+        0 24px 65px rgba(0, 0, 0, 0.52),
+        0 0 25px rgba(198, 161, 91, 0.13),
+        0 0 65px rgba(198, 161, 91, 0.075),
+        inset 0 1px 0 rgba(255, 255, 255, 0.065),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.6);
+}
+
+
+/* ------------------------------------------------------------
+   COURSE CARD TOP LINE
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card
+.course-card-top,
+.course-track[data-track="advanced"] .track-course-card
+.course-card-top,
+[data-track="advanced"] .track-course-card
+.course-card-top {
+
+    color: #B9B6B0;
+}
+
+
+/* ------------------------------------------------------------
+   ADVANCED BADGE
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card
+.course-level-badge,
+.track-section[data-track="advanced"] .track-course-card
+.level-badge,
+.course-track[data-track="advanced"] .track-course-card
+.course-level-badge,
+[data-track="advanced"] .track-course-card
+.course-level-badge {
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(198, 161, 91, 0.15),
+            rgba(198, 161, 91, 0.045)
+        ) !important;
+
+    border: 1px solid rgba(198, 161, 91, 0.48) !important;
+
+    color: #D8BD82 !important;
+
+    box-shadow:
+        0 0 12px rgba(198, 161, 91, 0.07),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
+
+    letter-spacing: 0.13em;
+}
+
+
+/* ------------------------------------------------------------
+   BLACKLINE LABEL
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card
+.course-track-label,
+.track-section[data-track="advanced"] .track-course-card
+.track-card-label,
+.course-track[data-track="advanced"] .track-course-card
+.course-track-label,
+[data-track="advanced"] .track-course-card
+.course-track-label {
+
+    color: #C6A15B !important;
+
+    letter-spacing: 0.18em;
+
+    text-shadow:
+        0 0 18px rgba(198, 161, 91, 0.16);
+}
+
+
+/* ------------------------------------------------------------
+   COURSE TITLES — ULTRA-HD PLATINUM
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card
+h3,
+.track-section[data-track="advanced"] .track-course-card
+.course-title,
+.course-track[data-track="advanced"] .track-course-card
+h3,
+[data-track="advanced"] .track-course-card
+h3 {
+
+    color: #F1EFE9 !important;
+
+    text-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.04),
+        0 8px 25px rgba(0, 0, 0, 0.38);
+
+    letter-spacing: -0.025em;
+}
+
+
+/* ------------------------------------------------------------
+   COURSE DESCRIPTION
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card
+p,
+.track-section[data-track="advanced"] .track-course-card
+.course-description,
+.course-track[data-track="advanced"] .track-course-card
+p,
+[data-track="advanced"] .track-course-card
+p {
+
+    color: #96958F !important;
+}
+
+
+/* ------------------------------------------------------------
+   PROGRESS PERCENTAGE
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card
+.course-progress-percent,
+.track-section[data-track="advanced"] .track-course-card
+.progress-percent,
+.course-track[data-track="advanced"] .track-course-card
+.course-progress-percent,
+[data-track="advanced"] .track-course-card
+.progress-percent {
+
+    color: #DDD8CC !important;
+
+    text-shadow:
+        0 0 15px rgba(226, 201, 138, 0.10);
+}
+
+
+/* ------------------------------------------------------------
+   LESSON COUNT / COMPLETION TEXT
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card
+.course-meta,
+.track-section[data-track="advanced"] .track-course-card
+.course-stats,
+.course-track[data-track="advanced"] .track-course-card
+.course-meta,
+[data-track="advanced"] .track-course-card
+.course-meta {
+
+    color: #777772 !important;
+}
+
+
+/* ------------------------------------------------------------
+   PROGRESS TRACK
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card
+.progress-track,
+.track-section[data-track="advanced"] .track-course-card
+.progress-bar-bg,
+.course-track[data-track="advanced"] .track-course-card
+.progress-track,
+[data-track="advanced"] .track-course-card
+.progress-track {
+
+    background:
+        linear-gradient(
+            90deg,
+            #1B1C20,
+            #22231F
+        ) !important;
+
+    border: 1px solid rgba(198, 161, 91, 0.10);
+}
+
+
+/* ------------------------------------------------------------
+   PROGRESS FILL — CHAMPAGNE METAL
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card
+.progress-fill,
+.track-section[data-track="advanced"] .track-course-card
+.progress-bar-fill,
+.course-track[data-track="advanced"] .track-course-card
+.progress-fill,
+[data-track="advanced"] .track-course-card
+.progress-fill {
+
+    background:
+        linear-gradient(
+            90deg,
+            #9D7B3F 0%,
+            #C6A15B 48%,
+            #E2C98A 100%
+        ) !important;
+
+    box-shadow:
+        0 0 12px rgba(198, 161, 91, 0.26),
+        0 0 28px rgba(198, 161, 91, 0.10);
+}
+
+
+/* ------------------------------------------------------------
+   BOTTOM DIVIDER
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card
+.course-card-divider,
+.track-section[data-track="advanced"] .track-course-card
+.card-divider,
+.course-track[data-track="advanced"] .track-course-card
+.course-card-divider,
+[data-track="advanced"] .track-course-card
+.course-card-divider {
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(198, 161, 91, 0.18),
+            rgba(255, 255, 255, 0.045),
+            rgba(198, 161, 91, 0.18)
+        ) !important;
+}
+
+
+/* ------------------------------------------------------------
+   SELF-PACED TEXT
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card
+.self-paced,
+.track-section[data-track="advanced"] .track-course-card
+.course-mode,
+.course-track[data-track="advanced"] .track-course-card
+.self-paced,
+[data-track="advanced"] .track-course-card
+.self-paced {
+
+    color: #686862 !important;
+
+    font-style: italic;
+}
+
+
+/* ------------------------------------------------------------
+   LOCKED TEXT
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card
+.locked,
+.track-section[data-track="advanced"] .track-course-card
+.course-locked,
+.course-track[data-track="advanced"] .track-course-card
+.locked,
+[data-track="advanced"] .track-course-card
+.locked {
+
+    color: #D6D2C9 !important;
+
+    text-shadow:
+        0 0 14px rgba(226, 201, 138, 0.08);
+}
+
+
+/* ------------------------------------------------------------
+   LOCK ARROW
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card
+.locked svg,
+.track-section[data-track="advanced"] .track-course-card
+.course-locked svg,
+.course-track[data-track="advanced"] .track-course-card
+.locked svg,
+[data-track="advanced"] .track-course-card
+.locked svg {
+
+    color: #C6A15B !important;
+}
+
+
+/* ------------------------------------------------------------
+   CORNER LIGHT — TOP RIGHT
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card
+.course-card-top::after,
+.course-track[data-track="advanced"] .track-course-card
+.course-card-top::after,
+[data-track="advanced"] .track-course-card
+.course-card-top::after {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    right: 0;
+
+    width: 130px;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(226, 201, 138, 0.55)
+        );
+
+    box-shadow:
+        0 0 12px rgba(198, 161, 91, 0.22);
+
+    pointer-events: none;
+}
+
+
+/* ------------------------------------------------------------
+   CORNER LIGHT — BOTTOM LEFT
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card
+.course-card-bottom::before,
+.course-track[data-track="advanced"] .track-course-card
+.course-card-bottom::before,
+[data-track="advanced"] .track-course-card
+.course-card-bottom::before {
+
+    content: "";
+
+    position: absolute;
+
+    bottom: 0;
+    left: 0;
+
+    width: 110px;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(198, 161, 91, 0.42),
+            transparent
+        );
+
+    box-shadow:
+        0 0 14px rgba(198, 161, 91, 0.15);
+
+    pointer-events: none;
+}
+
+
+/* ------------------------------------------------------------
+   TEXT SELECTION
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card ::selection,
+.course-track[data-track="advanced"] .track-course-card ::selection,
+[data-track="advanced"] .track-course-card ::selection {
+
+    background: rgba(198, 161, 91, 0.28);
+
+    color: #FFFFFF;
+}
+
+
+/* ------------------------------------------------------------
+   BLACKLINE SECTION HEADING
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-section-title,
+.track-section[data-track="advanced"] h2,
+.course-track[data-track="advanced"] h2 {
+
+    color: #F1EFE9 !important;
+
+    text-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.42);
+}
+
+
+/* ------------------------------------------------------------
+   BLACKLINE SECTION ACCENT
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-section-title::after,
+.course-track[data-track="advanced"] h2::after {
+
+    background:
+        linear-gradient(
+            90deg,
+            #9D7B3F,
+            #C6A15B,
+            #E2C98A,
+            transparent
+        ) !important;
+
+    box-shadow:
+        0 0 18px rgba(198, 161, 91, 0.18);
+}
+
+
+/* ------------------------------------------------------------
+   STRONGER HOVER BORDER
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card:hover::before,
+.course-track[data-track="advanced"] .track-course-card:hover::before,
+[data-track="advanced"] .track-course-card:hover::before {
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(242, 219, 163, 0.95) 0%,
+            rgba(198, 161, 91, 0.62) 20%,
+            rgba(92, 83, 66, 0.24) 46%,
+            rgba(198, 161, 91, 0.56) 78%,
+            rgba(242, 219, 163, 0.88) 100%
+        );
+
+    opacity: 1;
+}
+
+
+/* ------------------------------------------------------------
+   HOVER GOLD AURA
+   ------------------------------------------------------------ */
+
+.track-section[data-track="advanced"] .track-course-card:hover::after,
+.course-track[data-track="advanced"] .track-course-card:hover::after,
+[data-track="advanced"] .track-course-card:hover::after {
+
+    opacity: 1;
+
+    filter: blur(12px);
+}
+
+
+/* ------------------------------------------------------------
+   MOBILE
+   ------------------------------------------------------------ */
+
+@media (max-width: 900px) {
+
+    .track-section[data-track="advanced"] .track-course-card,
+    .course-track[data-track="advanced"] .track-course-card,
+    [data-track="advanced"] .track-course-card {
+
+        box-shadow:
+            0 14px 40px rgba(0, 0, 0, 0.40),
+            0 0 18px rgba(198, 161, 91, 0.055),
+            inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .track-section[data-track="advanced"] .track-course-card,
+    .course-track[data-track="advanced"] .track-course-card,
+    [data-track="advanced"] .track-course-card {
+
+        background:
+            radial-gradient(
+                circle at 88% 8%,
+                rgba(198, 161, 91, 0.09),
+                transparent 34%
+            ),
+            linear-gradient(
+                145deg,
+                #17191E 0%,
+                #101216 48%,
+                #090B0F 100%
+            ) !important;
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   REDUCED MOTION
+   ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .track-section[data-track="advanced"] .track-course-card,
+    .course-track[data-track="advanced"] .track-course-card,
+    [data-track="advanced"] .track-course-card {
+
+        transition: none !important;
+    }
+}
+
+
+/* ============================================================
+   END — SECORA BLACKLINE PREMIUM THEME
+   ============================================================ */
