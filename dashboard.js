@@ -1046,7 +1046,7 @@
           id,
           code,
           name,
-          title
+           access_mode
         `)
         .in(
           "id",
