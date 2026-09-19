@@ -8435,4 +8435,258 @@ input[type="text"]:focus {
     transform 220ms ease,
     filter 220ms ease;
 }
+/* ============================================================
+   SECORA — MAIN LAYOUT POSITION FIX
+   ------------------------------------------------------------
+   Fixes:
+   • Huge empty space above dashboard
+   • Main content pushed downward
+   • Header/search positioned too low
+   • Preserves sidebar
+   • Preserves sidebar scrollbar
+   • Does NOT modify course-card colors
+   ------------------------------------------------------------
+   Paste at VERY BOTTOM of dashboard.css
+   ============================================================ */
 
+
+/* ============================================================
+   01 — RESET MAIN PAGE VERTICAL OFFSET
+   ============================================================ */
+
+main,
+.main,
+.main-content,
+.dashboard,
+.dashboard-main,
+.page-content,
+.content,
+.content-area {
+  margin-top: 0 !important;
+
+  padding-top: 0 !important;
+
+  top: 0 !important;
+
+  transform: none !important;
+}
+
+
+/* ============================================================
+   02 — MAIN CONTENT AREA
+   ------------------------------------------------------------
+   Sidebar remains responsible for its own width.
+   Main content begins immediately after it.
+   ============================================================ */
+
+main {
+  box-sizing: border-box !important;
+
+  margin-top: 0 !important;
+
+  padding-top: 0 !important;
+
+  min-height: 100vh;
+}
+
+
+/* ============================================================
+   03 — COMMON MAIN DASHBOARD WRAPPERS
+   ============================================================ */
+
+.main-content,
+.dashboard-main,
+.page-content,
+.content-area {
+  box-sizing: border-box !important;
+
+  margin-top: 0 !important;
+
+  padding-top: 0 !important;
+
+  top: auto !important;
+
+  transform: none !important;
+}
+
+
+/* ============================================================
+   04 — TOP BAR / HEADER
+   ------------------------------------------------------------
+   Prevents search/header from being pushed down.
+   ============================================================ */
+
+.topbar,
+.top-bar,
+.header,
+.dashboard-header,
+.main-header {
+  margin-top: 0 !important;
+
+  top: 0 !important;
+
+  transform: none !important;
+}
+
+
+/* ============================================================
+   05 — SEARCH / HEADER ROW
+   ============================================================ */
+
+.search-bar,
+.search-container,
+.header-content,
+.topbar-content {
+  margin-top: 0 !important;
+
+  transform: none !important;
+}
+
+
+/* ============================================================
+   06 — FIRST DASHBOARD SECTION
+   ------------------------------------------------------------
+   Removes accidental large top spacing.
+   ============================================================ */
+
+.dashboard-content,
+.dashboard-container,
+.home-content,
+.hero,
+.welcome-section {
+  margin-top: 0 !important;
+
+  transform: none !important;
+}
+
+
+/* ============================================================
+   07 — PREVENT ABSOLUTE POSITIONING FROM PUSHING CONTENT
+   ============================================================ */
+
+main > *,
+.main-content > *,
+.dashboard-main > *,
+.page-content > * {
+  transform: none !important;
+}
+
+
+/* ============================================================
+   08 — IMPORTANT:
+   Do NOT allow the sidebar fix to affect the main layout
+   ============================================================ */
+
+.sidebar {
+  top: 0 !important;
+
+  margin-top: 0 !important;
+
+  transform: none !important;
+
+  height: 100vh !important;
+  height: 100dvh !important;
+}
+
+
+/* ============================================================
+   09 — SIDEBAR INTERNAL SCROLL REMAINS INTACT
+   ============================================================ */
+
+.sidebar {
+  overflow-x: hidden !important;
+
+  overflow-y: auto !important;
+
+  scrollbar-gutter: stable !important;
+}
+
+
+/* ============================================================
+   10 — REMOVE COMMON LARGE TOP SPACING
+   ------------------------------------------------------------
+   These values override accidental spacing introduced by
+   previous responsive/layout rules.
+   ============================================================ */
+
+main,
+.main,
+.main-content,
+.dashboard,
+.dashboard-main,
+.page-content,
+.content,
+.content-area,
+.dashboard-content,
+.dashboard-container,
+.home-content {
+  margin-block-start: 0 !important;
+}
+
+
+/* ============================================================
+   11 — IF MAIN USES FLEX
+   ============================================================ */
+
+body {
+  box-sizing: border-box;
+}
+
+body > main,
+body > .main,
+body > .main-content {
+  margin-top: 0 !important;
+
+  padding-top: 0 !important;
+}
+
+
+/* ============================================================
+   12 — DESKTOP
+   ============================================================ */
+
+@media (min-width: 901px) {
+
+  main,
+  .main,
+  .main-content,
+  .dashboard,
+  .dashboard-main,
+  .page-content,
+  .content-area {
+    margin-top: 0 !important;
+
+    padding-top: 0 !important;
+
+    transform: none !important;
+  }
+
+}
+
+
+/* ============================================================
+   13 — MOBILE
+   ------------------------------------------------------------
+   Don't destroy existing mobile spacing.
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+  main,
+  .main,
+  .main-content,
+  .dashboard,
+  .dashboard-main,
+  .page-content,
+  .content-area {
+    margin-top: 0 !important;
+
+    transform: none !important;
+  }
+
+}
+
+
+/* ============================================================
+   END — MAIN LAYOUT POSITION FIX
+   ============================================================ */
