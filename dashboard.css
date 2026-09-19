@@ -12101,3 +12101,820 @@ a[class*="unlock"] {
 /* ============================================================
    END — SECORA DATE CARD FINAL OVERRIDE
    ============================================================ */
+/* ============================================================
+   SECORA — COURSE CARD FOOTER V3
+   ============================================================
+   REAL SELECTORS:
+   • .course-explore
+   • .course-card-time
+   • .course-card-footer
+
+   CHANGES:
+   • Explore → becomes ACCESS →
+   • Larger CTA
+   • Higher contrast
+   • UHD+ typography
+   • Stronger footer hierarchy
+   • Origin / Core / Blackline individual accents
+   • Larger duration / hours text
+   • Premium ambient animation
+   • Glass treatment
+   • Hover illumination
+   • Keeps existing course-link functionality
+
+   Paste ENTIRE BLOCK at VERY BOTTOM of dashboard.css
+   ============================================================ */
+
+
+/* ============================================================
+   01 — COURSE FOOTER FOUNDATION
+   ============================================================ */
+
+.course-card-footer {
+
+  position: relative !important;
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  justify-content: space-between !important;
+
+  gap: 18px !important;
+
+  min-height: 42px !important;
+
+  margin-top: auto !important;
+
+  padding-top: 17px !important;
+
+  border-top:
+    1px solid rgba(255, 255, 255, 0.085) !important;
+
+  text-rendering: geometricPrecision !important;
+
+  -webkit-font-smoothing: antialiased !important;
+
+  -moz-osx-font-smoothing: grayscale !important;
+}
+
+
+/* ============================================================
+   02 — DURATION / HOURS
+   ============================================================ */
+
+.course-card-time {
+
+  position: relative !important;
+
+  display: inline-flex !important;
+
+  align-items: center !important;
+
+  min-height: 30px !important;
+
+  padding:
+    5px 10px !important;
+
+  border-radius: 7px !important;
+
+  color: #A7AFB9 !important;
+
+  font-family: inherit !important;
+
+  font-size: 12px !important;
+
+  font-weight: 700 !important;
+
+  line-height: 1 !important;
+
+  letter-spacing: 0.045em !important;
+
+  text-transform: uppercase !important;
+
+  white-space: nowrap !important;
+
+  text-rendering: geometricPrecision !important;
+
+  -webkit-font-smoothing: antialiased !important;
+
+  background:
+    rgba(255, 255, 255, 0.018) !important;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.055) !important;
+
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.025) !important;
+
+  transition:
+    color 220ms ease,
+    border-color 220ms ease,
+    background 220ms ease,
+    transform 220ms ease !important;
+}
+
+
+/* ============================================================
+   03 — DURATION HOVER
+   ============================================================ */
+
+.course-card:hover .course-card-time {
+
+  color: #D3D9E1 !important;
+
+  background:
+    rgba(255, 255, 255, 0.035) !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.10) !important;
+
+  transform:
+    translateY(-1px) !important;
+}
+
+
+/* ============================================================
+   04 — ACCESS BUTTON
+   ------------------------------------------------------------
+   The original text remains in the DOM for functionality,
+   but is visually replaced with ACCESS →.
+   ============================================================ */
+
+.course-explore {
+
+  position: relative !important;
+
+  display: inline-flex !important;
+
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  min-width: 104px !important;
+
+  min-height: 40px !important;
+
+  padding:
+    0 15px !important;
+
+  box-sizing: border-box !important;
+
+  overflow: hidden !important;
+
+  border-radius: 10px !important;
+
+  color: #F3F5F8 !important;
+
+  font-family: inherit !important;
+
+  font-size: 0 !important;
+
+  font-weight: 850 !important;
+
+  line-height: 1 !important;
+
+  letter-spacing: 0.085em !important;
+
+  text-transform: uppercase !important;
+
+  text-decoration: none !important;
+
+  white-space: nowrap !important;
+
+  cursor: pointer !important;
+
+  text-rendering: geometricPrecision !important;
+
+  -webkit-font-smoothing: antialiased !important;
+
+  /*
+     Default glass
+  */
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.075),
+      rgba(255,255,255,0.025)
+    ) !important;
+
+  border:
+    1px solid rgba(210, 219, 230, 0.25) !important;
+
+  box-shadow:
+    0 7px 18px rgba(0, 0, 0, 0.20),
+    inset 0 1px rgba(255,255,255,0.08),
+    inset 0 -1px rgba(0,0,0,0.22) !important;
+
+  backdrop-filter:
+    blur(14px) saturate(130%) !important;
+
+  -webkit-backdrop-filter:
+    blur(14px) saturate(130%) !important;
+
+  transition:
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 220ms ease,
+    border-color 220ms ease,
+    background 240ms ease,
+    box-shadow 260ms ease !important;
+}
+
+
+/* ============================================================
+   05 — ACCESS TEXT
+   ============================================================ */
+
+.course-explore::before {
+
+  content: "ACCESS" !important;
+
+  display: inline-block !important;
+
+  font-size: 12px !important;
+
+  font-weight: 850 !important;
+
+  line-height: 1 !important;
+
+  letter-spacing: 0.10em !important;
+
+  color: inherit !important;
+}
+
+
+/* ============================================================
+   06 — ACCESS ARROW
+   ============================================================ */
+
+.course-explore::after {
+
+  content: "→" !important;
+
+  display: inline-block !important;
+
+  margin-left: 9px !important;
+
+  font-size: 17px !important;
+
+  font-weight: 500 !important;
+
+  line-height: 0.8 !important;
+
+  color: inherit !important;
+
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+
+/* ============================================================
+   07 — ACCESS LIGHT SWEEP
+   ============================================================ */
+
+.course-explore {
+
+  isolation: isolate !important;
+}
+
+
+.course-explore > * {
+
+  position: relative;
+
+  z-index: 3;
+}
+
+
+.course-explore:hover::before {
+
+  position: relative;
+
+  z-index: 3;
+}
+
+
+/*
+   Additional ambient reflection using the actual button
+   background layers.
+*/
+
+.course-explore {
+
+  background-size:
+    180% 180% !important;
+
+  animation:
+    secoraAccessBreath 5s ease-in-out infinite alternate !important;
+}
+
+
+@keyframes secoraAccessBreath {
+
+  0% {
+
+    background-position:
+      0% 50%;
+
+  }
+
+  100% {
+
+    background-position:
+      100% 50%;
+
+  }
+}
+
+
+/* ============================================================
+   08 — GENERAL ACCESS HOVER
+   ============================================================ */
+
+.course-explore:hover {
+
+  transform:
+    translateY(-2px)
+    scale(1.035) !important;
+
+  color: #FFFFFF !important;
+
+  border-color:
+    rgba(225, 232, 240, 0.48) !important;
+
+  box-shadow:
+    0 11px 27px rgba(0,0,0,0.30),
+    0 0 22px rgba(190,205,225,0.07),
+    inset 0 1px rgba(255,255,255,0.13),
+    inset 0 -1px rgba(0,0,0,0.24) !important;
+}
+
+
+.course-explore:hover::after {
+
+  transform:
+    translateX(4px) !important;
+}
+
+
+/* ============================================================
+   09 — ORIGIN ACCESS
+   GRAPHITE × SILVER
+   ============================================================ */
+
+.course-track[data-track="fundamentals"]
+.course-explore {
+
+  color: #F0F3F6 !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(221,229,237,0.16),
+      rgba(174,184,197,0.055)
+    ) !important;
+
+  border-color:
+    rgba(174,184,197,0.38) !important;
+
+  box-shadow:
+    0 7px 20px rgba(0,0,0,0.22),
+    0 0 18px rgba(174,184,197,0.055),
+    inset 0 1px rgba(255,255,255,0.10),
+    inset 0 -1px rgba(0,0,0,0.25) !important;
+}
+
+
+.course-track[data-track="fundamentals"]
+.course-explore:hover {
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(221,229,237,0.25),
+      rgba(174,184,197,0.09)
+    ) !important;
+
+  border-color:
+    rgba(221,229,237,0.58) !important;
+
+  box-shadow:
+    0 12px 29px rgba(0,0,0,0.29),
+    0 0 25px rgba(174,184,197,0.10),
+    inset 0 1px rgba(255,255,255,0.15) !important;
+}
+
+
+/* Origin duration */
+
+.course-track[data-track="fundamentals"]
+.course-card-time {
+
+  color: #AEB8C5 !important;
+
+  border-color:
+    rgba(174,184,197,0.16) !important;
+}
+
+
+/* ============================================================
+   10 — CORE ACCESS
+   MIDNIGHT NAVY × ELECTRIC BLUE
+   ============================================================ */
+
+.course-track[data-track="intermediate"]
+.course-explore {
+
+  color: #EAF2FF !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(77,141,255,0.22),
+      rgba(43,78,139,0.07)
+    ) !important;
+
+  border-color:
+    rgba(77,141,255,0.44) !important;
+
+  box-shadow:
+    0 7px 20px rgba(0,0,0,0.22),
+    0 0 20px rgba(77,141,255,0.08),
+    inset 0 1px rgba(255,255,255,0.10),
+    inset 0 -1px rgba(0,0,0,0.25) !important;
+}
+
+
+.course-track[data-track="intermediate"]
+.course-explore:hover {
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(77,141,255,0.34),
+      rgba(43,78,139,0.12)
+    ) !important;
+
+  border-color:
+    rgba(115,167,255,0.66) !important;
+
+  box-shadow:
+    0 12px 30px rgba(0,0,0,0.30),
+    0 0 28px rgba(77,141,255,0.15),
+    inset 0 1px rgba(255,255,255,0.16) !important;
+}
+
+
+/* Core duration */
+
+.course-track[data-track="intermediate"]
+.course-card-time {
+
+  color: #91A0B3 !important;
+
+  border-color:
+    rgba(77,141,255,0.14) !important;
+}
+
+
+/* ============================================================
+   11 — BLACKLINE ACCESS
+   OBSIDIAN × CHAMPAGNE
+   ============================================================ */
+
+.course-track[data-track="advanced"]
+.course-explore {
+
+  color: #F5EBD5 !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(198,161,91,0.23),
+      rgba(104,84,48,0.065)
+    ) !important;
+
+  border-color:
+    rgba(198,161,91,0.48) !important;
+
+  box-shadow:
+    0 7px 20px rgba(0,0,0,0.24),
+    0 0 21px rgba(198,161,91,0.075),
+    inset 0 1px rgba(255,255,255,0.10),
+    inset 0 -1px rgba(0,0,0,0.25) !important;
+}
+
+
+.course-track[data-track="advanced"]
+.course-explore:hover {
+
+  color: #FFF7E5 !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(198,161,91,0.35),
+      rgba(104,84,48,0.10)
+    ) !important;
+
+  border-color:
+    rgba(226,201,138,0.70) !important;
+
+  box-shadow:
+    0 12px 30px rgba(0,0,0,0.32),
+    0 0 30px rgba(198,161,91,0.15),
+    inset 0 1px rgba(255,255,255,0.17) !important;
+}
+
+
+/* Blackline duration */
+
+.course-track[data-track="advanced"]
+.course-card-time {
+
+  color: #B8A16E !important;
+
+  border-color:
+    rgba(198,161,91,0.16) !important;
+}
+
+
+/* ============================================================
+   12 — FOOTER HOVER LIGHT
+   ============================================================ */
+
+.course-card:hover .course-card-footer {
+
+  border-top-color:
+    rgba(255,255,255,0.12) !important;
+}
+
+
+/* ============================================================
+   13 — ACCESS FOCUS
+   ============================================================ */
+
+.course-explore:focus-visible {
+
+  outline:
+    2px solid rgba(255,255,255,0.65) !important;
+
+  outline-offset: 3px !important;
+
+  box-shadow:
+    0 0 0 5px rgba(255,255,255,0.055),
+    0 10px 28px rgba(0,0,0,0.28) !important;
+}
+
+
+/* ============================================================
+   14 — LARGE DESKTOP
+   ============================================================ */
+
+@media (min-width: 1440px) {
+
+  .course-card-footer {
+
+    min-height: 46px !important;
+
+    padding-top: 19px !important;
+
+    gap: 22px !important;
+  }
+
+
+  .course-card-time {
+
+    min-height: 32px !important;
+
+    padding:
+      6px 11px !important;
+
+    font-size: 12.5px !important;
+
+    font-weight: 720 !important;
+
+    letter-spacing: 0.05em !important;
+  }
+
+
+  .course-explore {
+
+    min-width: 116px !important;
+
+    min-height: 43px !important;
+
+    padding:
+      0 17px !important;
+  }
+
+
+  .course-explore::before {
+
+    font-size: 12.5px !important;
+
+    letter-spacing: 0.105em !important;
+  }
+
+
+  .course-explore::after {
+
+    font-size: 18px !important;
+
+    margin-left: 10px !important;
+  }
+}
+
+
+/* ============================================================
+   15 — UHD DESKTOP
+   ============================================================ */
+
+@media (min-width: 1800px) {
+
+  .course-card-footer {
+
+    min-height: 49px !important;
+
+    padding-top: 21px !important;
+  }
+
+
+  .course-card-time {
+
+    min-height: 34px !important;
+
+    padding:
+      7px 12px !important;
+
+    font-size: 13px !important;
+
+    font-weight: 750 !important;
+
+    letter-spacing: 0.055em !important;
+  }
+
+
+  .course-explore {
+
+    min-width: 124px !important;
+
+    min-height: 46px !important;
+
+    padding:
+      0 19px !important;
+
+    border-radius: 11px !important;
+  }
+
+
+  .course-explore::before {
+
+    font-size: 13.5px !important;
+
+    letter-spacing: 0.11em !important;
+  }
+
+
+  .course-explore::after {
+
+    font-size: 19px !important;
+
+    margin-left: 11px !important;
+  }
+}
+
+
+/* ============================================================
+   16 — SHORT SCREEN
+   ============================================================ */
+
+@media (max-height: 760px) and (min-width: 901px) {
+
+  .course-card-footer {
+
+    min-height: 38px !important;
+
+    padding-top: 13px !important;
+  }
+
+
+  .course-card-time {
+
+    min-height: 27px !important;
+
+    padding:
+      4px 8px !important;
+
+    font-size: 10.5px !important;
+  }
+
+
+  .course-explore {
+
+    min-width: 94px !important;
+
+    min-height: 35px !important;
+
+    padding:
+      0 12px !important;
+  }
+
+
+  .course-explore::before {
+
+    font-size: 10.5px !important;
+  }
+
+
+  .course-explore::after {
+
+    font-size: 15px !important;
+
+    margin-left: 7px !important;
+  }
+}
+
+
+/* ============================================================
+   17 — MOBILE
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+  .course-card-footer {
+
+    gap: 10px !important;
+
+    min-height: 42px !important;
+
+    padding-top: 15px !important;
+  }
+
+
+  .course-card-time {
+
+    min-height: 27px !important;
+
+    padding:
+      4px 8px !important;
+
+    font-size: 10px !important;
+
+    letter-spacing: 0.035em !important;
+  }
+
+
+  .course-explore {
+
+    min-width: 94px !important;
+
+    min-height: 36px !important;
+
+    padding:
+      0 12px !important;
+
+    border-radius: 9px !important;
+  }
+
+
+  .course-explore::before {
+
+    font-size: 10.5px !important;
+
+    letter-spacing: 0.08em !important;
+  }
+
+
+  .course-explore::after {
+
+    font-size: 15px !important;
+
+    margin-left: 7px !important;
+  }
+}
+
+
+/* ============================================================
+   18 — REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .course-explore {
+
+    animation: none !important;
+
+    transition: none !important;
+  }
+
+  .course-explore::after {
+
+    transition: none !important;
+  }
+}
+
+
+/* ============================================================
+   END — SECORA COURSE CARD FOOTER V3
+   ============================================================ */
