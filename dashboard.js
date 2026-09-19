@@ -8,7 +8,7 @@
 //
 // Existing authentication, courses, modules, lessons,
 // progress and navigation are preserved.
-// =========================================================
+// ========================================================
 
 
 document.addEventListener(
