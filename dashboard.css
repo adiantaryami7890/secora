@@ -2507,3 +2507,166 @@ input[type="text"]:focus {
 /* ============================================================
    END — PREMIUM ACCESS CENTER
    ============================================================ */
+/* ============================================================
+   SECORA — CORE / BLACKLINE CARD TITLES
+   HD+ TYPOGRAPHY OVERRIDE
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   CORE
+   ------------------------------------------------------------ */
+
+[data-access-product="core"] h3 {
+
+  /* Hide original text while keeping the element */
+  font-size: 0 !important;
+
+  line-height: 1 !important;
+
+  margin: 8px 0 0 !important;
+}
+
+
+[data-access-product="core"] h3::after {
+
+  content: "CORE SECURITY";
+
+  display: block !important;
+
+  color: #f4f7fc !important;
+
+  font-family:
+    "Bebas Neue",
+    "Arial Narrow",
+    sans-serif !important;
+
+  font-size: clamp(
+    30px,
+    2.5vw,
+    42px
+  ) !important;
+
+  font-weight: 400 !important;
+
+  line-height: .95 !important;
+
+  letter-spacing: .045em !important;
+
+  text-transform: uppercase !important;
+
+  text-rendering: geometricPrecision !important;
+
+  -webkit-font-smoothing: antialiased !important;
+
+  text-shadow:
+    0 1px 18px rgba(255,255,255,.035) !important;
+}
+
+
+/* ------------------------------------------------------------
+   BLACKLINE
+   ------------------------------------------------------------ */
+
+[data-access-product="blackline"] h3 {
+
+  font-size: 0 !important;
+
+  line-height: 1 !important;
+
+  margin: 8px 0 0 !important;
+}
+
+
+[data-access-product="blackline"] h3::after {
+
+  content: "BLACKLINE SECURITY";
+
+  display: block !important;
+
+  color: #f4f7fc !important;
+
+  font-family:
+    "Bebas Neue",
+    "Arial Narrow",
+    sans-serif !important;
+
+  font-size: clamp(
+    30px,
+    2.5vw,
+    42px
+  ) !important;
+
+  font-weight: 400 !important;
+
+  line-height: .95 !important;
+
+  letter-spacing: .045em !important;
+
+  text-transform: uppercase !important;
+
+  text-rendering: geometricPrecision !important;
+
+  -webkit-font-smoothing: antialiased !important;
+
+  text-shadow:
+    0 1px 18px rgba(255,255,255,.035) !important;
+}
+
+
+/* ============================================================
+   PREMIUM VISUAL DISTINCTION
+   ============================================================ */
+
+[data-access-product="core"] h3::after {
+
+  background:
+    linear-gradient(
+      90deg,
+      #f4f7fc 0%,
+      #c9d4ec 55%,
+      #91a8d8 100%
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+}
+
+
+[data-access-product="blackline"] h3::after {
+
+  background:
+    linear-gradient(
+      90deg,
+      #f4f7fc 0%,
+      #d4cce8 55%,
+      #a895c9 100%
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 650px) {
+
+  [data-access-product="core"] h3::after,
+  [data-access-product="blackline"] h3::after {
+
+    font-size: 31px !important;
+
+    letter-spacing: .035em !important;
+  }
+}
+
+
+/* ============================================================
+   END
+   ============================================================ */
